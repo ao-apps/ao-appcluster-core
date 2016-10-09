@@ -31,20 +31,25 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * TODO: This pulls-in the different components.  Put this test into the -all package?
+ *
  * @author  AO Industries, Inc.
  */
-public class PropertiesConfigurationTest {
+public class PropertiesConfigurationTestTODO {
 
 	@Test
 	public void testRealWorldConfig() throws IOException, AppClusterConfigurationException, InterruptedException {
-		URL url = PropertiesConfigurationTest.class.getResource("appcluster.properties");
+		URL url = PropertiesConfigurationTestTODO.class.getResource("appcluster.properties");
 		AppClusterPropertiesConfiguration config;
 		if(url.getProtocol().equals("file")) {
 			config = new AppClusterPropertiesConfiguration(new File(url.getPath()));
 		} else {
 			Properties props = new Properties();
-			try (InputStream in = url.openStream()) {
+			InputStream in = url.openStream();
+			try {
 				props.load(in);
+			} finally {
+				in.close();
 			}
 			config = new AppClusterPropertiesConfiguration(props);
 		}
