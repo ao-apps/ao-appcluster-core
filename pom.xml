@@ -58,8 +58,8 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 							<artifactId>maven-javadoc-plugin</artifactId>
 							<configuration>
 								<links>
-									<link>https://www.aoindustries.com/docs/ao-cron/</link>
-									<link>https://www.aoindustries.com/docs/aocode-public/</link>
+									<link>https://www.aoindustries.com/ao-cron/apidocs/</link>
+									<link>https://www.aoindustries.com/aocode-public/apidocs/</link>
 									<link>http://www.dnsjava.org/doc/</link>
 								</links>
 							</configuration>
