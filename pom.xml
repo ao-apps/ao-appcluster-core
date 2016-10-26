@@ -41,7 +41,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 	</properties>
 
 	<name>AO AppCluster Core</name>
-	<url>${project.parent.url}core/</url>
+	<url>https://www.aoindustries.com${bookPath}/</url><!-- Can't inherit due to multi-module -->
 	<description>Application-level clustering tools.</description>
 	<inceptionYear>2011</inceptionYear>
 
