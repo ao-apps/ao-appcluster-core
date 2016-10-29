@@ -3,6 +3,7 @@ Application-level clustering tools.
 
 ## Project Links
 * [Project Home](https://www.aoindustries.com/ao-appcluster/core/)
+* [Changelog](https://www.aoindustries.com/ao-appcluster/core/changelog)
 * [API Docs](https://www.aoindustries.com/ao-appcluster/core/apidocs/)
 * [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.aoindustries%22%20AND%20a:%22ao-appcluster-core%22)
 * [GitHub](https://github.com/aoindustries/ao-appcluster-core)
