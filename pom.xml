@@ -41,7 +41,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 	</properties>
 
 	<name>AO AppCluster Core</name>
-	<url>https://www.aoindustries.com${bookPath}/</url><!-- Can't inherit due to multi-module -->
+	<url>https://aoindustries.com${bookPath}/</url><!-- Can't inherit due to multi-module -->
 	<description>Application-level clustering tools.</description>
 	<inceptionYear>2011</inceptionYear>
 
@@ -64,8 +64,8 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 							<artifactId>maven-javadoc-plugin</artifactId>
 							<configuration>
 								<links>
-									<link>https://www.aoindustries.com/ao-cron/apidocs/</link>
-									<link>https://www.aoindustries.com/aocode-public/apidocs/</link>
+									<link>https://aoindustries.com/ao-cron/apidocs/</link>
+									<link>https://aoindustries.com/aocode-public/apidocs/</link>
 									<link>http://www.dnsjava.org/doc/</link>
 								</links>
 							</configuration>
