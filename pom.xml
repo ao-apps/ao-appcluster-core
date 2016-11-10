@@ -36,12 +36,11 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 	<packaging>jar</packaging>
 
 	<properties>
-		<bookPath>/${project.parent.artifactId}/core</bookPath>
 		<shortTitle>Core</shortTitle>
 	</properties>
 
 	<name>AO AppCluster Core</name>
-	<url>https://aoindustries.com${bookPath}/</url><!-- Can't inherit due to multi-module -->
+	<url>https://aoindustries.com/${project.parent.artifactId}/core/</url>
 	<description>Application-level clustering tools.</description>
 	<inceptionYear>2011</inceptionYear>
 
