@@ -67,6 +67,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 							<configuration>
 								<links>
 									<link>https://aoindustries.com/ao-cron/apidocs/</link>
+									<link>https://aoindustries.com/ao-lang/apidocs/</link>
 									<link>https://aoindustries.com/aocode-public/apidocs/</link>
 									<link>http://www.dnsjava.org/doc/</link>
 								</links>
@@ -86,8 +87,13 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
+			<artifactId>ao-lang</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aoindustries</groupId>
 			<artifactId>aocode-public</artifactId>
-			<version>1.8.3</version>
+			<version>1.9.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>dnsjava</groupId>
