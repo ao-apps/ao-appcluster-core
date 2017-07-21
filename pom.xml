@@ -66,6 +66,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 							<artifactId>maven-javadoc-plugin</artifactId>
 							<configuration>
 								<links>
+									<link>${javac.link.javaApi}</link>
 									<link>https://aoindustries.com/ao-cron/apidocs/</link>
 									<link>https://aoindustries.com/ao-lang/apidocs/</link>
 									<link>https://aoindustries.com/aocode-public/apidocs/</link>
