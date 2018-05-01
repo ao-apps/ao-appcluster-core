@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -106,8 +106,6 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 												Thread.sleep(FILE_CHECK_INTERVAL);
 											} catch(InterruptedException exc) {
 												logger.log(Level.WARNING, null, exc);
-												// Restore the interrupted status
-												Thread.currentThread().interrupt();
 											}
 											boolean notifyListeners = false;
 											synchronized(fileMonitorLock) {
