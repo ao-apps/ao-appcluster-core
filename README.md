@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [AO AppCluster](https://aoindustries.com/ao-appcluster/) / [Core](https://aoindustries.com/ao-appcluster/core/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [AO AppCluster](https://github.com/aoindustries/ao-appcluster) / [Core](https://github.com/aoindustries/ao-appcluster-core)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-current-stable">
 		<img src="https://aoindustries.com/ao-badges/project-current-stable.svg" alt="project: current stable" />
