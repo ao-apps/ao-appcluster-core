@@ -61,10 +61,10 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 						<configuration>
 							<links>
 								<link>${javac.link.javaApi}</link>
+								<link>http://www.dnsjava.org/doc/</link>
 								<link>https://aoindustries.com/ao-cron/apidocs/</link>
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
-								<link>http://www.dnsjava.org/doc/</link>
 							</links>
 						</configuration>
 					</plugin>
