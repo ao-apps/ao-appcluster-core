@@ -45,11 +45,8 @@ public class PropertiesConfigurationTestTODO {
 			config = new AppClusterPropertiesConfiguration(new File(url.getPath()));
 		} else {
 			Properties props = new Properties();
-			InputStream in = url.openStream();
-			try {
+			try (InputStream in = url.openStream()) {
 				props.load(in);
-			} finally {
-				in.close();
 			}
 			config = new AppClusterPropertiesConfiguration(props);
 		}

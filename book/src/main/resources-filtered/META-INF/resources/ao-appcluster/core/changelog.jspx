@@ -37,7 +37,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-29T15:21:59-0500"
-		dateModified="2018-05-01T11:54:54-0500"
+		dateModified="2019-04-23T03:21:31-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.aoindustries:ao-appcluster-core:pom.version}" />
@@ -54,6 +54,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 				scmUrl="@{documented.scm.url}"
 			>
 				<ul>
+					<li>Minimum Java version changed from 1.6 to 1.7.</li>
 					<li>Removed some incorrect uses of <code>Thread.currentThread().interrupt()</code>.</li>
 				</ul>
 			</changelog:release>

@@ -81,7 +81,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 		super(localResourceNode, remoteResourceNode);
 		this.synchronizeSchedule = synchronizeSchedule;
 		this.testSchedule = testSchedule;
-		List<Schedule> combined = new ArrayList<Schedule>(2);
+		List<Schedule> combined = new ArrayList<>(2);
 		combined.add(synchronizeSchedule);
 		combined.add(testSchedule);
 		this.combinedSchedule = new MultiSchedule(combined);
