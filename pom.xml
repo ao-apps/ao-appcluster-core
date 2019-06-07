@@ -76,6 +76,10 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Test -->
+			<dependency>
+				<groupId>junit</groupId><artifactId>junit</artifactId><version>4.12</version>
+			</dependency>
 			<!-- Direct -->
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-cron</artifactId><version>1.1.1-SNAPSHOT</version>
