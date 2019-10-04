@@ -88,7 +88,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 				<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>3.2.0-POST-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.1.1-SNAPSHOT</version>
+				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>3.1.1-POST-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>dnsjava</groupId><artifactId>dnsjava</artifactId><version>2.1.9</version>
