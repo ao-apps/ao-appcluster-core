@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -29,6 +29,7 @@ package com.aoindustries.appcluster;
  *
  * @author  AO Industries, Inc.
  */
+@FunctionalInterface
 public interface ResourcePropertiesConfigurationFactory<R extends Resource<R,RN>,RN extends ResourceNode<R,RN>> {
 
 	ResourcePropertiesConfiguration<R,RN> newResourcePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException;
