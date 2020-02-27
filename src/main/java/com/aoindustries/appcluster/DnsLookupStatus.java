@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,7 +25,7 @@ package com.aoindustries.appcluster;
 /**
  * The set of statuses that apply to individual DNS records.
  *
- * @see DnsRecordResult
+ * @see DnsLookupResult
  *
  * @author  AO Industries, Inc.
  */
