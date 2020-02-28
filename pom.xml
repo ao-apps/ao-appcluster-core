@@ -40,6 +40,8 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		<javadoc.breadcrumbs><![CDATA[<a target="_top" href="https://aoindustries.com/ao-appcluster/">AO AppCluster</a>
 / <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>Core</shortTitle>
+		<!-- Dependencies -->
+		<dnsjava.dnsjava.version>2.1.9</dnsjava.dnsjava.version>
 	</properties>
 
 	<name>AO AppCluster Core</name>
@@ -69,7 +71,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 								<link>https://aoindustries.com/ao-cron/apidocs/</link>
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
-								<link>http://www.dnsjava.org/doc/</link>
+								<link>https://javadoc.io/doc/dnsjava/dnsjava/${dnsjava.dnsjava.version}/</link>
 							</links>
 						</configuration>
 					</plugin>
@@ -95,7 +97,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>4.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>dnsjava</groupId><artifactId>dnsjava</artifactId><version>2.1.9</version>
+				<groupId>dnsjava</groupId><artifactId>dnsjava</artifactId><version>${dnsjava.dnsjava.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
