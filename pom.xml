@@ -37,7 +37,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 / <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>Core</shortTitle>
 		<!-- Dependencies -->
-		<dnsjava.dnsjava.version>2.1.9</dnsjava.dnsjava.version>
+		<dnsjava.dnsjava.version>3.0.1</dnsjava.dnsjava.version>
 	</properties>
 
 	<name>AO AppCluster Core</name>
@@ -80,7 +80,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		<dependencies>
 			<!-- Test -->
 			<dependency>
-				<groupId>junit</groupId><artifactId>junit</artifactId><version>4.12</version>
+				<groupId>junit</groupId><artifactId>junit</artifactId><version>4.13</version>
 			</dependency>
 			<!-- Direct -->
 			<dependency>
