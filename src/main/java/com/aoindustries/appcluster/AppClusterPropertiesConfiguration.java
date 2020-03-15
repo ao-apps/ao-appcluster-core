@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,7 +26,7 @@ import com.aoindustries.cron.MatcherSchedule;
 import com.aoindustries.cron.Schedule;
 import com.aoindustries.util.AoCollections;
 import com.aoindustries.util.PropertiesUtils;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -235,7 +235,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	public Set<String> getUniqueStrings(String propertyName, boolean required) throws AppClusterConfigurationException {
 		String paramValue = getString(propertyName, required);
 		if(paramValue==null) return Collections.emptySet();
-		List<String> values = StringUtility.splitStringCommaSpace(paramValue);
+		List<String> values = Strings.splitStringCommaSpace(paramValue);
 		Set<String> set = new LinkedHashSet<>(values.size()*4/3+1);
 		for(String value : values) {
 			value = value.trim();
@@ -254,7 +254,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	 */
 	public Set<? extends Name> getUniqueNames(String propertyName) throws AppClusterConfigurationException {
 		try {
-			List<String> values = StringUtility.splitStringCommaSpace(getString(propertyName, true));
+			List<String> values = Strings.splitStringCommaSpace(getString(propertyName, true));
 			Set<Name> set = new LinkedHashSet<>(values.size()*4/3+1);
 			for(String value : values) {
 				value = value.trim();

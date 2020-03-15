@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.util.ErrorPrinter;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -385,7 +385,7 @@ public class ResourceDnsMonitor {
 																ApplicationResources.accessor.getMessage(
 																	"ResourceDnsMonitor.masterRecord.multiMasterNotAllowed",
 																	enabledNameserver,
-																	StringUtility.join(addresses, ", ")
+																	Strings.join(addresses, ", ")
 																)
 															);
 														}
@@ -402,10 +402,10 @@ public class ResourceDnsMonitor {
 																		"ResourceDnsMonitor.multiRecordMaster.mismatch",
 																		firstMasterNameserver,
 																		firstMasterRecord,
-																		StringUtility.join(firstMasterAddresses, ", "),
+																		Strings.join(firstMasterAddresses, ", "),
 																		enabledNameserver,
 																		masterRecord,
-																		StringUtility.join(addresses, ", ")
+																		Strings.join(addresses, ", ")
 																	)
 																);
 															}
@@ -462,7 +462,7 @@ public class ResourceDnsMonitor {
 																	nodeStatusMessages.add(
 																		ApplicationResources.accessor.getMessage(
 																			"ResourceDnsMonitor.nodeRecord.onlyOneAllowed",
-																			StringUtility.join(addresses, ", ")
+																			Strings.join(addresses, ", ")
 																		)
 																	);
 																} else {
@@ -528,10 +528,10 @@ public class ResourceDnsMonitor {
 																				"ResourceDnsMonitor.multiRecordNode.mismatch",
 																				firstNodeNameserver,
 																				firstNodeRecord,
-																				StringUtility.join(firstNodeAddresses, ", "),
+																				Strings.join(firstNodeAddresses, ", "),
 																				enabledNameserver,
 																				nodeRecord,
-																				StringUtility.join(addresses, ", ")
+																				Strings.join(addresses, ", ")
 																			)
 																		);
 																	}

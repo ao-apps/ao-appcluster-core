@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.util.AoCollections;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -75,8 +75,8 @@ public class LoggerResourceListener implements ResourceListener {
 										resource,
 										masterRecord,
 										enabledNameserver,
-										oldAddresses==null ? "" : StringUtility.join(oldAddresses, ", "),
-										StringUtility.join(newAddresses, ", ")
+										oldAddresses==null ? "" : Strings.join(oldAddresses, ", "),
+										Strings.join(newAddresses, ", ")
 									)
 								);
 							}
@@ -144,8 +144,8 @@ public class LoggerResourceListener implements ResourceListener {
 											node,
 											nodeRecord,
 											enabledNameserver,
-											oldAddresses==null ? "" : StringUtility.join(oldAddresses, ", "),
-											StringUtility.join(newAddresses, ", ")
+											oldAddresses==null ? "" : Strings.join(oldAddresses, ", "),
+											Strings.join(newAddresses, ", ")
 										)
 									);
 								}
