@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -164,7 +164,7 @@ public class ResourceDnsResult implements ResourceResult {
 	}
 
 	/**
-	 * Gets the mapping of all masterRecord DNS lookups in the form masterRecord->enabledNameserver->result.
+	 * Gets the mapping of all masterRecord DNS lookups in the form masterRecord-&gt;enabledNameserver-&gt;result.
 	 * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
 	 * Otherwise, it contains an entry for every masterRecord querying every enabled nameserver.
 	 */

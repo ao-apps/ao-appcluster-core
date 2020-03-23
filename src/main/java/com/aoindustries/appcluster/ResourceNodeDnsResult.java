@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -56,7 +56,7 @@ public class ResourceNodeDnsResult {
 	}
 
 	/**
-	 * Gets the mapping of all nodeRecord DNS lookups in the form nodeRecord->enabledNameserver->result.
+	 * Gets the mapping of all nodeRecord DNS lookups in the form nodeRecord-&gt;enabledNameserver-&gt;result.
 	 * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
 	 * Otherwise, it contains an entry for every nodeRecord querying every enabled nameserver.
 	 */
