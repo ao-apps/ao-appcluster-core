@@ -64,6 +64,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 							<links>
 								<link>${javadoc.link.javase}</link>
 								<!-- Direct -->
+								<link>https://aoindustries.com/ao-collections/apidocs/</link>
 								<link>https://aoindustries.com/ao-cron/apidocs/</link>
 								<link>https://aoindustries.com/ao-lang/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
@@ -83,6 +84,9 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 				<groupId>junit</groupId><artifactId>junit</artifactId><version>4.13</version>
 			</dependency>
 			<!-- Direct -->
+			<dependency>
+				<groupId>com.aoindustries</groupId><artifactId>ao-collections</artifactId><version>1.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-cron</artifactId><version>1.2.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
@@ -105,6 +109,9 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 			<scope>test</scope>
 		</dependency>
 		<!-- Direct -->
+		<dependency>
+			<groupId>com.aoindustries</groupId><artifactId>ao-collections</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-cron</artifactId>
 		</dependency>

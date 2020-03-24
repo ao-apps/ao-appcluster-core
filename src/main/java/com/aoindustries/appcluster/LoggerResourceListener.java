@@ -22,7 +22,7 @@
  */
 package com.aoindustries.appcluster;
 
-import com.aoindustries.util.AoCollections;
+import com.aoindustries.collections.AoCollections;
 import com.aoindustries.lang.Strings;
 import java.util.List;
 import java.util.Map;

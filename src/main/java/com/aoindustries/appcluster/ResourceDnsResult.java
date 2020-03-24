@@ -22,7 +22,7 @@
  */
 package com.aoindustries.appcluster;
 
-import com.aoindustries.util.AoCollections;
+import com.aoindustries.collections.AoCollections;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.Arrays;

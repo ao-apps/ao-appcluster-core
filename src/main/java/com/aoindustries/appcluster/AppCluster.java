@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,7 @@
  */
 package com.aoindustries.appcluster;
 
-import com.aoindustries.util.AoCollections;
+import com.aoindustries.collections.AoCollections;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -387,6 +387,7 @@ public class AppCluster {
 	public Map<String,Node> getNodeMap() {
 		Map<String,Node> nodeMap;
 		synchronized(startedLock) {
+			// TODO: Inspect all for diamond operator
 			nodeMap = new LinkedHashMap<String,Node>(nodes.size()*4/3+1);
 			for(Node node : nodes) nodeMap.put(node.getId(), node);
 		}
