@@ -235,7 +235,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	public Set<String> getUniqueStrings(String propertyName, boolean required) throws AppClusterConfigurationException {
 		String paramValue = getString(propertyName, required);
 		if(paramValue==null) return Collections.emptySet();
-		List<String> values = Strings.splitStringCommaSpace(paramValue);
+		List<String> values = Strings.splitCommaSpace(paramValue);
 		Set<String> set = new LinkedHashSet<>(values.size()*4/3+1);
 		for(String value : values) {
 			value = value.trim();
@@ -254,7 +254,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	 */
 	public Set<? extends Name> getUniqueNames(String propertyName) throws AppClusterConfigurationException {
 		try {
-			List<String> values = Strings.splitStringCommaSpace(getString(propertyName, true));
+			List<String> values = Strings.splitCommaSpace(getString(propertyName, true));
 			Set<Name> set = new LinkedHashSet<>(values.size()*4/3+1);
 			for(String value : values) {
 				value = value.trim();
