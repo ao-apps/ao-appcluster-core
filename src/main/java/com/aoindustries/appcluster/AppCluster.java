@@ -40,7 +40,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xbill.DNS.Name;
@@ -205,18 +204,13 @@ public class AppCluster {
 	void notifyResourceListenersOnDnsResult(final ResourceDnsResult oldResult, final ResourceDnsResult newResult) {
 		synchronized(resourceListeners) {
 			for(final ResourceListener resourceListener : resourceListeners) {
-				resourceListenersOnDnsResultExecutorService.submit(
-					new Runnable() {
-						@Override
-						public void run() {
-							try {
-								resourceListener.onResourceDnsResult(oldResult, newResult);
-							} catch(Exception exc) {
-								logger.log(Level.SEVERE, null, exc);
-							}
-						}
+				resourceListenersOnDnsResultExecutorService.submit(() -> {
+					try {
+						resourceListener.onResourceDnsResult(oldResult, newResult);
+					} catch(Exception exc) {
+						logger.log(Level.SEVERE, null, exc);
 					}
-				);
+				});
 			}
 		}
 	}
@@ -224,18 +218,13 @@ public class AppCluster {
 	void notifyResourceListenersOnSynchronizationResult(final ResourceSynchronizationResult oldResult, final ResourceSynchronizationResult newResult) {
 		synchronized(resourceListeners) {
 			for(final ResourceListener resourceListener : resourceListeners) {
-				resourceListenersOnSynchronizationResultExecutorService.submit(
-					new Runnable() {
-						@Override
-						public void run() {
-							try {
-								resourceListener.onResourceSynchronizationResult(oldResult, newResult);
-							} catch(Exception exc) {
-								logger.log(Level.SEVERE, null, exc);
-							}
-						}
+				resourceListenersOnSynchronizationResultExecutorService.submit(() -> {
+					try {
+						resourceListener.onResourceSynchronizationResult(oldResult, newResult);
+					} catch(Exception exc) {
+						logger.log(Level.SEVERE, null, exc);
 					}
-				);
+				});
 			}
 		}
 	}
@@ -488,34 +477,25 @@ public class AppCluster {
 
 				// Start the executor services
 				executorService = Executors.newCachedThreadPool(
-					new ThreadFactory() {
-						@Override
-						public Thread newThread(Runnable r) {
-							Thread thread = new Thread(r, AppCluster.class.getName()+".executorService");
-							thread.setPriority(EXECUTOR_THREAD_PRIORITY);
-							return thread;
-						}
+					(Runnable r) -> {
+						Thread thread = new Thread(r, AppCluster.class.getName()+".executorService");
+						thread.setPriority(EXECUTOR_THREAD_PRIORITY);
+						return thread;
 					}
 				);
 				synchronized(resourceListeners) {
 					resourceListenersOnDnsResultExecutorService = Executors.newSingleThreadExecutor(
-						new ThreadFactory() {
-							@Override
-							public Thread newThread(Runnable r) {
-								Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnDnsResultExecutorService");
-								thread.setPriority(EXECUTOR_THREAD_PRIORITY);
-								return thread;
-							}
+						(Runnable r) -> {
+							Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnDnsResultExecutorService");
+							thread.setPriority(EXECUTOR_THREAD_PRIORITY);
+							return thread;
 						}
 					);
 					resourceListenersOnSynchronizationResultExecutorService = Executors.newSingleThreadExecutor(
-						new ThreadFactory() {
-							@Override
-							public Thread newThread(Runnable r) {
-								Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnSynchronizationResultExecutorService");
-								thread.setPriority(EXECUTOR_THREAD_PRIORITY);
-								return thread;
-							}
+						(Runnable r) -> {
+							Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnSynchronizationResultExecutorService");
+							thread.setPriority(EXECUTOR_THREAD_PRIORITY);
+							return thread;
 						}
 					);
 				}
@@ -536,6 +516,7 @@ public class AppCluster {
 					resource.start();
 				}
 				resources = AoCollections.optimalUnmodifiableSet(newResources);
+			// TODO: Inspect all multicatch
 			} catch(TextParseException exc) {
 				throw new AppClusterConfigurationException(exc);
 			} catch(UnknownHostException exc) {

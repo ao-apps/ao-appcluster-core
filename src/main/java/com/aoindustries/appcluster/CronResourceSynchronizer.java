@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -287,21 +286,16 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 										stateMessage = null;
 									}
 									long startTime = System.currentTimeMillis();
-									Future<ResourceSynchronizationResult> future = resource.getCluster().getExecutorService().submit(
-										new Callable<ResourceSynchronizationResult>() {
-											@Override
-											public ResourceSynchronizationResult call() throws Exception {
-												final Thread currentThread = Thread.currentThread();
-												final int oldThreadPriority = currentThread.getPriority();
-												try {
-													currentThread.setPriority(THREAD_PRIORITY);
-													return synchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult);
-												} finally {
-													currentThread.setPriority(oldThreadPriority);
-												}
-											}
+									Future<ResourceSynchronizationResult> future = resource.getCluster().getExecutorService().submit(() -> {
+										final Thread currentThread = Thread.currentThread();
+										final int oldThreadPriority = currentThread.getPriority();
+										try {
+											currentThread.setPriority(THREAD_PRIORITY);
+											return synchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult);
+										} finally {
+											currentThread.setPriority(oldThreadPriority);
 										}
-									);
+									});
 									ResourceSynchronizationResult result;
 									try {
 										result = future.get(resource.getSynchronizeTimeout(), TimeUnit.SECONDS);
@@ -345,21 +339,16 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 										stateMessage = null;
 									}
 									long startTime = System.currentTimeMillis();
-									Future<ResourceSynchronizationResult> future = resource.getCluster().getExecutorService().submit(
-										new Callable<ResourceSynchronizationResult>() {
-											@Override
-											public ResourceSynchronizationResult call() throws Exception {
-												final Thread currentThread = Thread.currentThread();
-												final int oldThreadPriority = currentThread.getPriority();
-												try {
-													currentThread.setPriority(THREAD_PRIORITY);
-													return synchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult);
-												} finally {
-													currentThread.setPriority(oldThreadPriority);
-												}
-											}
+									Future<ResourceSynchronizationResult> future = resource.getCluster().getExecutorService().submit(() -> {
+										final Thread currentThread = Thread.currentThread();
+										final int oldThreadPriority = currentThread.getPriority();
+										try {
+											currentThread.setPriority(THREAD_PRIORITY);
+											return synchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult);
+										} finally {
+											currentThread.setPriority(oldThreadPriority);
 										}
-									);
+									});
 									ResourceSynchronizationResult result;
 									try {
 										result = future.get(resource.getTestTimeout(), TimeUnit.SECONDS);

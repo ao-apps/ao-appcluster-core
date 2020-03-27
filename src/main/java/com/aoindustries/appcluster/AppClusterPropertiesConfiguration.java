@@ -96,43 +96,40 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 						fileLastModified = file.lastModified();
 						this.properties = PropertiesUtils.loadFromFile(file);
 						fileMonitorThread = new Thread(
-							new Runnable() {
-								@Override
-								public void run() {
-									final Thread currentThread = Thread.currentThread();
-									while(true) {
+							() -> {
+								final Thread currentThread = Thread.currentThread();
+								while(true) {
+									try {
 										try {
-											try {
-												Thread.sleep(FILE_CHECK_INTERVAL);
-											} catch(InterruptedException exc) {
-												logger.log(Level.WARNING, null, exc);
+											Thread.sleep(FILE_CHECK_INTERVAL);
+										} catch(InterruptedException exc) {
+											logger.log(Level.WARNING, null, exc);
+										}
+										boolean notifyListeners = false;
+										synchronized(fileMonitorLock) {
+											if(currentThread!=fileMonitorThread) break;
+											long newLastModified = file.lastModified();
+											if(newLastModified!=fileLastModified) {
+												// Reload the configuration
+												fileLastModified = newLastModified;
+												Properties newProperties = PropertiesUtils.loadFromFile(file);
+												AppClusterPropertiesConfiguration.this.properties = newProperties;
+												notifyListeners = true;
 											}
-											boolean notifyListeners = false;
-											synchronized(fileMonitorLock) {
-												if(currentThread!=fileMonitorThread) break;
-												long newLastModified = file.lastModified();
-												if(newLastModified!=fileLastModified) {
-													// Reload the configuration
-													fileLastModified = newLastModified;
-													Properties newProperties = PropertiesUtils.loadFromFile(file);
-													AppClusterPropertiesConfiguration.this.properties = newProperties;
-													notifyListeners = true;
-												}
-											}
-											if(notifyListeners) {
-												synchronized(listeners) {
-													for(AppClusterConfigurationListener listener : listeners) {
-														try {
-															listener.onConfigurationChanged();
-														} catch(Exception exc) {
-															logger.log(Level.SEVERE, null, exc);
-														}
+										}
+										if(notifyListeners) {
+											synchronized(listeners) {
+												for(AppClusterConfigurationListener listener : listeners) {
+													try {
+														listener.onConfigurationChanged();
+													} catch(Exception exc) {
+														logger.log(Level.SEVERE, null, exc);
 													}
 												}
 											}
-										} catch(Exception exc) {
-											logger.log(Level.SEVERE, null, exc);
 										}
+									} catch(Exception exc) {
+										logger.log(Level.SEVERE, null, exc);
 									}
 								}
 							},
@@ -299,9 +296,9 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 			ResourcePropertiesConfigurationFactory<?,?> factory = factoryCache.get(classname);
 			if(factory==null) {
 				try {
-					factory = Class.forName(classname).asSubclass(ResourcePropertiesConfigurationFactory.class).newInstance();
+					factory = Class.forName(classname).asSubclass(ResourcePropertiesConfigurationFactory.class).getConstructor().newInstance();
 					factoryCache.put(classname, factory);
-				} catch(ClassNotFoundException | ClassCastException | InstantiationException | IllegalAccessException exc) {
+				} catch(RuntimeException | ReflectiveOperationException exc) {
 					throw new AppClusterConfigurationException(exc);
 				}
 			}
