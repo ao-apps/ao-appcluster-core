@@ -516,10 +516,7 @@ public class AppCluster {
 					resource.start();
 				}
 				resources = AoCollections.optimalUnmodifiableSet(newResources);
-			// TODO: Inspect all multicatch
-			} catch(TextParseException exc) {
-				throw new AppClusterConfigurationException(exc);
-			} catch(UnknownHostException exc) {
+			} catch(TextParseException | UnknownHostException exc) {
 				throw new AppClusterConfigurationException(exc);
 			}
 		}
