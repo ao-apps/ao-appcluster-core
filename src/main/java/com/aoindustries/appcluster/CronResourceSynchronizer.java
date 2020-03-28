@@ -24,7 +24,6 @@ package com.aoindustries.appcluster;
 
 import com.aoindustries.cron.CronDaemon;
 import com.aoindustries.cron.CronJob;
-import com.aoindustries.cron.CronJobScheduleMode;
 import com.aoindustries.cron.MultiSchedule;
 import com.aoindustries.cron.Schedule;
 import com.aoindustries.util.ErrorPrinter;
@@ -240,22 +239,17 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 
 					job = new CronJob() {
 						@Override
-						public Schedule getCronJobSchedule() {
+						public Schedule getSchedule() {
 							return combinedSchedule;
 						}
 
 						@Override
-						public CronJobScheduleMode getCronJobScheduleMode() {
-							return CronJobScheduleMode.SKIP;
-						}
-
-						@Override
-						public String getCronJobName() {
+						public String getName() {
 							return CronResourceSynchronizer.this.toString();
 						}
 
 						@Override
-						public void runCronJob(int minute, int hour, int dayOfMonth, int month, int dayOfWeek, int year) {
+						public void run(int minute, int hour, int dayOfMonth, int month, int dayOfWeek, int year) {
 							final ResourceSynchronizationMode synchronizeNowMode;
 							synchronized(jobLock) {
 								if(job!=this) return;
@@ -275,7 +269,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 										synchronizeNowMode == ResourceSynchronizationMode.SYNCHRONIZE
 										|| (
 											synchronizeNowMode == null
-											&& synchronizeSchedule.isCronJobScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
+											&& synchronizeSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
 										)
 									) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
 								) {
@@ -328,7 +322,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 										synchronizeNowMode == ResourceSynchronizationMode.TEST_ONLY
 										|| (
 											synchronizeNowMode == null
-											&& testSchedule.isCronJobScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
+											&& testSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
 										)
 									) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
 								) {
@@ -381,7 +375,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 						}
 
 						@Override
-						public int getCronJobThreadPriority() {
+						public int getThreadPriority() {
 							return THREAD_PRIORITY;
 						}
 					};
