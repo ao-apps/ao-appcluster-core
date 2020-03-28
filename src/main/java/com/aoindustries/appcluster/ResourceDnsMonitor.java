@@ -25,6 +25,7 @@ package com.aoindustries.appcluster;
 import com.aoindustries.lang.Strings;
 import com.aoindustries.util.ErrorPrinter;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -64,7 +64,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * Checks the DNS settings once every 30 seconds.
 	 */
-	public static final int DNS_CHECK_INTERVAL = 30000;
+	public static final Duration DNS_CHECK_INTERVAL = Duration.ofSeconds(30);
 
 	/**
 	 * The number of DNS tries.
@@ -74,7 +74,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * DNS queries time-out at 30 seconds.
 	 */
-	public static final int DNS_CHECK_TIMEOUT = 30000;
+	public static final Duration DNS_CHECK_TIMEOUT = Duration.ofSeconds(30);
 
 	/**
 	 * Only one resolver will be created for each unique nameserver (case-insensitive on unique)
@@ -84,7 +84,7 @@ public class ResourceDnsMonitor {
 		SimpleResolver resolver = resolvers.get(hostname);
 		if(resolver==null) {
 			resolver = new SimpleResolver(hostname.toString());
-			resolver.setTimeout(DNS_CHECK_TIMEOUT / 1000, DNS_CHECK_TIMEOUT % 1000);
+			resolver.setTimeout(DNS_CHECK_TIMEOUT);
 			SimpleResolver existing = resolvers.putIfAbsent(hostname, resolver);
 			if(existing!=null) resolver = existing;
 		}
@@ -620,7 +620,7 @@ public class ResourceDnsMonitor {
 									logger.log(Level.SEVERE, null, exc);
 								}
 								try {
-									Thread.sleep(DNS_CHECK_INTERVAL);
+									Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);
 								} catch(InterruptedException exc) {
 									logger.log(Level.WARNING, null, exc);
 								}

@@ -59,6 +59,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 						Reduced use of property substitutions in <code>pom.xml</code>.
 						This is to help 3rd-party parsers that fail to perform full Maven-compatible substitutions.
 					</li>
+					<li>Using <code>Duration</code> for time intervals.</li>
 					<li>Updated dependencies.</li>
 				</ul>
 			</changelog:release>

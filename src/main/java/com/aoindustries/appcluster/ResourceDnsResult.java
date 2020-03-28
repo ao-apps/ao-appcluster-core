@@ -43,8 +43,18 @@ import org.xbill.DNS.Name;
  */
 public class ResourceDnsResult implements ResourceResult {
 
-	public static final int WARNING_SECONDS = 10 + (ResourceDnsMonitor.DNS_CHECK_INTERVAL + ResourceDnsMonitor.DNS_ATTEMPTS * ResourceDnsMonitor.DNS_CHECK_TIMEOUT) / 1000;
-	public static final int ERROR_SECONDS = WARNING_SECONDS + (ResourceDnsMonitor.DNS_CHECK_INTERVAL / 1000);
+	/**
+	 * The warning is 10 seconds after the longest check time including timeouts.
+	 */
+	public static final int WARNING_SECONDS =
+		10 + (int)(
+			(
+				ResourceDnsMonitor.DNS_CHECK_INTERVAL.toMillis()
+				+ ResourceDnsMonitor.DNS_ATTEMPTS * ResourceDnsMonitor.DNS_CHECK_TIMEOUT.toMillis()
+			) / 1000
+		);
+
+	public static final int ERROR_SECONDS = WARNING_SECONDS + (int)ResourceDnsMonitor.DNS_CHECK_INTERVAL.getSeconds();
 
 	static final Comparator<Object> defaultLocaleCollator = Collator.getInstance();
 
