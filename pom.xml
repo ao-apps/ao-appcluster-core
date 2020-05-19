@@ -37,7 +37,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 / <a target="${javadoc.target}" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
 		<shortTitle>Core</shortTitle>
 		<!-- Dependencies -->
-		<dnsjava.dnsjava.version>3.0.2</dnsjava.dnsjava.version>
+		<dnsjava.dnsjava.version>3.1.0</dnsjava.dnsjava.version>
 	</properties>
 
 	<name>AO AppCluster Core</name>
