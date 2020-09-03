@@ -85,6 +85,7 @@ abstract public class ResourceNode<R extends Resource<R,RN>,RN extends ResourceN
 	 * match the resource's masterRecords for this node to be considered
 	 * a master.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Name> getNodeRecords() {
 		return nodeRecords;
 	}

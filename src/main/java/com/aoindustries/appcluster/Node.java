@@ -52,7 +52,9 @@ public class Node {
 		this.username = nodeConfiguration.getUsername();
 		Set<? extends Name> configNameservers = nodeConfiguration.getNameservers();
 		Set<Nameserver> newNameservers = new LinkedHashSet<>(configNameservers.size()*4/3+1);
-		for(Name nameserver : configNameservers) newNameservers.add(new Nameserver(cluster, nameserver));
+		for(Name nameserver : configNameservers) {
+			newNameservers.add(new Nameserver(cluster, nameserver));
+		}
 		this.nameservers = AoCollections.optimalUnmodifiableSet(newNameservers);
 	}
 
@@ -112,6 +114,7 @@ public class Node {
 	/**
 	 * Gets the set of nameservers that are local to the machine running this node.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Nameserver> getNameservers() {
 		return nameservers;
 	}
@@ -129,7 +132,9 @@ public class Node {
 				Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
 				if(nodeLookups!=null) {
 					for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : nodeLookups.values()) {
-						for(Nameserver nameserver : nameservers) status = AppCluster.max(status, lookups.get(nameserver).getStatus().getResourceStatus());
+						for(Nameserver nameserver : nameservers) {
+							status = AppCluster.max(status, lookups.get(nameserver).getStatus().getResourceStatus());
+						}
 					}
 				}
 			}

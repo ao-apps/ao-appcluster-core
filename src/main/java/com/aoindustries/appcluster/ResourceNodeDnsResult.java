@@ -60,6 +60,7 @@ public class ResourceNodeDnsResult {
 	 * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
 	 * Otherwise, it contains an entry for every nodeRecord querying every enabled nameserver.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getNodeRecordLookups() {
 		return nodeRecordLookups;
 	}
@@ -75,6 +76,7 @@ public class ResourceNodeDnsResult {
 	 * Gets the node status messages.
 	 * If no message, returns an empty set.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public SortedSet<String> getNodeStatusMessages() {
 		return nodeStatusMessages;
 	}

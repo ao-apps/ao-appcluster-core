@@ -178,6 +178,7 @@ public class ResourceDnsResult implements ResourceResult {
 	 * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
 	 * Otherwise, it contains an entry for every masterRecord querying every enabled nameserver.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getMasterRecordLookups() {
 		return masterRecordLookups;
 	}
@@ -193,6 +194,7 @@ public class ResourceDnsResult implements ResourceResult {
 	 * Gets the master status messages.
 	 * If no message, returns an empty set.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public SortedSet<String> getMasterStatusMessages() {
 		return masterStatusMessages;
 	}
@@ -201,6 +203,7 @@ public class ResourceDnsResult implements ResourceResult {
 	 * Gets the result of each node.
 	 * This has an entry for every node in this resource.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<? extends Node,? extends ResourceNodeDnsResult> getNodeResultMap() {
 		return nodeResults;
 	}
@@ -228,7 +231,9 @@ public class ResourceDnsResult implements ResourceResult {
 		status = AppCluster.max(status, getMasterStatus().getResourceStatus());
 		if(masterRecordLookups!=null) {
 			for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : masterRecordLookups.values()) {
-				for(DnsLookupResult lookup : lookups.values()) status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
+				for(DnsLookupResult lookup : lookups.values()) {
+					status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
+				}
 			}
 		}
 
@@ -238,7 +243,9 @@ public class ResourceDnsResult implements ResourceResult {
 			Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
 			if(nodeLookups!=null) {
 				for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : nodeLookups.values()) {
-					for(DnsLookupResult lookup : lookups.values()) status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
+					for(DnsLookupResult lookup : lookups.values()) {
+						status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
+					}
 				}
 			}
 		}

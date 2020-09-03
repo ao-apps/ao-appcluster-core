@@ -161,6 +161,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * If both the cluster and this resource are enabled, starts the resource DNS monitor.
 	 */
+	@SuppressWarnings({"NestedSynchronizedStatement", "UseSpecificCatch", "TooBroadCatch", "SleepWhileHoldingLock"})
 	void start() {
 		synchronized(threadLock) {
 			if(!resource.getCluster().isEnabled()) {
@@ -338,11 +339,13 @@ public class ResourceDnsMonitor {
 															null,
 															null
 														);
-													} catch(Exception exc) {
+													} catch(ThreadDeath td) {
+														throw td;
+													} catch(Throwable t) {
 														return new DnsLookupResult(
 															hostname,
 															DnsLookupStatus.ERROR,
-															Collections.singleton(ErrorPrinter.getStackTraces(exc)),
+															Collections.singleton(ErrorPrinter.getStackTraces(t)),
 															null
 														);
 													}
@@ -422,6 +425,7 @@ public class ResourceDnsMonitor {
 											masterStatusMessages.add(ApplicationResources.accessor.getMessage("ResourceDnsMonitor.masterRecord.missing", masterRecord));
 										}
 									}
+									assert firstMasterAddresses != null;
 
 									// Get the results for each node
 									Map<Node,ResourceNodeDnsResult> _nodeResults = new HashMap<>(_resourceNodes.length*4/3+1);

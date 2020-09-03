@@ -54,6 +54,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	private final ResourceDnsMonitor dnsMonitor;
 	private final Map<Node,ResourceSynchronizer<R,RN>> synchronizers;
 
+	@SuppressWarnings("OverridableMethodCallInConstructor")
 	protected Resource(AppCluster cluster, ResourceConfiguration<R,RN> resourceConfiguration, Collection<? extends ResourceNode<?,?>> resourceNodes) throws AppClusterConfigurationException {
 		this.cluster = cluster;
 		this.id = resourceConfiguration.getId();
@@ -160,6 +161,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 * The master node is determined by matching these records against
 	 * the resource node configuration's node records.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Name> getMasterRecords() {
 		return masterRecords;
 	}
@@ -174,6 +176,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	/**
 	 * Gets the set of all nameservers used by all enabled nodes.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Nameserver> getEnabledNameservers() {
 		return enabledNameservers;
 	}
@@ -185,6 +188,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 		return dnsMonitor;
 	}
 
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends RN> getResourceNodes() {
 		return resourceNodes;
 	}
@@ -222,14 +226,18 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 */
 	void start() {
 		dnsMonitor.start();
-		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) synchronizer.start();
+		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) {
+			synchronizer.start();
+		}
 	}
 
 	/**
 	 * Stops all synchronizers and the DNS monitor.
 	 */
 	void stop() {
-		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) synchronizer.stop();
+		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) {
+			synchronizer.stop();
+		}
 		dnsMonitor.stop();
 	}
 
@@ -250,6 +258,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 * Gets a map-view of the resource synchronizers keyed on remote node.
 	 * If the local node is not part of the resource nodes, returns an empty map.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<Node,ResourceSynchronizer<R,RN>> getSynchronizerMap() {
 		return synchronizers;
 	}

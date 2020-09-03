@@ -70,7 +70,9 @@ public class ResourceSynchronizationResult implements ResourceResult {
 	@Override
 	public Timestamp getStartTime() {
 		long startTime = Long.MAX_VALUE;
-		for(ResourceSynchronizationResultStep step : steps) startTime = Math.min(startTime, step.startTime);
+		for(ResourceSynchronizationResultStep step : steps) {
+			startTime = Math.min(startTime, step.startTime);
+		}
 		return new Timestamp(startTime);
 	}
 
@@ -80,7 +82,9 @@ public class ResourceSynchronizationResult implements ResourceResult {
 	@Override
 	public Timestamp getEndTime() {
 		long endTime = Long.MIN_VALUE;
-		for(ResourceSynchronizationResultStep step : steps) endTime = Math.max(endTime, step.endTime);
+		for(ResourceSynchronizationResultStep step : steps) {
+			endTime = Math.max(endTime, step.endTime);
+		}
 		return new Timestamp(endTime);
 	}
 
@@ -90,7 +94,9 @@ public class ResourceSynchronizationResult implements ResourceResult {
 	@Override
 	public ResourceStatus getResourceStatus() {
 		ResourceStatus status = ResourceStatus.UNKNOWN;
-		for(ResourceSynchronizationResultStep step : steps) status = AppCluster.max(status, step.getResourceStatus());
+		for(ResourceSynchronizationResultStep step : steps) {
+			status = AppCluster.max(status, step.getResourceStatus());
+		}
 		return status;
 	}
 
@@ -104,6 +110,7 @@ public class ResourceSynchronizationResult implements ResourceResult {
 	/**
 	 * Gets the steps for this synchronization.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public List<ResourceSynchronizationResultStep> getSteps() {
 		return steps;
 	}

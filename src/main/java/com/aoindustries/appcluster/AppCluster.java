@@ -23,10 +23,10 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.collections.AoCollections;
+import com.aoindustries.sql.UnmodifiableTimestamp;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,7 +63,7 @@ public class AppCluster {
 	 */
 	private final Object startedLock = new Object();
 	private boolean started = false; // Protected by startedLock
-	private Timestamp startedTime = null; // Protected by startedLock
+	private UnmodifiableTimestamp startedTime = null; // Protected by startedLock
 	private boolean enabled = false; // Protected by startedLock
 	private String display; // Protected by startedLock
 	private ExecutorService executorService; // Protected by startLock
@@ -268,7 +268,8 @@ public class AppCluster {
 	/**
 	 * Gets the time this cluster was started or <code>null</code> if not running.
 	 */
-	public Timestamp getStartedTime() {
+	@SuppressWarnings("ReturnOfDateField") // UnmodifiableTimestamp
+	public UnmodifiableTimestamp getStartedTime() {
 		synchronized(startedLock) {
 			return startedTime;
 		}
@@ -286,7 +287,7 @@ public class AppCluster {
 				if(logger.isLoggable(Level.INFO)) logger.info(ApplicationResources.accessor.getMessage("AppCluster.start.info", configuration.getDisplay()));
 				configuration.addConfigurationListener(configUpdated);
 				started = true;
-				startedTime = new Timestamp(System.currentTimeMillis());
+				startedTime = new UnmodifiableTimestamp(System.currentTimeMillis());
 				startUp();
 			}
 		}
@@ -353,6 +354,7 @@ public class AppCluster {
 	/**
 	 * Gets the set of all nodes or empty set if not started.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Node> getNodes() {
 		synchronized(startedLock) {
 			return nodes;
@@ -364,7 +366,9 @@ public class AppCluster {
 	 */
 	public Node getNode(String id) {
 		synchronized(startedLock) {
-			for(Node node : nodes) if(node.getId().equals(id)) return node;
+			for(Node node : nodes) {
+				if(node.getId().equals(id)) return node;
+			}
 			return null;
 		}
 	}
@@ -377,7 +381,9 @@ public class AppCluster {
 		Map<String,Node> nodeMap;
 		synchronized(startedLock) {
 			nodeMap = new LinkedHashMap<>(nodes.size()*4/3+1);
-			for(Node node : nodes) nodeMap.put(node.getId(), node);
+			for(Node node : nodes) {
+				nodeMap.put(node.getId(), node);
+			}
 		}
 		return AoCollections.optimalUnmodifiableMap(nodeMap);
 	}
@@ -421,6 +427,7 @@ public class AppCluster {
 	/**
 	 * Gets the set of all resources or empty set if not started.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<? extends Resource<?,?>> getResources() {
 		synchronized(startedLock) {
 			return resources;
@@ -434,7 +441,9 @@ public class AppCluster {
 	public Map<String,? extends Resource<?,?>> getResourceMap() {
 		synchronized(startedLock) {
 			LinkedHashMap<String,Resource<?,?>> map = new LinkedHashMap<>(resources.size()*4/3+1);
-			for(Resource<?,?> resource : resources) map.put(resource.getId(), resource);
+			for(Resource<?,?> resource : resources) {
+				map.put(resource.getId(), resource);
+			}
 			return AoCollections.optimalUnmodifiableMap(map);
 		}
 	}
@@ -522,11 +531,14 @@ public class AppCluster {
 		}
 	}
 
+	@SuppressWarnings("NestedSynchronizedStatement")
 	private void shutdown() {
 		synchronized(startedLock) {
 			if(started) {
 				// Stop per-resource monitoring and synchronization threads
-				for(Resource<?,?> resource : resources) resource.stop();
+				for(Resource<?,?> resource : resources) {
+					resource.stop();
+				}
 				resources = Collections.emptySet();
 
 				// Stop the executor service
@@ -579,7 +591,9 @@ public class AppCluster {
 			ResourceStatus status = ResourceStatus.UNKNOWN;
 			if(!started) status = max(status, ResourceStatus.STOPPED);
 			if(!enabled) status = max(status, ResourceStatus.DISABLED);
-			for(Resource<?,?> resource : getResources()) status = max(status, resource.getStatus());
+			for(Resource<?,?> resource : getResources()) {
+				status = max(status, resource.getStatus());
+			}
 			return status;
 		}
 	}

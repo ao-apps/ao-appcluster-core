@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -27,5 +27,6 @@ package com.aoindustries.appcluster;
  *
  * @author  AO Industries, Inc.
  */
+@SuppressWarnings("MarkerInterface")
 public interface CronResourceNodeConfiguration<R extends CronResource<R,RN>,RN extends CronResourceNode<R,RN>> extends ResourceNodeConfiguration<R,RN> {
 }

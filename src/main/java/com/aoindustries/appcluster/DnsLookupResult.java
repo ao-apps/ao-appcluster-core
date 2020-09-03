@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -82,6 +82,7 @@ public class DnsLookupResult {
 	/**
 	 * Gets the status messages for this lookup.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public SortedSet<String> getStatusMessages() {
 		return statusMessages;
 	}
@@ -89,6 +90,7 @@ public class DnsLookupResult {
 	/**
 	 * Only relevant for SUCCESSFUL lookups.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public SortedSet<String> getAddresses() {
 		return addresses;
 	}

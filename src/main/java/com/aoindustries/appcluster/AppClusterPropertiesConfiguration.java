@@ -83,10 +83,13 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 		this.file = null;
 		// Make defensive copy
 		this.properties = new Properties();
-		for(String key : properties.stringPropertyNames()) this.properties.setProperty(key, properties.getProperty(key));
+		for(String key : properties.stringPropertyNames()) {
+			this.properties.setProperty(key, properties.getProperty(key));
+		}
 	}
 
 	@Override
+	@SuppressWarnings({"NestedSynchronizedStatement", "SleepWhileInLoop", "SleepWhileHoldingLock", "UseSpecificCatch", "TooBroadCatch"})
 	public void start() throws AppClusterConfigurationException {
 		if(file!=null) {
 			try {
@@ -128,8 +131,10 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 												}
 											}
 										}
-									} catch(Exception exc) {
-										logger.log(Level.SEVERE, null, exc);
+									} catch(ThreadDeath td) {
+										throw td;
+									} catch(Throwable t) {
+										logger.log(Level.SEVERE, null, t);
 									}
 								}
 							},
@@ -170,6 +175,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	}
 
 	@Override
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public void removeConfigurationListener(AppClusterConfigurationListener listener) {
 		synchronized(listeners) {
 			for(int i=0; i<listeners.size(); i++) {
@@ -229,6 +235,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	/**
 	 * Gets a unique set of trimmed strings.  Must have at least one value when required.
 	 */
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public Set<String> getUniqueStrings(String propertyName, boolean required) throws AppClusterConfigurationException {
 		String paramValue = getString(propertyName, required);
 		if(paramValue==null) return Collections.emptySet();
@@ -249,6 +256,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	/**
 	 * Gets a unique set of trimmed names.  Must have at least one value.
 	 */
+	@SuppressWarnings("AssignmentToForLoopParameter")
 	public Set<? extends Name> getUniqueNames(String propertyName) throws AppClusterConfigurationException {
 		try {
 			List<String> values = Strings.splitCommaSpace(getString(propertyName, true));

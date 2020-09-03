@@ -129,6 +129,7 @@ public class ResourceSynchronizationResultStep implements ResourceResult {
 	/**
 	 * Gets the outputs associated with this test or empty list for none.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public List<String> getOutputs() {
 		return outputs;
 	}
@@ -136,6 +137,7 @@ public class ResourceSynchronizationResultStep implements ResourceResult {
 	/**
 	 * Gets the warnings associated with this test or empty list for none.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public List<String> getWarnings() {
 		return warnings;
 	}
@@ -143,6 +145,7 @@ public class ResourceSynchronizationResultStep implements ResourceResult {
 	/**
 	 * Gets the errors associated with this test or empty list for none.
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public List<String> getErrors() {
 		return errors;
 	}
