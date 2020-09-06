@@ -314,8 +314,10 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 					Throwable cause = e.getCause();
 					if(cause instanceof AppClusterConfigurationException) throw (AppClusterConfigurationException)cause;
 					throw new AppClusterConfigurationException(cause == null ? e : cause);
-				} catch(Error | RuntimeException | ReflectiveOperationException exc) {
-					throw new AppClusterConfigurationException(exc);
+				} catch(ThreadDeath td) {
+					throw td;
+				} catch(Throwable t) {
+					throw new AppClusterConfigurationException(t);
 				}
 			}
 			return factory;
