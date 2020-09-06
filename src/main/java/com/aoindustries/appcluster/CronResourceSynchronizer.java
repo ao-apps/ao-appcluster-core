@@ -349,7 +349,9 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 									ResourceSynchronizationResult result;
 									try {
 										result = future.get(resource.getTestTimeout(), TimeUnit.SECONDS);
-									} catch(Exception err) {
+									} catch(ThreadDeath td) {
+										throw td;
+									} catch(Throwable t) {
 										result = new ResourceSynchronizationResult(
 											localResourceNode,
 											remoteResourceNode,
@@ -362,7 +364,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 													"future.get",
 													null,
 													null,
-													Collections.singletonList(ErrorPrinter.getStackTraces(err))
+													Collections.singletonList(ErrorPrinter.getStackTraces(t))
 												)
 											)
 										);

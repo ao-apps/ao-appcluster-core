@@ -161,7 +161,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * If both the cluster and this resource are enabled, starts the resource DNS monitor.
 	 */
-	@SuppressWarnings({"NestedSynchronizedStatement", "UseSpecificCatch", "TooBroadCatch", "SleepWhileHoldingLock"})
+	@SuppressWarnings({"NestedSynchronizedStatement", "UseSpecificCatch", "TooBroadCatch", "SleepWhileHoldingLock", "SleepWhileInLoop"})
 	void start() {
 		synchronized(threadLock) {
 			if(!resource.getCluster().isEnabled()) {
@@ -407,13 +407,15 @@ public class ResourceDnsMonitor {
 														}
 													}
 												}
-											} catch(Exception exc) {
+											} catch(ThreadDeath td) {
+												throw td;
+											} catch(Throwable t) {
 												masterLookups.put(
 													enabledNameserver,
 													new DnsLookupResult(
 														masterRecord,
 														DnsLookupStatus.UNRECOVERABLE,
-														Collections.singleton(ErrorPrinter.getStackTraces(exc)),
+														Collections.singleton(ErrorPrinter.getStackTraces(t)),
 														null
 													)
 												);
@@ -534,13 +536,15 @@ public class ResourceDnsMonitor {
 																}
 															}
 														}
-													} catch(Exception exc) {
+													} catch(ThreadDeath td) {
+														throw td;
+													} catch(Throwable t) {
 														nodeLookups.put(
 															enabledNameserver,
 															new DnsLookupResult(
 																nodeRecord,
 																DnsLookupStatus.UNRECOVERABLE,
-																Collections.singleton(ErrorPrinter.getStackTraces(exc)),
+																Collections.singleton(ErrorPrinter.getStackTraces(t)),
 																null
 															)
 														);
@@ -620,8 +624,10 @@ public class ResourceDnsMonitor {
 										needsLogged = currentThread==thread;
 									}
 									if(needsLogged) logger.log(Level.SEVERE, null, exc);
-								} catch(Exception exc) {
-									logger.log(Level.SEVERE, null, exc);
+								} catch(ThreadDeath td) {
+									throw td;
+								} catch(Throwable t) {
+									logger.log(Level.SEVERE, null, t);
 								}
 								try {
 									Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);

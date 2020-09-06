@@ -26,7 +26,6 @@ import com.aoindustries.collections.AoCollections;
 import com.aoindustries.sql.UnmodifiableTimestamp;
 import java.io.File;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +42,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xbill.DNS.Name;
-import org.xbill.DNS.TextParseException;
 
 /**
  * Central AppCluster manager.
@@ -207,8 +205,10 @@ public class AppCluster {
 				resourceListenersOnDnsResultExecutorService.submit(() -> {
 					try {
 						resourceListener.onResourceDnsResult(oldResult, newResult);
-					} catch(Exception exc) {
-						logger.log(Level.SEVERE, null, exc);
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
 					}
 				});
 			}
@@ -221,8 +221,10 @@ public class AppCluster {
 				resourceListenersOnSynchronizationResultExecutorService.submit(() -> {
 					try {
 						resourceListener.onResourceSynchronizationResult(oldResult, newResult);
-					} catch(Exception exc) {
-						logger.log(Level.SEVERE, null, exc);
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
 					}
 				});
 			}
@@ -234,19 +236,26 @@ public class AppCluster {
 	 */
 	private final AppClusterConfigurationListener configUpdated = new AppClusterConfigurationListener() {
 		@Override
+		@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 		public void onConfigurationChanged() {
 			synchronized(startedLock) {
 				if(started) {
-					try {
-						if(logger.isLoggable(Level.INFO)) logger.info(ApplicationResources.accessor.getMessage("AppCluster.onConfigurationChanged.info", configuration.getDisplay()));
-					} catch(AppClusterConfigurationException exc) {
-						logger.log(Level.SEVERE, null, exc);
+					if(logger.isLoggable(Level.INFO)) {
+						try {
+							logger.info(ApplicationResources.accessor.getMessage("AppCluster.onConfigurationChanged.info", configuration.getDisplay()));
+						} catch(ThreadDeath td) {
+							throw td;
+						} catch(Throwable t) {
+							logger.log(Level.SEVERE, null, t);
+						}
 					}
 					shutdown();
 					try {
 						startUp();
-					} catch(AppClusterConfigurationException exc) {
-						logger.log(Level.SEVERE, null, exc);
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
 					}
 				}
 			}
@@ -298,13 +307,18 @@ public class AppCluster {
 	 *
 	 * @see #start()
 	 */
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 	public void stop() {
 		synchronized(startedLock) {
 			if(started) {
-				try {
-					if(logger.isLoggable(Level.INFO)) logger.info(ApplicationResources.accessor.getMessage("AppCluster.stop.info", configuration.getDisplay()));
-				} catch(AppClusterConfigurationException exc) {
-					logger.log(Level.SEVERE, null, exc);
+				if(logger.isLoggable(Level.INFO)) {
+					try {
+						logger.info(ApplicationResources.accessor.getMessage("AppCluster.stop.info", configuration.getDisplay()));
+					} catch(ThreadDeath td) {
+						throw td;
+					} catch(Throwable t) {
+						logger.log(Level.SEVERE, null, t);
+					}
 				}
 				shutdown();
 				started = false;
@@ -448,6 +462,7 @@ public class AppCluster {
 		}
 	}
 
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 	private void startUp() throws AppClusterConfigurationException {
 		synchronized(startedLock) {
 			assert started;
@@ -525,8 +540,10 @@ public class AppCluster {
 					resource.start();
 				}
 				resources = AoCollections.optimalUnmodifiableSet(newResources);
-			} catch(TextParseException | UnknownHostException exc) {
-				throw new AppClusterConfigurationException(exc);
+			} catch(ThreadDeath | AppClusterConfigurationException td) {
+				throw td;
+			} catch(Throwable t) {
+				throw new AppClusterConfigurationException(t);
 			}
 		}
 	}

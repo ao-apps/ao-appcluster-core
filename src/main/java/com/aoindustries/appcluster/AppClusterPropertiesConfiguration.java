@@ -28,7 +28,7 @@ import com.aoindustries.cron.Schedule;
 import com.aoindustries.lang.Strings;
 import com.aoindustries.util.PropertiesUtils;
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,8 +125,10 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 												for(AppClusterConfigurationListener listener : listeners) {
 													try {
 														listener.onConfigurationChanged();
-													} catch(Exception exc) {
-														logger.log(Level.SEVERE, null, exc);
+													} catch(ThreadDeath td) {
+														throw td;
+													} catch(Throwable t) {
+														logger.log(Level.SEVERE, null, t);
 													}
 												}
 											}
@@ -144,8 +146,10 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 						fileMonitorThread.start();
 					}
 				}
-			} catch(IOException exc) {
-				throw new AppClusterConfigurationException(exc);
+			} catch(ThreadDeath e) {
+				throw e;
+			} catch(Throwable t) {
+				throw new AppClusterConfigurationException(t);
 			}
 		}
 	}
@@ -306,7 +310,11 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 				try {
 					factory = Class.forName(classname).asSubclass(ResourcePropertiesConfigurationFactory.class).getConstructor().newInstance();
 					factoryCache.put(classname, factory);
-				} catch(RuntimeException | ReflectiveOperationException exc) {
+				} catch(InvocationTargetException e) {
+					Throwable cause = e.getCause();
+					if(cause instanceof AppClusterConfigurationException) throw (AppClusterConfigurationException)cause;
+					throw new AppClusterConfigurationException(cause == null ? e : cause);
+				} catch(Error | RuntimeException | ReflectiveOperationException exc) {
 					throw new AppClusterConfigurationException(exc);
 				}
 			}
