@@ -303,6 +303,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	}
 
 	private static final Map<String,ResourcePropertiesConfigurationFactory<?,?>> factoryCache = new HashMap<>();
+	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
 	private static ResourcePropertiesConfigurationFactory<?,?> getResourcePropertiesConfigurationFactory(String classname) throws AppClusterConfigurationException {
 		synchronized(factoryCache) {
 			ResourcePropertiesConfigurationFactory<?,?> factory = factoryCache.get(classname);
