@@ -23,6 +23,7 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.collections.AoCollections;
+import com.aoindustries.lang.Throwables;
 import com.aoindustries.sql.UnmodifiableTimestamp;
 import java.io.File;
 import java.net.InetAddress;
@@ -540,10 +541,8 @@ public class AppCluster {
 					resource.start();
 				}
 				resources = AoCollections.optimalUnmodifiableSet(newResources);
-			} catch(ThreadDeath | AppClusterConfigurationException td) {
-				throw td;
 			} catch(Throwable t) {
-				throw new AppClusterConfigurationException(t);
+				throw Throwables.wrap(t, AppClusterConfigurationException.class, AppClusterConfigurationException::new);
 			}
 		}
 	}

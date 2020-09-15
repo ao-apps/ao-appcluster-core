@@ -26,6 +26,7 @@ import com.aoindustries.collections.AoCollections;
 import com.aoindustries.cron.MatcherSchedule;
 import com.aoindustries.cron.Schedule;
 import com.aoindustries.lang.Strings;
+import com.aoindustries.lang.Throwables;
 import com.aoindustries.util.PropertiesUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -146,10 +147,8 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 						fileMonitorThread.start();
 					}
 				}
-			} catch(ThreadDeath e) {
-				throw e;
 			} catch(Throwable t) {
-				throw new AppClusterConfigurationException(t);
+				throw Throwables.wrap(t, AppClusterConfigurationException.class, AppClusterConfigurationException::new);
 			}
 		}
 	}
@@ -309,16 +308,16 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 			ResourcePropertiesConfigurationFactory<?,?> factory = factoryCache.get(classname);
 			if(factory==null) {
 				try {
-					factory = Class.forName(classname).asSubclass(ResourcePropertiesConfigurationFactory.class).getConstructor().newInstance();
-					factoryCache.put(classname, factory);
-				} catch(InvocationTargetException e) {
-					Throwable cause = e.getCause();
-					if(cause instanceof AppClusterConfigurationException) throw (AppClusterConfigurationException)cause;
-					throw new AppClusterConfigurationException(cause == null ? e : cause);
-				} catch(ThreadDeath td) {
-					throw td;
+					try {
+						factory = Class.forName(classname).asSubclass(ResourcePropertiesConfigurationFactory.class).getConstructor().newInstance();
+						factoryCache.put(classname, factory);
+					} catch(InvocationTargetException e) {
+						// Unwrap cause for more direct stack traces
+						Throwable cause = e.getCause();
+						throw (cause == null) ? e : cause;
+					}
 				} catch(Throwable t) {
-					throw new AppClusterConfigurationException(t);
+					throw Throwables.wrap(t, AppClusterConfigurationException.class, AppClusterConfigurationException::new);
 				}
 			}
 			return factory;
