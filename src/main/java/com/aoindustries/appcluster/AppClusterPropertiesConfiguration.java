@@ -33,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -243,7 +242,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 		String paramValue = getString(propertyName, required);
 		if(paramValue==null) return Collections.emptySet();
 		List<String> values = Strings.splitCommaSpace(paramValue);
-		Set<String> set = new LinkedHashSet<>(values.size()*4/3+1);
+		Set<String> set = AoCollections.newLinkedHashSet(values.size());
 		for(String value : values) {
 			value = value.trim();
 			if(value.length()>0 && !set.add(value)) {
@@ -263,7 +262,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	public Set<? extends Name> getUniqueNames(String propertyName) throws AppClusterConfigurationException {
 		try {
 			List<String> values = Strings.splitCommaSpace(getString(propertyName, true));
-			Set<Name> set = new LinkedHashSet<>(values.size()*4/3+1);
+			Set<Name> set = AoCollections.newLinkedHashSet(values.size());
 			for(String value : values) {
 				value = value.trim();
 				if(value.length()>0 && !set.add(Name.fromString(value))) {
@@ -292,7 +291,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	@Override
 	public Set<? extends NodePropertiesConfiguration> getNodeConfigurations() throws AppClusterConfigurationException {
 		Set<String> ids = getUniqueStrings("appcluster.nodes", true);
-		Set<NodePropertiesConfiguration> nodes = new LinkedHashSet<>(ids.size()*4/3+1);
+		Set<NodePropertiesConfiguration> nodes = AoCollections.newLinkedHashSet(ids.size());
 		for(String id : ids) {
 			if(
 				!nodes.add(new NodePropertiesConfiguration(this, id))
@@ -328,12 +327,12 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	public Set<? extends ResourceConfiguration<?,?>> getResourceConfigurations() throws AppClusterConfigurationException {
 		// Get all of the resource types
 		Set<String> types = getUniqueStrings("appcluster.resourceTypes", true);
-		Map<String,ResourcePropertiesConfigurationFactory<?,?>> factories = new HashMap<>(types.size()*4/3+1);
+		Map<String,ResourcePropertiesConfigurationFactory<?,?>> factories = AoCollections.newHashMap(types.size());
 		for(String type : types) {
 			factories.put(type, getResourcePropertiesConfigurationFactory(getString("appcluster.resourceType."+type+".factory", true)));
 		}
 		Set<String> ids = getUniqueStrings("appcluster.resources", true);
-		Set<ResourceConfiguration<?,?>> resources = new LinkedHashSet<>(ids.size()*4/3+1);
+		Set<ResourceConfiguration<?,?>> resources = AoCollections.newLinkedHashSet(ids.size());
 		for(String id : ids) {
 			String propertyName = "appcluster.resource."+id+".type";
 			String type = getString(propertyName, true);

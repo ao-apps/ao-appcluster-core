@@ -23,7 +23,6 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.collections.AoCollections;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import org.xbill.DNS.Name;
@@ -51,7 +50,7 @@ public class Node {
 		this.hostname = nodeConfiguration.getHostname();
 		this.username = nodeConfiguration.getUsername();
 		Set<? extends Name> configNameservers = nodeConfiguration.getNameservers();
-		Set<Nameserver> newNameservers = new LinkedHashSet<>(configNameservers.size()*4/3+1);
+		Set<Nameserver> newNameservers = AoCollections.newLinkedHashSet(configNameservers.size());
 		for(Name nameserver : configNameservers) {
 			newNameservers.add(new Nameserver(cluster, nameserver));
 		}

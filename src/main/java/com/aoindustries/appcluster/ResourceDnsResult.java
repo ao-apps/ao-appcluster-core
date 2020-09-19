@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -82,11 +81,11 @@ public class ResourceDnsResult implements ResourceResult {
 	 * @exception  IllegalArgumentException  if any dnsRecord->nameserver result is missing.
 	 */
 	static Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getUnmodifiableDnsLookupResults(Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> dnsRecordLookups, Set<? extends Name> dnsRecords, Set<? extends Nameserver> nameservers) throws IllegalArgumentException {
-		Map<Name,Map<? extends Nameserver,? extends DnsLookupResult>> newDnsRecordLookups = new LinkedHashMap<>(dnsRecords.size()*4/3+1);
+		Map<Name,Map<? extends Nameserver,? extends DnsLookupResult>> newDnsRecordLookups = AoCollections.newLinkedHashMap(dnsRecords.size());
 		for(Name dnsRecord : dnsRecords) {
 			Map<? extends Nameserver,? extends DnsLookupResult> dnsLookupResults = dnsRecordLookups.get(dnsRecord);
 			if(dnsLookupResults==null) throw new IllegalArgumentException("Missing DNS record " + dnsRecord);
-			Map<Nameserver,DnsLookupResult> newDnsLookupResults = new LinkedHashMap<>(nameservers.size()*4/3+1);
+			Map<Nameserver,DnsLookupResult> newDnsLookupResults = AoCollections.newLinkedHashMap(nameservers.size());
 			for(Nameserver nameserver : nameservers) {
 				DnsLookupResult dnsLookupResult = dnsLookupResults.get(nameserver);
 				if(dnsLookupResult==null) throw new IllegalArgumentException("Missing DNS lookup result " + dnsLookupResult);
@@ -121,7 +120,7 @@ public class ResourceDnsResult implements ResourceResult {
 		this.masterStatus = masterStatus;
 		this.masterStatusMessages = getUnmodifiableSortedSet(masterStatusMessages, defaultLocaleCollator);
 		Set<? extends ResourceNode<?,?>> resourceNodes = resource.getResourceNodes();
-		Map<Node,ResourceNodeDnsResult> newNodeResults = new LinkedHashMap<>(resourceNodes.size()*4/3+1);
+		Map<Node,ResourceNodeDnsResult> newNodeResults = AoCollections.newLinkedHashMap(resourceNodes.size());
 		for(ResourceNode<?,?> resourceNode : resourceNodes) {
 			Node node = resourceNode.getNode();
 			ResourceNodeDnsResult nodeResult = nodeResults.get(node);

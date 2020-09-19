@@ -25,7 +25,6 @@ package com.aoindustries.appcluster;
 import com.aoindustries.collections.AoCollections;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +64,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 		this.type = resourceConfiguration.getType();
 		@SuppressWarnings("unchecked")
 		R rThis = (R)this;
-		Set<RN> newResourceNodes = new LinkedHashSet<>(resourceNodes.size()*4/3+1);
+		Set<RN> newResourceNodes = AoCollections.newLinkedHashSet(resourceNodes.size());
 		for(ResourceNode<?,?> resourceNode : resourceNodes) {
 			@SuppressWarnings("unchecked")
 			RN rn = (RN)resourceNode;
@@ -99,7 +98,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 				// The local node is not part of this resource.
 				synchronizers = Collections.emptyMap();
 			} else {
-				Map<Node,ResourceSynchronizer<R,RN>> newSynchronizers = new LinkedHashMap<>((this.resourceNodes.size()-1)*4/3+1);
+				Map<Node,ResourceSynchronizer<R,RN>> newSynchronizers = AoCollections.newLinkedHashMap(this.resourceNodes.size() - 1);
 				for(RN resourceNode : this.resourceNodes) {
 					Node node = resourceNode.getNode();
 					if(!node.equals(localNode)) {

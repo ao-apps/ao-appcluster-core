@@ -31,9 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -124,14 +121,14 @@ public class AppCluster {
 	 */
 	public static void checkConfiguration(Set<? extends NodeConfiguration> nodeConfigurations, Set<? extends ResourceConfiguration<?,?>> resourceConfigurations) throws AppClusterConfigurationException {
 		// Each node must have a distinct display
-		Set<String> strings = new HashSet<>(nodeConfigurations.size()*4/3+1);
+		Set<String> strings = AoCollections.newHashSet(nodeConfigurations.size());
 		for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
 			String display = nodeConfiguration.getDisplay();
 			if(!strings.add(display)) throw new AppClusterConfigurationException(ApplicationResources.accessor.getMessage("AppCluster.checkConfiguration.duplicateNodeDisplay", display));
 		}
 
 		// Each node must have a distinct hostname
-		Set<Name> names = new HashSet<>(nodeConfigurations.size()*4/3+1);
+		Set<Name> names = AoCollections.newHashSet(nodeConfigurations.size());
 		for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
 			Name hostname = nodeConfiguration.getHostname();
 			if(!names.add(hostname)) throw new AppClusterConfigurationException(ApplicationResources.accessor.getMessage("AppCluster.checkConfiguration.duplicateNodeHostname", hostname));
@@ -395,7 +392,7 @@ public class AppCluster {
 	public Map<String,Node> getNodeMap() {
 		Map<String,Node> nodeMap;
 		synchronized(startedLock) {
-			nodeMap = new LinkedHashMap<>(nodes.size()*4/3+1);
+			nodeMap = AoCollections.newLinkedHashMap(nodes.size());
 			for(Node node : nodes) {
 				nodeMap.put(node.getId(), node);
 			}
@@ -455,7 +452,7 @@ public class AppCluster {
 	 */
 	public Map<String,? extends Resource<?,?>> getResourceMap() {
 		synchronized(startedLock) {
-			LinkedHashMap<String,Resource<?,?>> map = new LinkedHashMap<>(resources.size()*4/3+1);
+			Map<String,Resource<?,?>> map = AoCollections.newLinkedHashMap(resources.size());
 			for(Resource<?,?> resource : resources) {
 				map.put(resource.getId(), resource);
 			}
@@ -482,7 +479,7 @@ public class AppCluster {
 				checkConfiguration(nodeConfigurations, resourceConfigurations);
 
 				// Create the nodes
-				Set<Node> newNodes = new LinkedHashSet<>(nodeConfigurations.size()*4/3+1);
+				Set<Node> newNodes = AoCollections.newLinkedHashSet(nodeConfigurations.size());
 				for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
 					newNodes.add(new Node(this, nodeConfiguration));
 				}
@@ -526,7 +523,7 @@ public class AppCluster {
 				}
 
 				// Start per-resource monitoring and synchronization threads
-				Set<Resource<?,?>> newResources = new LinkedHashSet<>(resourceConfigurations.size()*4/3+1);
+				Set<Resource<?,?>> newResources = AoCollections.newLinkedHashSet(resourceConfigurations.size());
 				for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
 					Set<? extends ResourceNodeConfiguration<?,?>> resourceNodeConfigs = resourceConfiguration.getResourceNodeConfigurations();
 					Collection<ResourceNode<?,?>> newResourceNodes = new ArrayList<>(resourceNodeConfigs.size());
