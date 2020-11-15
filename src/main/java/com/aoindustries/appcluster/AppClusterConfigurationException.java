@@ -22,6 +22,8 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.lang.Throwables;
+
 /**
  * @author  AO Industries, Inc.
  */
@@ -42,5 +44,11 @@ public class AppClusterConfigurationException extends AppClusterException {
 
 	public AppClusterConfigurationException(String message, Throwable cause) {
 		super(message, cause);
+	}
+
+	static {
+		Throwables.registerSurrogateFactory(AppClusterConfigurationException.class, (template, cause) ->
+			new AppClusterConfigurationException(template.getMessage(), cause)
+		);
 	}
 }

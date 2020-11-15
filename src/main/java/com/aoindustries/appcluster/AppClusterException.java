@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,8 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.lang.Throwables;
+
 /**
  * @author  AO Industries, Inc.
  */
@@ -42,5 +44,11 @@ public class AppClusterException extends Exception {
 
 	public AppClusterException(String message, Throwable cause) {
 		super(message, cause);
+	}
+
+	static {
+		Throwables.registerSurrogateFactory(AppClusterException.class, (template, cause) ->
+			new AppClusterException(template.getMessage(), cause)
+		);
 	}
 }
