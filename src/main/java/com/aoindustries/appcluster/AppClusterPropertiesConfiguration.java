@@ -204,8 +204,8 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 
 	public boolean getBoolean(String propertyName) throws AppClusterConfigurationException {
 		String value = getString(propertyName, true);
-		if("true".equals(value)) return true;
-		if("false".equals(value)) return false;
+		if("true".equalsIgnoreCase(value)) return true;
+		if("false".equalsIgnoreCase(value)) return false;
 		throw new AppClusterConfigurationException(ApplicationResources.accessor.getMessage("AppClusterPropertiesConfiguration.getBoolean.invalidValue", propertyName, value));
 	}
 
