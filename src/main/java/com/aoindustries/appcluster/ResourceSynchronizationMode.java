@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,8 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.i18n.Resources;
+
 /**
  * Contains the results of one resource synchronization.
  *
@@ -32,9 +34,11 @@ public enum ResourceSynchronizationMode {
 	SYNCHRONIZE,
 	TEST_ONLY;
 
+	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizationMode.class.getPackage());
+
 	@Override
 	public String toString() {
-		return ApplicationResources.accessor.getMessage("ResourceSynchronizationMode." + name());
+		return RESOURCES.getMessage("ResourceSynchronizationMode." + name());
 	}
 
 	/**

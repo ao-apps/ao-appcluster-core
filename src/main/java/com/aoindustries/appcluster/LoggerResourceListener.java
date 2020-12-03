@@ -23,6 +23,7 @@
 package com.aoindustries.appcluster;
 
 import com.aoindustries.collections.AoCollections;
+import com.aoindustries.i18n.Resources;
 import com.aoindustries.lang.Strings;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class LoggerResourceListener implements ResourceListener {
 
 	private static final Logger logger = Logger.getLogger(LoggerResourceListener.class.getName());
 
+	private static final Resources RESOURCES = Resources.getResources(LoggerResourceListener.class.getPackage());
+
 	@Override
 	public void onResourceDnsResult(ResourceDnsResult oldResult, ResourceDnsResult newResult) {
 		final Resource<?,?> resource = newResult.getResource();
@@ -47,7 +50,7 @@ public class LoggerResourceListener implements ResourceListener {
 
 		// Log any changes, except continual changes to time
 		if(logger.isLoggable(Level.FINE)) {
-			logger.log(Level.FINE, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.timeMillis", cluster, resource, newResult.endTime - newResult.startTime));
+			logger.log(Level.FINE, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.timeMillis", cluster, resource, newResult.endTime - newResult.startTime));
 		}
 		// Log any master DNS record change
 		Level level;
@@ -69,7 +72,7 @@ public class LoggerResourceListener implements ResourceListener {
 							if(!newAddresses.equals(oldAddresses)) {
 								logger.log(
 									level,
-									ApplicationResources.accessor.getMessage(
+									RESOURCES.getMessage(
 										"LoggingResourceDnsMonitor.onResourceDnsResult.masterRecordLookupResultChanged",
 										cluster,
 										resource,
@@ -87,7 +90,7 @@ public class LoggerResourceListener implements ResourceListener {
 								for(String statusMessage : newStatusMessages) {
 									logger.log(
 										level,
-										ApplicationResources.accessor.getMessage(
+										RESOURCES.getMessage(
 											"LoggingResourceDnsMonitor.onResourceDnsResult.masterRecord.statusMessage",
 											cluster,
 											resource,
@@ -106,11 +109,11 @@ public class LoggerResourceListener implements ResourceListener {
 		level = newResult.getMasterStatus().getResourceStatus().getLogLevel();
 		if(logger.isLoggable(level)) {
 			if(newResult.getMasterStatus()!=oldResult.getMasterStatus()) {
-				logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.masterStatusChanged", cluster, resource, oldResult.getMasterStatus(), newResult.getMasterStatus()));
+				logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.masterStatusChanged", cluster, resource, oldResult.getMasterStatus(), newResult.getMasterStatus()));
 			}
 			if(!newResult.getMasterStatusMessages().equals(oldResult.getMasterStatusMessages())) {
 				for(String masterStatusMessage : newResult.getMasterStatusMessages()) {
-					logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.masterStatusMessage", cluster, resource, masterStatusMessage));
+					logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.masterStatusMessage", cluster, resource, masterStatusMessage));
 				}
 			}
 		}
@@ -137,7 +140,7 @@ public class LoggerResourceListener implements ResourceListener {
 								if(!newAddresses.equals(oldAddresses)) {
 									logger.log(
 										level,
-										ApplicationResources.accessor.getMessage(
+										RESOURCES.getMessage(
 											"LoggingResourceDnsMonitor.onResourceDnsResult.nodeRecordLookupResultChanged",
 											cluster,
 											resource,
@@ -156,7 +159,7 @@ public class LoggerResourceListener implements ResourceListener {
 									for(String statusMessage : newStatusMessages) {
 										logger.log(
 											level,
-											ApplicationResources.accessor.getMessage(
+											RESOURCES.getMessage(
 												"LoggingResourceDnsMonitor.onResourceDnsResult.nodeRecord.statusMessage",
 												cluster,
 												resource,
@@ -178,13 +181,13 @@ public class LoggerResourceListener implements ResourceListener {
 			if(logger.isLoggable(level)) {
 				NodeDnsStatus oldNodeStatus = oldNodeResult.getNodeStatus();
 				if(newNodeStatus!=oldNodeStatus) {
-					logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.nodeStatusChanged", cluster, resource, node, oldNodeStatus, newNodeStatus));
+					logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.nodeStatusChanged", cluster, resource, node, oldNodeStatus, newNodeStatus));
 				}
 				SortedSet<String> newNodeStatusMessages = newNodeResult.getNodeStatusMessages();
 				SortedSet<String> oldNodeStatusMessages = oldNodeResult.getNodeStatusMessages();
 				if(!newNodeStatusMessages.equals(oldNodeStatusMessages)) {
 					for(String nodeStatusMessage : newNodeStatusMessages) {
-						logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.nodeStatusMessage", cluster, resource, node, nodeStatusMessage));
+						logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceDnsResult.nodeStatusMessage", cluster, resource, node, nodeStatusMessage));
 					}
 				}
 			}
@@ -225,7 +228,7 @@ public class LoggerResourceListener implements ResourceListener {
 		final ResourceSynchronizationMode mode = newResult.getMode();
 
 		if(logger.isLoggable(Level.FINE)) {
-			logger.log(Level.FINE, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.timeMillis", cluster, resource, localNode, remoteNode, mode, newResult.getEndTime().getTime() - newResult.getStartTime().getTime()));
+			logger.log(Level.FINE, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.timeMillis", cluster, resource, localNode, remoteNode, mode, newResult.getEndTime().getTime() - newResult.getStartTime().getTime()));
 		}
 
 		ResourceStatus resourceStatus = newResult.getResourceStatus();
@@ -234,15 +237,15 @@ public class LoggerResourceListener implements ResourceListener {
 			List<ResourceSynchronizationResultStep> steps = newResult.getSteps();
 			for(int stepNum=1, size=steps.size(); stepNum<=size; stepNum++) {
 				ResourceSynchronizationResultStep step = steps.get(stepNum-1);
-				logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.description", cluster, resource, localNode, remoteNode, mode, stepNum, step.getDescription()));
-				logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.startTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getStartTime()));
-				logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.endTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getEndTime()));
-				logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.status", cluster, resource, localNode, remoteNode, mode, stepNum, step.getResourceStatus()));
+				logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.description", cluster, resource, localNode, remoteNode, mode, stepNum, step.getDescription()));
+				logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.startTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getStartTime()));
+				logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.endTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getEndTime()));
+				logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.status", cluster, resource, localNode, remoteNode, mode, stepNum, step.getResourceStatus()));
 				for(String output: step.getOutputs()) {
-					logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.output", cluster, resource, localNode, remoteNode, mode, stepNum, output));
+					logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.output", cluster, resource, localNode, remoteNode, mode, stepNum, output));
 				}
 				for(String error: step.getErrors()) {
-					logger.log(level, ApplicationResources.accessor.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.error", cluster, resource, localNode, remoteNode, mode, stepNum, error));
+					logger.log(level, RESOURCES.getMessage("LoggingResourceDnsMonitor.onResourceSynchronizationResult.step.error", cluster, resource, localNode, remoteNode, mode, stepNum, error));
 				}
 			}
 		}

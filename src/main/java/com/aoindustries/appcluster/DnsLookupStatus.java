@@ -22,6 +22,8 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.i18n.Resources;
+
 /**
  * The set of statuses that apply to individual DNS records.
  *
@@ -38,6 +40,8 @@ public enum DnsLookupStatus {
 	UNRECOVERABLE(ResourceStatus.ERROR),
 	ERROR(ResourceStatus.ERROR);
 
+	private static final Resources RESOURCES = Resources.getResources(DnsLookupStatus.class.getPackage());
+
 	private final ResourceStatus resourceStatus;
 
 	private DnsLookupStatus(ResourceStatus resourceStatus) {
@@ -46,7 +50,7 @@ public enum DnsLookupStatus {
 
 	@Override
 	public String toString() {
-		return ApplicationResources.accessor.getMessage("DnsLookupStatus." + name());
+		return RESOURCES.getMessage("DnsLookupStatus." + name());
 	}
 
 	/**

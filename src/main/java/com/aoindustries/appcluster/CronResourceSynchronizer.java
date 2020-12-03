@@ -26,6 +26,7 @@ import com.aoindustries.cron.CronDaemon;
 import com.aoindustries.cron.CronJob;
 import com.aoindustries.cron.MultiSchedule;
 import com.aoindustries.cron.Schedule;
+import com.aoindustries.i18n.Resources;
 import com.aoindustries.util.ErrorPrinter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +62,8 @@ import java.util.logging.Logger;
 abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN extends CronResourceNode<R,RN>> extends ResourceSynchronizer<R,RN> {
 
 	private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
+
+	private static final Resources RESOURCES = Resources.getResources(CronResourceSynchronizer.class.getPackage());
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 2;
 
@@ -212,22 +215,22 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 			R resource = localResourceNode.getResource();
 			if(!resource.getCluster().isEnabled()) {
 				state = ResourceSynchronizerState.DISABLED;
-				stateMessage = ApplicationResources.accessor.getMessage("CronResourceSynchronizer.start.clusterDisabled.stateMessage");
+				stateMessage = RESOURCES.getMessage("CronResourceSynchronizer.start.clusterDisabled.stateMessage");
 				synchronizeNowMode = null;
 				lastResult = loadLastResult();
 			} else if(!resource.isEnabled()) {
 				state = ResourceSynchronizerState.DISABLED;
-				stateMessage = ApplicationResources.accessor.getMessage("CronResourceSynchronizer.start.resourceDisabled.stateMessage");
+				stateMessage = RESOURCES.getMessage("CronResourceSynchronizer.start.resourceDisabled.stateMessage");
 				synchronizeNowMode = null;
 				lastResult = loadLastResult();
 			} else if(!localResourceNode.getNode().isEnabled()) {
 				state = ResourceSynchronizerState.DISABLED;
-				stateMessage = ApplicationResources.accessor.getMessage("CronResourceSynchronizer.start.localNodeDisabled.stateMessage");
+				stateMessage = RESOURCES.getMessage("CronResourceSynchronizer.start.localNodeDisabled.stateMessage");
 				synchronizeNowMode = null;
 				lastResult = loadLastResult();
 			} else if(!remoteResourceNode.getNode().isEnabled()) {
 				state = ResourceSynchronizerState.DISABLED;
-				stateMessage = ApplicationResources.accessor.getMessage("CronResourceSynchronizer.start.remoteNodeDisabled.stateMessage");
+				stateMessage = RESOURCES.getMessage("CronResourceSynchronizer.start.remoteNodeDisabled.stateMessage");
 				synchronizeNowMode = null;
 				lastResult = loadLastResult();
 			} else {

@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.i18n.Resources;
 import java.util.logging.Level;
 
 /**
@@ -42,6 +43,8 @@ public enum ResourceStatus {
 	ERROR("background-color:#ff4040;", Level.SEVERE),
 	INCONSISTENT("background-color:#ff0000;", Level.SEVERE);
 
+	private static final Resources RESOURCES = Resources.getResources(ResourceStatus.class.getPackage());
+
 	private final String cssStyle;
 	private final Level logLevel;
 
@@ -52,7 +55,7 @@ public enum ResourceStatus {
 
 	@Override
 	public String toString() {
-		return ApplicationResources.accessor.getMessage("ResourceStatus." + name());
+		return RESOURCES.getMessage("ResourceStatus." + name());
 	}
 
 	/**

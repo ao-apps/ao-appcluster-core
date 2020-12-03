@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,8 @@
  */
 package com.aoindustries.appcluster;
 
+import com.aoindustries.i18n.Resources;
+
 /**
  * The master records for a resource have a specific status as a result of its configuration
  * and DNS responses.
@@ -37,6 +39,8 @@ public enum MasterDnsStatus {
 	WARNING(ResourceStatus.WARNING),
 	INCONSISTENT(ResourceStatus.INCONSISTENT);
 
+	private static final Resources RESOURCES = Resources.getResources(MasterDnsStatus.class.getPackage());
+
 	private final ResourceStatus resourceStatus;
 
 	private MasterDnsStatus(ResourceStatus resourceStatus) {
@@ -45,7 +49,7 @@ public enum MasterDnsStatus {
 
 	@Override
 	public String toString() {
-		return ApplicationResources.accessor.getMessage("MasterDnsStatus." + name());
+		return RESOURCES.getMessage("MasterDnsStatus." + name());
 	}
 
 	/**

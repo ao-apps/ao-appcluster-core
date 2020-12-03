@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,38 +22,27 @@
  */
 package com.aoindustries.appcluster;
 
-import com.aoindustries.util.i18n.ApplicationResourcesAccessor;
 import com.aoindustries.util.i18n.EditableResourceBundle;
 import com.aoindustries.util.i18n.EditableResourceBundleSet;
 import java.io.File;
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Provides a simplified interface for obtaining localized values from the ApplicationResources.properties files.
- *
  * @author  AO Industries, Inc.
  */
 public final class ApplicationResources extends EditableResourceBundle {
 
 	static final EditableResourceBundleSet bundleSet = new EditableResourceBundleSet(
-		ApplicationResources.class.getName(),
-		Arrays.asList(
-			Locale.ROOT,
-			Locale.JAPANESE
-		)
+		ApplicationResources.class,
+		Locale.ROOT,
+		Locale.JAPANESE
 	);
 
-	/**
-	 * Do not use directly.
-	 */
-	public ApplicationResources() {
-		super(
-			Locale.ROOT,
-			bundleSet,
-			new File(System.getProperty("user.home")+"/maven2/ao/ao-appcluster/core/src/main/resources/com/aoindustries/appcluster/ApplicationResources.properties")
-		);
+	static File getSourceFile(String filename) {
+		return new File(System.getProperty("user.home") + "/maven2/ao/ao-appcluster/core/src/main/resources/com/aoindustries/appcluster", filename);
 	}
 
-	static final ApplicationResourcesAccessor accessor = ApplicationResourcesAccessor.getInstance(bundleSet.getBaseName());
+	public ApplicationResources() {
+		super(Locale.ROOT, bundleSet, getSourceFile("ApplicationResources.properties"));
+	}
 }
