@@ -40,7 +40,7 @@ public enum DnsLookupStatus {
 	UNRECOVERABLE(ResourceStatus.ERROR),
 	ERROR(ResourceStatus.ERROR);
 
-	private static final Resources RESOURCES = Resources.getResources(DnsLookupStatus.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(DnsLookupStatus.class);
 
 	private final ResourceStatus resourceStatus;
 
@@ -50,7 +50,7 @@ public enum DnsLookupStatus {
 
 	@Override
 	public String toString() {
-		return RESOURCES.getMessage("DnsLookupStatus." + name());
+		return RESOURCES.getMessage(name());
 	}
 
 	/**

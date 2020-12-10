@@ -52,7 +52,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 
 	private static final Logger logger = Logger.getLogger(AppClusterPropertiesConfiguration.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(AppClusterPropertiesConfiguration.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(AppClusterPropertiesConfiguration.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY + 1;
 
@@ -199,7 +199,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 			value = properties.getProperty(propertyName);
 		}
 		if(value==null || (value=value.trim()).length()==0) {
-			if(required) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getString.missingValue", propertyName));
+			if(required) throw new AppClusterConfigurationException(RESOURCES.getMessage("getString.missingValue", propertyName));
 			else value = null;
 		}
 		return value;
@@ -209,7 +209,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 		String value = getString(propertyName, true);
 		if("true".equalsIgnoreCase(value)) return true;
 		if("false".equalsIgnoreCase(value)) return false;
-		throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getBoolean.invalidValue", propertyName, value));
+		throw new AppClusterConfigurationException(RESOURCES.getMessage("getBoolean.invalidValue", propertyName, value));
 	}
 
 	public int getInt(String propertyName) throws AppClusterConfigurationException {
@@ -217,7 +217,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 		try {
 			return Integer.parseInt(value);
 		} catch(NumberFormatException exc) {
-			throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getInt.invalidValue", propertyName, value));
+			throw new AppClusterConfigurationException(RESOURCES.getMessage("getInt.invalidValue", propertyName, value));
 		}
 	}
 
@@ -250,11 +250,11 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 			value = value.trim();
 			if(value.length()>0 && !set.add(value)) {
 				throw new AppClusterConfigurationException(
-					RESOURCES.getMessage("AppClusterPropertiesConfiguration.getStrings.duplicate", propertyName, value)
+					RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
 				);
 			}
 		}
-		if(required && set.isEmpty()) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getString.missingValue", propertyName));
+		if(required && set.isEmpty()) throw new AppClusterConfigurationException(RESOURCES.getMessage("getString.missingValue", propertyName));
 		return AoCollections.optimalUnmodifiableSet(set);
 	}
 
@@ -270,11 +270,11 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 				value = value.trim();
 				if(value.length()>0 && !set.add(Name.fromString(value))) {
 					throw new AppClusterConfigurationException(
-						RESOURCES.getMessage("AppClusterPropertiesConfiguration.getStrings.duplicate", propertyName, value)
+						RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
 					);
 				}
 			}
-			if(set.isEmpty()) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getString.missingValue", propertyName));
+			if(set.isEmpty()) throw new AppClusterConfigurationException(RESOURCES.getMessage("getString.missingValue", propertyName));
 			return AoCollections.optimalUnmodifiableSet(set);
 		} catch(TextParseException exc) {
 			throw new AppClusterConfigurationException(exc);
@@ -340,7 +340,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 			String propertyName = "appcluster.resource."+id+".type";
 			String type = getString(propertyName, true);
 			ResourcePropertiesConfigurationFactory<?,?> factory = factories.get(type);
-			if(factory==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppClusterPropertiesConfiguration.getResourceConfigurations.unexpectedType", propertyName, type));
+			if(factory==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("getResourceConfigurations.unexpectedType", propertyName, type));
 			if(!resources.add(factory.newResourcePropertiesConfiguration(this, id))) throw new AssertionError();
 		}
 		return AoCollections.optimalUnmodifiableSet(resources);

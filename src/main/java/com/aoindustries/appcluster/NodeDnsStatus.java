@@ -39,7 +39,7 @@ public enum NodeDnsStatus {
 	MASTER(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "font-weight:bold;"),
 	INCONSISTENT(ResourceStatus.INCONSISTENT, ResourceStatus.INCONSISTENT.getCssStyle());
 
-	private static final Resources RESOURCES = Resources.getResources(NodeDnsStatus.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(NodeDnsStatus.class);
 
 	private final ResourceStatus resourceStatus;
 	private final String cssStyle;
@@ -51,7 +51,7 @@ public enum NodeDnsStatus {
 
 	@Override
 	public String toString() {
-		return RESOURCES.getMessage("NodeDnsStatus." + name());
+		return RESOURCES.getMessage(name());
 	}
 
 	/**

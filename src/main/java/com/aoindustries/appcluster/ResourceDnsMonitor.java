@@ -60,7 +60,7 @@ public class ResourceDnsMonitor {
 
 	private static final Logger logger = Logger.getLogger(ResourceDnsMonitor.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceDnsMonitor.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(ResourceDnsMonitor.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 
@@ -169,7 +169,7 @@ public class ResourceDnsMonitor {
 		synchronized(threadLock) {
 			if(!resource.getCluster().isEnabled()) {
 				long currentTime = System.currentTimeMillis();
-				Collection<String> messages = Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.start.clusterDisabled.statusMessage"));
+				Collection<String> messages = Collections.singleton(RESOURCES.getMessage("start.clusterDisabled.statusMessage"));
 				setDnsResult(
 					new ResourceDnsResult(
 						resource,
@@ -183,7 +183,7 @@ public class ResourceDnsMonitor {
 				);
 			} else if(!resource.isEnabled()) {
 				long currentTime = System.currentTimeMillis();
-				Collection<String> messages = Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.start.resourceDisabled.statusMessage"));
+				Collection<String> messages = Collections.singleton(RESOURCES.getMessage("start.resourceDisabled.statusMessage"));
 				setDnsResult(
 					new ResourceDnsResult(
 						resource,
@@ -198,8 +198,8 @@ public class ResourceDnsMonitor {
 			} else {
 				if(thread==null) {
 					long currentTime = System.currentTimeMillis();
-					Collection<String> unknownMessage = Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.start.newThread.statusMessage"));
-					Collection<String> nodeDisabledMessages = Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.nodeDisabled"));
+					Collection<String> unknownMessage = Collections.singleton(RESOURCES.getMessage("start.newThread.statusMessage"));
+					Collection<String> nodeDisabledMessages = Collections.singleton(RESOURCES.getMessage("nodeDisabled"));
 					Set<? extends ResourceNode<?,?>> resourceNodes = resource.getResourceNodes();
 					Map<Node,ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
 					for(ResourceNode<?,?> resourceNode : resourceNodes) {
@@ -292,7 +292,7 @@ public class ResourceDnsMonitor {
 																			long ttl = aRecord.getTTL();
 																			if(ttl!=masterRecordsTtl) {
 																				if(statusMessages==null) statusMessages = new ArrayList<>();
-																				statusMessages.add(RESOURCES.getMessage("ResourceDnsMonitor.lookup.unexpectedTtl", masterRecordsTtl, ttl));
+																				statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl", masterRecordsTtl, ttl));
 																			}
 																		}
 																		addresses[c] = aRecord.getAddress().getHostAddress();
@@ -331,7 +331,7 @@ public class ResourceDnsMonitor {
 																	return new DnsLookupResult(
 																		hostname,
 																		DnsLookupStatus.ERROR,
-																		Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.lookup.unexpectedResultCode", result)),
+																		Collections.singleton(RESOURCES.getMessage("lookup.unexpectedResultCode", result)),
 																		null
 																	);
 															}
@@ -382,7 +382,7 @@ public class ResourceDnsMonitor {
 														masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
 														masterStatusMessages.add(
 															RESOURCES.getMessage(
-																"ResourceDnsMonitor.masterRecord.multiMasterNotAllowed",
+																"masterRecord.multiMasterNotAllowed",
 																enabledNameserver,
 																Strings.join(addresses, ", ")
 															)
@@ -398,7 +398,7 @@ public class ResourceDnsMonitor {
 															masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
 															masterStatusMessages.add(
 																RESOURCES.getMessage(
-																	"ResourceDnsMonitor.multiRecordMaster.mismatch",
+																	"multiRecordMaster.mismatch",
 																	firstMasterNameserver,
 																	firstMasterRecord,
 																	Strings.join(firstMasterAddresses, ", "),
@@ -427,7 +427,7 @@ public class ResourceDnsMonitor {
 										// Make sure we got at least one response for every master
 										if(!foundSuccessful) {
 											masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
-											masterStatusMessages.add(RESOURCES.getMessage("ResourceDnsMonitor.masterRecord.missing", masterRecord));
+											masterStatusMessages.add(RESOURCES.getMessage("masterRecord.missing", masterRecord));
 										}
 									}
 									assert firstMasterAddresses != null;
@@ -463,7 +463,7 @@ public class ResourceDnsMonitor {
 																nodeStatus = NodeDnsStatus.INCONSISTENT;
 																nodeStatusMessages.add(
 																	RESOURCES.getMessage(
-																		"ResourceDnsMonitor.nodeRecord.onlyOneAllowed",
+																		"nodeRecord.onlyOneAllowed",
 																		Strings.join(addresses, ", ")
 																	)
 																);
@@ -488,7 +488,7 @@ public class ResourceDnsMonitor {
 																			nodeStatus = NodeDnsStatus.INCONSISTENT;
 																			nodeStatusMessages.add(
 																				RESOURCES.getMessage(
-																					"ResourceDnsMonitor.nodeRecord.duplicateA",
+																					"nodeRecord.duplicateA",
 																					previousNode,
 																					nodeRecord,
 																					address
@@ -498,7 +498,7 @@ public class ResourceDnsMonitor {
 																			List<String> newNodeStatusMessages = new ArrayList<>(previousNodeResult.getNodeStatusMessages());
 																			newNodeStatusMessages.add(
 																				RESOURCES.getMessage(
-																					"ResourceDnsMonitor.nodeRecord.duplicateA",
+																					"nodeRecord.duplicateA",
 																					nodeRecord,
 																					previousNode,
 																					address
@@ -527,7 +527,7 @@ public class ResourceDnsMonitor {
 																	nodeStatus = NodeDnsStatus.INCONSISTENT;
 																	nodeStatusMessages.add(
 																		RESOURCES.getMessage(
-																			"ResourceDnsMonitor.multiRecordNode.mismatch",
+																			"multiRecordNode.mismatch",
 																			firstNodeNameserver,
 																			firstNodeRecord,
 																			Strings.join(firstNodeAddresses, ", "),
@@ -556,7 +556,7 @@ public class ResourceDnsMonitor {
 												// Make sure we got at least one response for every node
 												if(!foundSuccessful) {
 													nodeStatus = NodeDnsStatus.INCONSISTENT;
-													nodeStatusMessages.add(RESOURCES.getMessage("ResourceDnsMonitor.nodeRecord.missing", nodeRecord));
+													nodeStatusMessages.add(RESOURCES.getMessage("nodeRecord.missing", nodeRecord));
 												}
 											}
 											// If master and node are both consistent and matches any master A record, promote to master
@@ -580,7 +580,7 @@ public class ResourceDnsMonitor {
 													resourceNode,
 													null,
 													NodeDnsStatus.DISABLED,
-													Collections.singleton(RESOURCES.getMessage("ResourceDnsMonitor.nodeDisabled"))
+													Collections.singleton(RESOURCES.getMessage("nodeDisabled"))
 												)
 											);
 										}
@@ -595,7 +595,7 @@ public class ResourceDnsMonitor {
 														masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
 														masterStatusMessages.add(
 															RESOURCES.getMessage(
-																"ResourceDnsMonitor.masterARecordDoesntMatchNode",
+																"masterARecordDoesntMatchNode",
 																masterRecord,
 																masterAddress
 															)

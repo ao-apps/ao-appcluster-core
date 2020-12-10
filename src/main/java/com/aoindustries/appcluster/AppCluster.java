@@ -51,7 +51,7 @@ public class AppCluster {
 
 	private static final Logger logger = Logger.getLogger(AppCluster.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(AppCluster.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(AppCluster.class);
 
 	private static final int EXECUTOR_THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 
@@ -127,21 +127,21 @@ public class AppCluster {
 		Set<String> strings = AoCollections.newHashSet(nodeConfigurations.size());
 		for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
 			String display = nodeConfiguration.getDisplay();
-			if(!strings.add(display)) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.checkConfiguration.duplicateNodeDisplay", display));
+			if(!strings.add(display)) throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.duplicateNodeDisplay", display));
 		}
 
 		// Each node must have a distinct hostname
 		Set<Name> names = AoCollections.newHashSet(nodeConfigurations.size());
 		for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
 			Name hostname = nodeConfiguration.getHostname();
-			if(!names.add(hostname)) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.checkConfiguration.duplicateNodeHostname", hostname));
+			if(!names.add(hostname)) throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.duplicateNodeHostname", hostname));
 		}
 
 		// Each node must have a distinct display
 		strings.clear();
 		for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
 			String display = resourceConfiguration.getDisplay();
-			if(!strings.add(display)) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.checkConfiguration.duplicateResourceDisplay", display));
+			if(!strings.add(display)) throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.duplicateResourceDisplay", display));
 		}
 
 		// Each resource-node must have no overlap between nodeRecords and masterRecords of the resource
@@ -150,7 +150,7 @@ public class AppCluster {
 			for(ResourceNodeConfiguration<?,?> resourceNodeConfigs : resourceConfiguration.getResourceNodeConfigurations()) {
 				for(Name nodeRecord : resourceNodeConfigs.getNodeRecords()) {
 					if(masterRecords.contains(nodeRecord)) {
-						throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.checkConfiguration.nodeMatchesMaster", nodeRecord));
+						throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.nodeMatchesMaster", nodeRecord));
 					}
 				}
 			}
@@ -165,7 +165,7 @@ public class AppCluster {
 					if(!resourceNodeConfig1.equals(resourceNodeConfig2)) {
 						for(Name nodeRecord : resourceNodeConfig2.getNodeRecords()) {
 							if(nodeRecords1.contains(nodeRecord)) {
-								throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.checkConfiguration.nodeMatchesOtherNode", nodeRecord));
+								throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.nodeMatchesOtherNode", nodeRecord));
 							}
 						}
 					}
@@ -243,7 +243,7 @@ public class AppCluster {
 				if(started) {
 					if(logger.isLoggable(Level.INFO)) {
 						try {
-							logger.info(RESOURCES.getMessage("AppCluster.onConfigurationChanged.info", configuration.getDisplay()));
+							logger.info(RESOURCES.getMessage("onConfigurationChanged.info", configuration.getDisplay()));
 						} catch(ThreadDeath td) {
 							throw td;
 						} catch(Throwable t) {
@@ -294,7 +294,7 @@ public class AppCluster {
 		synchronized(startedLock) {
 			if(!started) {
 				configuration.start();
-				if(logger.isLoggable(Level.INFO)) logger.info(RESOURCES.getMessage("AppCluster.start.info", configuration.getDisplay()));
+				if(logger.isLoggable(Level.INFO)) logger.info(RESOURCES.getMessage("start.info", configuration.getDisplay()));
 				configuration.addConfigurationListener(configUpdated);
 				started = true;
 				startedTime = new UnmodifiableTimestamp(System.currentTimeMillis());
@@ -314,7 +314,7 @@ public class AppCluster {
 			if(started) {
 				if(logger.isLoggable(Level.INFO)) {
 					try {
-						logger.info(RESOURCES.getMessage("AppCluster.stop.info", configuration.getDisplay()));
+						logger.info(RESOURCES.getMessage("stop.info", configuration.getDisplay()));
 					} catch(ThreadDeath td) {
 						throw td;
 					} catch(Throwable t) {
@@ -533,7 +533,7 @@ public class AppCluster {
 					for(ResourceNodeConfiguration<?,?> resourceNodeConfig : resourceNodeConfigs) {
 						String nodeId = resourceNodeConfig.getNodeId();
 						Node node = getNode(nodeId);
-						if(node==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("AppCluster.startUp.nodeNotFound", resourceConfiguration.getId(), nodeId));
+						if(node==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("startUp.nodeNotFound", resourceConfiguration.getId(), nodeId));
 						newResourceNodes.add(resourceNodeConfig.newResourceNode(node));
 					}
 					Resource<?,?> resource = resourceConfiguration.newResource(this, newResourceNodes);

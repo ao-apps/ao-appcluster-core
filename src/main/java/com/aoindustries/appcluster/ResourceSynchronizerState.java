@@ -38,7 +38,7 @@ public enum ResourceSynchronizerState {
 	TESTING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#00ff00;"),
 	SYNCHRONIZING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#8080ff;");
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizerState.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizerState.class);
 
 	private final ResourceStatus resourceStatus;
 	private final String cssStyle;
@@ -50,7 +50,7 @@ public enum ResourceSynchronizerState {
 
 	@Override
 	public String toString() {
-		return RESOURCES.getMessage("ResourceSynchronizerState." + name());
+		return RESOURCES.getMessage(name());
 	}
 
 	/**

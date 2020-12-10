@@ -34,11 +34,11 @@ public enum ResourceSynchronizationMode {
 	SYNCHRONIZE,
 	TEST_ONLY;
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizationMode.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizationMode.class);
 
 	@Override
 	public String toString() {
-		return RESOURCES.getMessage("ResourceSynchronizationMode." + name());
+		return RESOURCES.getMessage(name());
 	}
 
 	/**

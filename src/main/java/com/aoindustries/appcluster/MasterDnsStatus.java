@@ -39,7 +39,7 @@ public enum MasterDnsStatus {
 	WARNING(ResourceStatus.WARNING),
 	INCONSISTENT(ResourceStatus.INCONSISTENT);
 
-	private static final Resources RESOURCES = Resources.getResources(MasterDnsStatus.class.getPackage());
+	private static final Resources RESOURCES = Resources.getResources(MasterDnsStatus.class);
 
 	private final ResourceStatus resourceStatus;
 
@@ -49,7 +49,7 @@ public enum MasterDnsStatus {
 
 	@Override
 	public String toString() {
-		return RESOURCES.getMessage("MasterDnsStatus." + name());
+		return RESOURCES.getMessage(name());
 	}
 
 	/**
