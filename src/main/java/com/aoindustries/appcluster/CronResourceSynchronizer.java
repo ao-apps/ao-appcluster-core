@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -59,7 +59,7 @@ import java.util.logging.Logger;
  *
  * @author  AO Industries, Inc.
  */
-abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN extends CronResourceNode<R,RN>> extends ResourceSynchronizer<R,RN> {
+abstract public class CronResourceSynchronizer<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceSynchronizer<R, RN> {
 
 	private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
@@ -111,7 +111,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 		ResourceDnsResult resourceDnsResult = resource.getDnsMonitor().getLastResult();
 		// Not allowed to synchronize while inconsistent
 		if(resourceDnsResult.getResourceStatus()==ResourceStatus.INCONSISTENT) return false;
-		Map<? extends Node,? extends ResourceNodeDnsResult> nodeResultMap = resourceDnsResult.getNodeResultMap();
+		Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResultMap = resourceDnsResult.getNodeResultMap();
 		final ResourceNodeDnsResult localDnsResult = nodeResultMap.get(localResourceNode.getNode());
 		final ResourceNodeDnsResult remoteDnsResult = nodeResultMap.get(remoteResourceNode.getNode());
 		return canSynchronize(mode, localDnsResult, remoteDnsResult);
@@ -265,7 +265,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R,RN>,RN e
 							ResourceDnsResult resourceDnsResult = resource.getDnsMonitor().getLastResult();
 							if(resourceDnsResult.getResourceStatus()!=ResourceStatus.INCONSISTENT) {
 								// Find the node status of both the local and remote nodes
-								Map<? extends Node,? extends ResourceNodeDnsResult> nodeResultMap = resourceDnsResult.getNodeResultMap();
+								Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResultMap = resourceDnsResult.getNodeResultMap();
 								final ResourceNodeDnsResult localDnsResult = nodeResultMap.get(localResourceNode.getNode());
 								final ResourceNodeDnsResult remoteDnsResult = nodeResultMap.get(remoteResourceNode.getNode());
 								if(

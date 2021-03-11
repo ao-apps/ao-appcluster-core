@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,7 +31,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class ResourcePropertiesConfiguration<R extends Resource<R,RN>,RN extends ResourceNode<R,RN>> implements ResourceConfiguration<R,RN> {
+public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> implements ResourceConfiguration<R, RN> {
 
 	protected final AppClusterPropertiesConfiguration properties;
 	protected final String id;
@@ -99,8 +99,8 @@ public abstract class ResourcePropertiesConfiguration<R extends Resource<R,RN>,R
 	}
 
 	@Override
-	abstract public Set<? extends ResourceNodePropertiesConfiguration<R,RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
+	abstract public Set<? extends ResourceNodePropertiesConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
 
 	@Override
-	abstract public R newResource(AppCluster cluster, Collection<? extends ResourceNode<?,?>> resourceNodes) throws AppClusterConfigurationException;
+	abstract public R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;
 }

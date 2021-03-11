@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -124,20 +124,20 @@ public class Node {
 	public ResourceStatus getStatus() {
 		ResourceStatus status = ResourceStatus.UNKNOWN;
 		if(!enabled) status = AppCluster.max(status, ResourceStatus.DISABLED);
-		for(Resource<?,?> resource : cluster.getResources()) {
+		for(Resource<?, ?> resource : cluster.getResources()) {
 			ResourceNodeDnsResult nodeDnsResult = resource.getDnsMonitor().getLastResult().getNodeResultMap().get(this);
 			if(nodeDnsResult!=null) {
 				status = AppCluster.max(status, nodeDnsResult.getNodeStatus().getResourceStatus());
-				Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
+				Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
 				if(nodeLookups!=null) {
-					for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : nodeLookups.values()) {
+					for(Map<? extends Nameserver, ? extends DnsLookupResult> lookups : nodeLookups.values()) {
 						for(Nameserver nameserver : nameservers) {
 							status = AppCluster.max(status, lookups.get(nameserver).getStatus().getResourceStatus());
 						}
 					}
 				}
 			}
-			ResourceSynchronizer<?,?> synchronizer = resource.getSynchronizerMap().get(this);
+			ResourceSynchronizer<?, ?> synchronizer = resource.getSynchronizerMap().get(this);
 			if(synchronizer!=null) status = AppCluster.max(status, synchronizer.getResultStatus());
 		}
 		return status;

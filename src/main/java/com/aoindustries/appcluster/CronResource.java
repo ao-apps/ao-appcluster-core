@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -29,12 +29,12 @@ import java.util.Collection;
  * 
  * @author  AO Industries, Inc.
  */
-abstract public class CronResource<R extends CronResource<R,RN>,RN extends CronResourceNode<R,RN>> extends Resource<R,RN> {
+abstract public class CronResource<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends Resource<R, RN> {
 
 	private final int synchronizeTimeout;
 	private final int testTimeout;
 
-	protected CronResource(AppCluster cluster, CronResourceConfiguration<R,RN> resourceConfiguration, Collection<? extends ResourceNode<?,?>> resourceNodes) throws AppClusterConfigurationException {
+	protected CronResource(AppCluster cluster, CronResourceConfiguration<R, RN> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
 		super(cluster, resourceConfiguration, resourceNodes);
 		this.synchronizeTimeout = resourceConfiguration.getSynchronizeTimeout();
 		this.testTimeout = resourceConfiguration.getTestTimeout();
@@ -55,5 +55,5 @@ abstract public class CronResource<R extends CronResource<R,RN>,RN extends CronR
 	}
 
 	@Override
-	abstract protected CronResourceSynchronizer<R,RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R,RN> resourceConfiguration) throws AppClusterConfigurationException;
+	abstract protected CronResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
 }

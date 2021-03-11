@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,14 +34,14 @@ import org.xbill.DNS.Name;
  */
 public class ResourceNodeDnsResult {
 
-	private final ResourceNode<?,?> resourceNode;
-	private final Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeRecordLookups;
+	private final ResourceNode<?, ?> resourceNode;
+	private final Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups;
 	private final NodeDnsStatus nodeStatus;
 	private final SortedSet<String> nodeStatusMessages;
 
 	ResourceNodeDnsResult(
-		ResourceNode<?,?> resourceNode,
-		Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeRecordLookups,
+		ResourceNode<?, ?> resourceNode,
+		Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
 		NodeDnsStatus nodeStatus,
 		Collection<String> nodeStatusMessages
 	) {
@@ -51,7 +51,7 @@ public class ResourceNodeDnsResult {
 		this.nodeStatusMessages = ResourceDnsResult.getUnmodifiableSortedSet(nodeStatusMessages, ResourceDnsResult.defaultLocaleCollator);
 	}
 
-	public ResourceNode<?,?> getResourceNode() {
+	public ResourceNode<?, ?> getResourceNode() {
 		return resourceNode;
 	}
 
@@ -61,7 +61,7 @@ public class ResourceNodeDnsResult {
 	 * Otherwise, it contains an entry for every nodeRecord querying every enabled nameserver.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getNodeRecordLookups() {
+	public Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getNodeRecordLookups() {
 		return nodeRecordLookups;
 	}
 

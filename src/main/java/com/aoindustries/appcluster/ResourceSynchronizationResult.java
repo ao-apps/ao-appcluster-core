@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,8 +34,8 @@ import java.util.List;
  */
 public class ResourceSynchronizationResult implements ResourceResult {
 
-	private final ResourceNode<?,?> localResourceNode;
-	private final ResourceNode<?,?> remoteResourceNode;
+	private final ResourceNode<?, ?> localResourceNode;
+	private final ResourceNode<?, ?> remoteResourceNode;
 	private final ResourceSynchronizationMode mode;
 	private final List<ResourceSynchronizationResultStep> steps;
 
@@ -43,8 +43,8 @@ public class ResourceSynchronizationResult implements ResourceResult {
 	 * @param steps At least one step is required.
 	 */
 	public ResourceSynchronizationResult(
-		ResourceNode<?,?> localResourceNode,
-		ResourceNode<?,?> remoteResourceNode,
+		ResourceNode<?, ?> localResourceNode,
+		ResourceNode<?, ?> remoteResourceNode,
 		ResourceSynchronizationMode mode,
 		Collection<ResourceSynchronizationResultStep> steps
 	) {
@@ -56,11 +56,11 @@ public class ResourceSynchronizationResult implements ResourceResult {
 		this.steps = AoCollections.unmodifiableCopyList(steps);
 	}
 
-	public ResourceNode<?,?> getLocalResourceNode() {
+	public ResourceNode<?, ?> getLocalResourceNode() {
 		return localResourceNode;
 	}
 
-	public ResourceNode<?,?> getRemoteResourceNode() {
+	public ResourceNode<?, ?> getRemoteResourceNode() {
 		return remoteResourceNode;
 	}
 

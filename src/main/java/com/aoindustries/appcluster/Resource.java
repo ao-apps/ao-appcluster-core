@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -38,7 +38,7 @@ import org.xbill.DNS.Name;
  * 
  * @author  AO Industries, Inc.
  */
-abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<R,RN>> {
+abstract public class Resource<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	private final AppCluster cluster;
 	private final String id;
@@ -51,10 +51,10 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	private final Set<? extends Nameserver> enabledNameservers;
 
 	private final ResourceDnsMonitor dnsMonitor;
-	private final Map<Node,ResourceSynchronizer<R,RN>> synchronizers;
+	private final Map<Node, ResourceSynchronizer<R, RN>> synchronizers;
 
 	@SuppressWarnings("OverridableMethodCallInConstructor")
-	protected Resource(AppCluster cluster, ResourceConfiguration<R,RN> resourceConfiguration, Collection<? extends ResourceNode<?,?>> resourceNodes) throws AppClusterConfigurationException {
+	protected Resource(AppCluster cluster, ResourceConfiguration<R, RN> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
 		this.cluster = cluster;
 		this.id = resourceConfiguration.getId();
 		this.enabled = cluster.isEnabled() && resourceConfiguration.isEnabled();
@@ -65,7 +65,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 		@SuppressWarnings("unchecked")
 		R rThis = (R)this;
 		Set<RN> newResourceNodes = AoCollections.newLinkedHashSet(resourceNodes.size());
-		for(ResourceNode<?,?> resourceNode : resourceNodes) {
+		for(ResourceNode<?, ?> resourceNode : resourceNodes) {
 			@SuppressWarnings("unchecked")
 			RN rn = (RN)resourceNode;
 			rn.init(rThis);
@@ -73,7 +73,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 		}
 		this.resourceNodes = AoCollections.optimalUnmodifiableSet(newResourceNodes);
 		final Set<Nameserver> newEnabledNameservers = new LinkedHashSet<>();
-		for(ResourceNode<?,?> resourceNode : resourceNodes) {
+		for(ResourceNode<?, ?> resourceNode : resourceNodes) {
 			Node node = resourceNode.getNode();
 			if(node.isEnabled()) newEnabledNameservers.addAll(node.getNameservers());
 		}
@@ -98,11 +98,11 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 				// The local node is not part of this resource.
 				synchronizers = Collections.emptyMap();
 			} else {
-				Map<Node,ResourceSynchronizer<R,RN>> newSynchronizers = AoCollections.newLinkedHashMap(this.resourceNodes.size() - 1);
+				Map<Node, ResourceSynchronizer<R, RN>> newSynchronizers = AoCollections.newLinkedHashMap(this.resourceNodes.size() - 1);
 				for(RN resourceNode : this.resourceNodes) {
 					Node node = resourceNode.getNode();
 					if(!node.equals(localNode)) {
-						ResourceSynchronizer<R,RN> synchronizer = newResourceSynchronizer(localResourceNode, resourceNode, resourceConfiguration);
+						ResourceSynchronizer<R, RN> synchronizer = newResourceSynchronizer(localResourceNode, resourceNode, resourceConfiguration);
 						if(synchronizer!=null) newSynchronizers.put(node, synchronizer);
 					}
 				}
@@ -199,7 +199,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 		ResourceStatus status = ResourceStatus.UNKNOWN;
 		if(!isEnabled()) status = AppCluster.max(status, ResourceStatus.DISABLED);
 		status = AppCluster.max(status, getDnsMonitor().getLastResult().getResourceStatus());
-		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) {
+		for(ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
 			// Overall synchronizer state
 			status = AppCluster.max(status, synchronizer.getState().getResourceStatus());
 			// Synchronization result
@@ -225,7 +225,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 */
 	void start() {
 		dnsMonitor.start();
-		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) {
+		for(ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
 			synchronizer.start();
 		}
 	}
@@ -234,7 +234,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 * Stops all synchronizers and the DNS monitor.
 	 */
 	void stop() {
-		for(ResourceSynchronizer<R,RN> synchronizer : synchronizers.values()) {
+		for(ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
 			synchronizer.stop();
 		}
 		dnsMonitor.stop();
@@ -244,12 +244,12 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 * Creates the resource synchronizer for this specific type of resource or <code>null</code>
 	 * if never performs any synchronization between these two nodes.
 	 */
-	abstract protected ResourceSynchronizer<R,RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R,RN> resourceConfiguration) throws AppClusterConfigurationException;
+	abstract protected ResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
 
 	/**
 	 * Gets the set of resource synchronizers.
 	 */
-	public Collection<ResourceSynchronizer<R,RN>> getSynchronizers() {
+	public Collection<ResourceSynchronizer<R, RN>> getSynchronizers() {
 		return synchronizers.values();
 	}
 
@@ -258,7 +258,7 @@ abstract public class Resource<R extends Resource<R,RN>,RN extends ResourceNode<
 	 * If the local node is not part of the resource nodes, returns an empty map.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<Node,ResourceSynchronizer<R,RN>> getSynchronizerMap() {
+	public Map<Node, ResourceSynchronizer<R, RN>> getSynchronizerMap() {
 		return synchronizers;
 	}
 }

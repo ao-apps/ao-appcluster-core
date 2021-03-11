@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -45,7 +45,7 @@ public class LoggerResourceListener implements ResourceListener {
 
 	@Override
 	public void onResourceDnsResult(ResourceDnsResult oldResult, ResourceDnsResult newResult) {
-		final Resource<?,?> resource = newResult.getResource();
+		final Resource<?, ?> resource = newResult.getResource();
 		final AppCluster cluster = resource.getCluster();
 
 		// Log any changes, except continual changes to time
@@ -55,12 +55,12 @@ public class LoggerResourceListener implements ResourceListener {
 		// Log any master DNS record change
 		Level level;
 		{
-			Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> newMasterLookupResults = newResult.getMasterRecordLookups();
-			Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> oldMasterLookupResults = oldResult.getMasterRecordLookups();
+			Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newMasterLookupResults = newResult.getMasterRecordLookups();
+			Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldMasterLookupResults = oldResult.getMasterRecordLookups();
 			if(newMasterLookupResults!=null) {
 				for(Name masterRecord : resource.getMasterRecords()) {
-					Map<? extends Nameserver,? extends DnsLookupResult> newMasterLookups = newMasterLookupResults.get(masterRecord);
-					Map<? extends Nameserver,? extends DnsLookupResult> oldMasterLookups = oldMasterLookupResults==null ? null : oldMasterLookupResults.get(masterRecord);
+					Map<? extends Nameserver, ? extends DnsLookupResult> newMasterLookups = newMasterLookupResults.get(masterRecord);
+					Map<? extends Nameserver, ? extends DnsLookupResult> oldMasterLookups = oldMasterLookupResults==null ? null : oldMasterLookupResults.get(masterRecord);
 					for(Nameserver enabledNameserver : resource.getEnabledNameservers()) {
 						DnsLookupResult newDnsLookupResult = newMasterLookups.get(enabledNameserver);
 						level = newDnsLookupResult.getStatus().getResourceStatus().getLogLevel();
@@ -117,18 +117,18 @@ public class LoggerResourceListener implements ResourceListener {
 				}
 			}
 		}
-		for(ResourceNode<?,?> resourceNode : resource.getResourceNodes()) {
+		for(ResourceNode<?, ?> resourceNode : resource.getResourceNodes()) {
 			Node node = resourceNode.getNode();
 			ResourceNodeDnsResult newNodeResult = newResult.getNodeResultMap().get(node);
 			ResourceNodeDnsResult oldNodeResult = oldResult.getNodeResultMap().get(node);
 			// Log any node DNS record change
 			{
-				Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> newNodeLookupResults = newNodeResult.getNodeRecordLookups();
-				Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> oldNodeLookupResults = oldNodeResult.getNodeRecordLookups();
+				Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newNodeLookupResults = newNodeResult.getNodeRecordLookups();
+				Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldNodeLookupResults = oldNodeResult.getNodeRecordLookups();
 				if(newNodeLookupResults!=null) {
 					for(Name nodeRecord : resourceNode.getNodeRecords()) {
-						Map<? extends Nameserver,? extends DnsLookupResult> newNodeLookups = newNodeLookupResults.get(nodeRecord);
-						Map<? extends Nameserver,? extends DnsLookupResult> oldNodeLookups = oldNodeLookupResults==null ? null : oldNodeLookupResults.get(nodeRecord);
+						Map<? extends Nameserver, ? extends DnsLookupResult> newNodeLookups = newNodeLookupResults.get(nodeRecord);
+						Map<? extends Nameserver, ? extends DnsLookupResult> oldNodeLookups = oldNodeLookupResults==null ? null : oldNodeLookupResults.get(nodeRecord);
 						for(Nameserver enabledNameserver : resource.getEnabledNameservers()) {
 							DnsLookupResult newDnsLookupResult = newNodeLookups.get(enabledNameserver);
 							level = newDnsLookupResult.getStatus().getResourceStatus().getLogLevel();
@@ -219,9 +219,9 @@ public class LoggerResourceListener implements ResourceListener {
 
 	@Override
 	public void onResourceSynchronizationResult(ResourceSynchronizationResult oldResult, ResourceSynchronizationResult newResult) {
-		final ResourceNode<?,?> localResourceNode = newResult.getLocalResourceNode();
-		final ResourceNode<?,?> remoteResourceNode = newResult.getRemoteResourceNode();
-		final Resource<?,?> resource = localResourceNode.getResource();
+		final ResourceNode<?, ?> localResourceNode = newResult.getLocalResourceNode();
+		final ResourceNode<?, ?> remoteResourceNode = newResult.getRemoteResourceNode();
+		final Resource<?, ?> resource = localResourceNode.getResource();
 		final AppCluster cluster = resource.getCluster();
 		final Node localNode = localResourceNode.getNode();
 		final Node remoteNode = remoteResourceNode.getNode();

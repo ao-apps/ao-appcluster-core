@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -82,7 +82,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * Only one resolver will be created for each unique nameserver (case-insensitive on unique)
 	 */
-	private static final ConcurrentMap<Nameserver,SimpleResolver> resolvers = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<Nameserver, SimpleResolver> resolvers = new ConcurrentHashMap<>();
 	private static SimpleResolver getSimpleResolver(Nameserver hostname) throws UnknownHostException {
 		SimpleResolver resolver = resolvers.get(hostname);
 		if(resolver==null) {
@@ -97,10 +97,10 @@ public class ResourceDnsMonitor {
 	/**
 	 * Gets a mapping for all nodes with the same status.
 	 */
-	private static Map<? extends Node,? extends ResourceNodeDnsResult> getNodeResults(Resource<?,?> resource, Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeRecordLookups, NodeDnsStatus nodeStatus, Collection<String> nodeStatusMessages) {
-		Set<? extends ResourceNode<?,?>> resourceNodes = resource.getResourceNodes();
-		Map<Node,ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
-		for(ResourceNode<?,?> resourceNode : resourceNodes) {
+	private static Map<? extends Node, ? extends ResourceNodeDnsResult> getNodeResults(Resource<?, ?> resource, Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups, NodeDnsStatus nodeStatus, Collection<String> nodeStatusMessages) {
+		Set<? extends ResourceNode<?, ?>> resourceNodes = resource.getResourceNodes();
+		Map<Node, ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
+		for(ResourceNode<?, ?> resourceNode : resourceNodes) {
 			nodeResults.put(
 				resourceNode.getNode(),
 				new ResourceNodeDnsResult(
@@ -114,13 +114,13 @@ public class ResourceDnsMonitor {
 		return nodeResults;
 	}
 
-	private final Resource<?,?> resource;
+	private final Resource<?, ?> resource;
 
 	private final Object threadLock = new Object();
 	private Thread thread; // All access uses threadLock
 	private ResourceDnsResult lastResult; // All access uses threadLock
 
-	ResourceDnsMonitor(Resource<?,?> resource) {
+	ResourceDnsMonitor(Resource<?, ?> resource) {
 		this.resource = resource;
 		long currentTime = System.currentTimeMillis();
 		this.lastResult = new ResourceDnsResult(
@@ -137,7 +137,7 @@ public class ResourceDnsMonitor {
 	/**
 	 * Gets the resource this monitor is for.
 	 */
-	public Resource<?,?> getResource() {
+	public Resource<?, ?> getResource() {
 		return resource;
 	}
 
@@ -200,9 +200,9 @@ public class ResourceDnsMonitor {
 					long currentTime = System.currentTimeMillis();
 					Collection<String> unknownMessage = Collections.singleton(RESOURCES.getMessage("start.newThread.statusMessage"));
 					Collection<String> nodeDisabledMessages = Collections.singleton(RESOURCES.getMessage("nodeDisabled"));
-					Set<? extends ResourceNode<?,?>> resourceNodes = resource.getResourceNodes();
-					Map<Node,ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
-					for(ResourceNode<?,?> resourceNode : resourceNodes) {
+					Set<? extends ResourceNode<?, ?>> resourceNodes = resource.getResourceNodes();
+					Map<Node, ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
+					for(ResourceNode<?, ?> resourceNode : resourceNodes) {
 						Node node = resourceNode.getNode();
 						if(node.isEnabled()) {
 							nodeResults.put(
@@ -236,14 +236,14 @@ public class ResourceDnsMonitor {
 							final boolean allowMultiMaster = resource.getAllowMultiMaster();
 							final Nameserver[] enabledNameservers = resource.getEnabledNameservers().toArray(new Nameserver[resource.getEnabledNameservers().size()]);
 
-							final ResourceNode<?,?>[] _resourceNodes = resource.getResourceNodes().toArray(new ResourceNode<?,?>[resource.getResourceNodes().size()]);
+							final ResourceNode<?, ?>[] _resourceNodes = resource.getResourceNodes().toArray(new ResourceNode<?, ?>[resource.getResourceNodes().size()]);
 
 							// Find all the unique hostnames and nameservers that will be queried
 							final Name[] allHostnames;
 							{
 								final Set<Name> allHostnamesSet = new HashSet<>();
 								allHostnamesSet.addAll(masterRecords);
-								for(ResourceNode<?,?> resourceNode : _resourceNodes) {
+								for(ResourceNode<?, ?> resourceNode : _resourceNodes) {
 									if(resourceNode.getNode().isEnabled()) allHostnamesSet.addAll(resourceNode.getNodeRecords());
 								}
 								allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
@@ -257,9 +257,9 @@ public class ResourceDnsMonitor {
 									long startTime = System.currentTimeMillis();
 
 									// Query all enabled nameservers for all involved dns entries in parallel, getting all A records
-									final Map<Name,Map<Nameserver,Future<DnsLookupResult>>> allHostnameFutures = AoCollections.newHashMap(allHostnames.length);
+									final Map<Name, Map<Nameserver, Future<DnsLookupResult>>> allHostnameFutures = AoCollections.newHashMap(allHostnames.length);
 									for(final Name hostname : allHostnames) {
-										Map<Nameserver,Future<DnsLookupResult>> hostnameFutures = AoCollections.newHashMap(enabledNameservers.length);
+										Map<Nameserver, Future<DnsLookupResult>> hostnameFutures = AoCollections.newHashMap(enabledNameservers.length);
 										allHostnameFutures.put(hostname, hostnameFutures);
 										for(final Nameserver nameserver : enabledNameservers) {
 											hostnameFutures.put(
@@ -358,16 +358,16 @@ public class ResourceDnsMonitor {
 									}
 
 									// Get all the masterRecord results
-									Map<Name,Map<Nameserver,DnsLookupResult>> masterRecordLookups = AoCollections.newHashMap(masterRecords.size());
+									Map<Name, Map<Nameserver, DnsLookupResult>> masterRecordLookups = AoCollections.newHashMap(masterRecords.size());
 									MasterDnsStatus masterStatus = MasterDnsStatus.CONSISTENT;
 									List<String> masterStatusMessages = new ArrayList<>();
 									Nameserver firstMasterNameserver = null;
 									Name firstMasterRecord = null;
 									Set<String> firstMasterAddresses = null;
 									for(Name masterRecord : masterRecords) {
-										Map<Nameserver,DnsLookupResult> masterLookups = AoCollections.newHashMap(enabledNameservers.length);
+										Map<Nameserver, DnsLookupResult> masterLookups = AoCollections.newHashMap(enabledNameservers.length);
 										masterRecordLookups.put(masterRecord, masterLookups);
-										Map<Nameserver,Future<DnsLookupResult>> masterFutures = allHostnameFutures.get(masterRecord);
+										Map<Nameserver, Future<DnsLookupResult>> masterFutures = allHostnameFutures.get(masterRecord);
 										boolean foundSuccessful = false;
 										for(Nameserver enabledNameserver : enabledNameservers) {
 											try {
@@ -433,22 +433,22 @@ public class ResourceDnsMonitor {
 									assert firstMasterAddresses != null;
 
 									// Get the results for each node
-									Map<Node,ResourceNodeDnsResult> _nodeResults = AoCollections.newHashMap(_resourceNodes.length);
+									Map<Node, ResourceNodeDnsResult> _nodeResults = AoCollections.newHashMap(_resourceNodes.length);
 									Set<String> allNodeAddresses = AoCollections.newHashSet(_resourceNodes.length);
-									for(ResourceNode<?,?> resourceNode :  _resourceNodes) {
+									for(ResourceNode<?, ?> resourceNode :  _resourceNodes) {
 										Node node = resourceNode.getNode();
 										if(node.isEnabled()) {
 											Set<? extends Name> nodeRecords = resourceNode.getNodeRecords();
-											Map<Name,Map<Nameserver,DnsLookupResult>> nodeRecordLookups = AoCollections.newHashMap(nodeRecords.size());
+											Map<Name, Map<Nameserver, DnsLookupResult>> nodeRecordLookups = AoCollections.newHashMap(nodeRecords.size());
 											NodeDnsStatus nodeStatus = NodeDnsStatus.SLAVE;
 											List<String> nodeStatusMessages = new ArrayList<>();
 											Nameserver firstNodeNameserver = null;
 											Name firstNodeRecord = null;
 											Set<String> firstNodeAddresses = null;
 											for(Name nodeRecord : resourceNode.getNodeRecords()) {
-												Map<Nameserver,DnsLookupResult> nodeLookups = AoCollections.newHashMap(enabledNameservers.length);
+												Map<Nameserver, DnsLookupResult> nodeLookups = AoCollections.newHashMap(enabledNameservers.length);
 												nodeRecordLookups.put(nodeRecord, nodeLookups);
-												Map<Nameserver,Future<DnsLookupResult>> nodeFutures = allHostnameFutures.get(nodeRecord);
+												Map<Nameserver, Future<DnsLookupResult>> nodeFutures = allHostnameFutures.get(nodeRecord);
 												boolean foundSuccessful = false;
 												for(Nameserver enabledNameserver : enabledNameservers) {
 													try {
@@ -471,11 +471,11 @@ public class ResourceDnsMonitor {
 																// Each node must have a different A record
 																String address = addresses.iterator().next();
 																for(ResourceNodeDnsResult previousNodeResult :  _nodeResults.values()) {
-																	Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
+																	Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
 																	if(previousNodeRecordLookups!=null) {
 																		boolean foundMatch = false;
 																		MATCH_LOOP:
-																		for(Map<? extends Nameserver,? extends DnsLookupResult> previousLookups : previousNodeRecordLookups.values()) {
+																		for(Map<? extends Nameserver, ? extends DnsLookupResult> previousLookups : previousNodeRecordLookups.values()) {
 																			for(DnsLookupResult previousResult : previousLookups.values()) {
 																				if(previousResult.getAddresses().contains(address)) {
 																					foundMatch = true;
@@ -588,7 +588,7 @@ public class ResourceDnsMonitor {
 
 									// Inconsistent if any master A record is outside the expected nodeDomains
 									for(Name masterRecord : masterRecords) {
-										for(Map<Nameserver,DnsLookupResult> masterLookups : masterRecordLookups.values()) {
+										for(Map<Nameserver, DnsLookupResult> masterLookups : masterRecordLookups.values()) {
 											for(DnsLookupResult masterResult : masterLookups.values()) {
 												for(String masterAddress : masterResult.getAddresses()) {
 													if(!allNodeAddresses.contains(masterAddress)) {

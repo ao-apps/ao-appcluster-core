@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -303,11 +303,11 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 		return AoCollections.optimalUnmodifiableSet(nodes);
 	}
 
-	private static final Map<String,ResourcePropertiesConfigurationFactory<?,?>> factoryCache = new HashMap<>();
+	private static final Map<String, ResourcePropertiesConfigurationFactory<?, ?>> factoryCache = new HashMap<>();
 	@SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
-	private static ResourcePropertiesConfigurationFactory<?,?> getResourcePropertiesConfigurationFactory(String classname) throws AppClusterConfigurationException {
+	private static ResourcePropertiesConfigurationFactory<?, ?> getResourcePropertiesConfigurationFactory(String classname) throws AppClusterConfigurationException {
 		synchronized(factoryCache) {
-			ResourcePropertiesConfigurationFactory<?,?> factory = factoryCache.get(classname);
+			ResourcePropertiesConfigurationFactory<?, ?> factory = factoryCache.get(classname);
 			if(factory==null) {
 				try {
 					try {
@@ -327,19 +327,19 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	}
 
 	@Override
-	public Set<? extends ResourceConfiguration<?,?>> getResourceConfigurations() throws AppClusterConfigurationException {
+	public Set<? extends ResourceConfiguration<?, ?>> getResourceConfigurations() throws AppClusterConfigurationException {
 		// Get all of the resource types
 		Set<String> types = getUniqueStrings("appcluster.resourceTypes", true);
-		Map<String,ResourcePropertiesConfigurationFactory<?,?>> factories = AoCollections.newHashMap(types.size());
+		Map<String, ResourcePropertiesConfigurationFactory<?, ?>> factories = AoCollections.newHashMap(types.size());
 		for(String type : types) {
 			factories.put(type, getResourcePropertiesConfigurationFactory(getString("appcluster.resourceType."+type+".factory", true)));
 		}
 		Set<String> ids = getUniqueStrings("appcluster.resources", true);
-		Set<ResourceConfiguration<?,?>> resources = AoCollections.newLinkedHashSet(ids.size());
+		Set<ResourceConfiguration<?, ?>> resources = AoCollections.newLinkedHashSet(ids.size());
 		for(String id : ids) {
 			String propertyName = "appcluster.resource."+id+".type";
 			String type = getString(propertyName, true);
-			ResourcePropertiesConfigurationFactory<?,?> factory = factories.get(type);
+			ResourcePropertiesConfigurationFactory<?, ?> factory = factories.get(type);
 			if(factory==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("getResourceConfigurations.unexpectedType", propertyName, type));
 			if(!resources.add(factory.newResourcePropertiesConfiguration(this, id))) throw new AssertionError();
 		}

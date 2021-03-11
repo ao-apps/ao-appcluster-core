@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,7 +30,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public interface ResourceNodeConfiguration<R extends Resource<R,RN>,RN extends ResourceNode<R,RN>> {
+public interface ResourceNodeConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	@Override
 	String toString();

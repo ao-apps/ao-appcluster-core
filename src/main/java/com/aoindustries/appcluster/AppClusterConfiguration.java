@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -69,5 +69,5 @@ public interface AppClusterConfiguration {
 	/**
 	 * Gets the set of resources for the cluster.
 	 */
-	Set<? extends ResourceConfiguration<?,?>> getResourceConfigurations() throws AppClusterConfigurationException;
+	Set<? extends ResourceConfiguration<?, ?>> getResourceConfigurations() throws AppClusterConfigurationException;
 }

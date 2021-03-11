@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -29,7 +29,7 @@ import com.aoindustries.cron.Schedule;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResourcePropertiesConfiguration<R extends CronResource<R,RN>,RN extends CronResourceNode<R,RN>> extends ResourcePropertiesConfiguration<R,RN> implements CronResourceConfiguration<R,RN> {
+public abstract class CronResourcePropertiesConfiguration<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourcePropertiesConfiguration<R, RN> implements CronResourceConfiguration<R, RN> {
 
 	private final int synchronizeTimeout;
 	private final int testTimeout;

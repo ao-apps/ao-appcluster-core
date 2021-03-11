@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -75,20 +75,20 @@ public class Nameserver {
 	 */
 	public ResourceStatus getStatus() {
 		ResourceStatus status = ResourceStatus.UNKNOWN;
-		for(Resource<?,?> resource : cluster.getResources()) {
+		for(Resource<?, ?> resource : cluster.getResources()) {
 			ResourceDnsResult resourceDnsResult = resource.getDnsMonitor().getLastResult();
-			Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> masterDnsLookups = resourceDnsResult.getMasterRecordLookups();
+			Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> masterDnsLookups = resourceDnsResult.getMasterRecordLookups();
 			if(masterDnsLookups!=null) {
-				for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : masterDnsLookups.values()) {
+				for(Map<? extends Nameserver, ? extends DnsLookupResult> lookups : masterDnsLookups.values()) {
 					DnsLookupResult lookup = lookups.get(this);
 					if(lookup!=null) status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
 				}
 			}
 
 			for(ResourceNodeDnsResult nodeDnsResult : resourceDnsResult.getNodeResultMap().values()) {
-				Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeDnsLookups = nodeDnsResult.getNodeRecordLookups();
+				Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeDnsLookups = nodeDnsResult.getNodeRecordLookups();
 				if(nodeDnsLookups!=null) {
-					for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : nodeDnsLookups.values()) {
+					for(Map<? extends Nameserver, ? extends DnsLookupResult> lookups : nodeDnsLookups.values()) {
 						DnsLookupResult lookup = lookups.get(this);
 						if(lookup!=null) status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
 					}

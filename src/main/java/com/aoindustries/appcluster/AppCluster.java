@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -70,7 +70,7 @@ public class AppCluster {
 	private Name localHostname; // Protected by startedLock
 	private String localUsername; // Protected by startedLock
 	private Node localNode; // Protected by startedLock
-	private Set<? extends Resource<?,?>> resources = Collections.emptySet(); // Protected by startedLock
+	private Set<? extends Resource<?, ?>> resources = Collections.emptySet(); // Protected by startedLock
 
 	private final List<ResourceListener> resourceListeners = new ArrayList<>();
 	private ExecutorService resourceListenersOnDnsResultExecutorService; // Protected by resourceListeners
@@ -122,7 +122,7 @@ public class AppCluster {
 	/**
 	 * Performs a consistency check on a configuration.
 	 */
-	public static void checkConfiguration(Set<? extends NodeConfiguration> nodeConfigurations, Set<? extends ResourceConfiguration<?,?>> resourceConfigurations) throws AppClusterConfigurationException {
+	public static void checkConfiguration(Set<? extends NodeConfiguration> nodeConfigurations, Set<? extends ResourceConfiguration<?, ?>> resourceConfigurations) throws AppClusterConfigurationException {
 		// Each node must have a distinct display
 		Set<String> strings = AoCollections.newHashSet(nodeConfigurations.size());
 		for(NodeConfiguration nodeConfiguration : nodeConfigurations) {
@@ -139,15 +139,15 @@ public class AppCluster {
 
 		// Each node must have a distinct display
 		strings.clear();
-		for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
+		for(ResourceConfiguration<?, ?> resourceConfiguration : resourceConfigurations) {
 			String display = resourceConfiguration.getDisplay();
 			if(!strings.add(display)) throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.duplicateResourceDisplay", display));
 		}
 
 		// Each resource-node must have no overlap between nodeRecords and masterRecords of the resource
-		for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
+		for(ResourceConfiguration<?, ?> resourceConfiguration : resourceConfigurations) {
 			Set<? extends Name> masterRecords = resourceConfiguration.getMasterRecords();
-			for(ResourceNodeConfiguration<?,?> resourceNodeConfigs : resourceConfiguration.getResourceNodeConfigurations()) {
+			for(ResourceNodeConfiguration<?, ?> resourceNodeConfigs : resourceConfiguration.getResourceNodeConfigurations()) {
 				for(Name nodeRecord : resourceNodeConfigs.getNodeRecords()) {
 					if(masterRecords.contains(nodeRecord)) {
 						throw new AppClusterConfigurationException(RESOURCES.getMessage("checkConfiguration.nodeMatchesMaster", nodeRecord));
@@ -157,11 +157,11 @@ public class AppCluster {
 		}
 
 		// Each resource-node must have no overlap between nodeRecords and nodeRecords of any other resource-node of the resource
-		for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
-			Set<? extends ResourceNodeConfiguration<?,?>> resourceNodeConfigurations = resourceConfiguration.getResourceNodeConfigurations();
-			for(ResourceNodeConfiguration<?,?> resourceNodeConfig1 : resourceNodeConfigurations) {
+		for(ResourceConfiguration<?, ?> resourceConfiguration : resourceConfigurations) {
+			Set<? extends ResourceNodeConfiguration<?, ?>> resourceNodeConfigurations = resourceConfiguration.getResourceNodeConfigurations();
+			for(ResourceNodeConfiguration<?, ?> resourceNodeConfig1 : resourceNodeConfigurations) {
 				Set<? extends Name> nodeRecords1 = resourceNodeConfig1.getNodeRecords();
-				for(ResourceNodeConfiguration<?,?> resourceNodeConfig2 : resourceNodeConfigurations) {
+				for(ResourceNodeConfiguration<?, ?> resourceNodeConfig2 : resourceNodeConfigurations) {
 					if(!resourceNodeConfig1.equals(resourceNodeConfig2)) {
 						for(Name nodeRecord : resourceNodeConfig2.getNodeRecords()) {
 							if(nodeRecords1.contains(nodeRecord)) {
@@ -392,8 +392,8 @@ public class AppCluster {
 	 * Gets a map view of the nodes, keyed by their id.  This is not a fast
 	 * implementation and is here for JSP EL compatibility.
 	 */
-	public Map<String,Node> getNodeMap() {
-		Map<String,Node> nodeMap;
+	public Map<String, Node> getNodeMap() {
+		Map<String, Node> nodeMap;
 		synchronized(startedLock) {
 			nodeMap = AoCollections.newLinkedHashMap(nodes.size());
 			for(Node node : nodes) {
@@ -443,7 +443,7 @@ public class AppCluster {
 	 * Gets the set of all resources or empty set if not started.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Set<? extends Resource<?,?>> getResources() {
+	public Set<? extends Resource<?, ?>> getResources() {
 		synchronized(startedLock) {
 			return resources;
 		}
@@ -453,10 +453,10 @@ public class AppCluster {
 	 * Gets a map view of the resources keyed on String resourceId.
 	 * This is for compatibility with JSP EL - it is not a fast implementation.
 	 */
-	public Map<String,? extends Resource<?,?>> getResourceMap() {
+	public Map<String, ? extends Resource<?, ?>> getResourceMap() {
 		synchronized(startedLock) {
-			Map<String,Resource<?,?>> map = AoCollections.newLinkedHashMap(resources.size());
-			for(Resource<?,?> resource : resources) {
+			Map<String, Resource<?, ?>> map = AoCollections.newLinkedHashMap(resources.size());
+			for(Resource<?, ?> resource : resources) {
 				map.put(resource.getId(), resource);
 			}
 			return AoCollections.optimalUnmodifiableMap(map);
@@ -476,7 +476,7 @@ public class AppCluster {
 				enabled = configuration.isEnabled();
 				display = configuration.getDisplay();
 				Set<? extends NodeConfiguration> nodeConfigurations = configuration.getNodeConfigurations();
-				Set<? extends ResourceConfiguration<?,?>> resourceConfigurations = configuration.getResourceConfigurations();
+				Set<? extends ResourceConfiguration<?, ?>> resourceConfigurations = configuration.getResourceConfigurations();
 
 				// Check the configuration for consistency
 				checkConfiguration(nodeConfigurations, resourceConfigurations);
@@ -526,17 +526,17 @@ public class AppCluster {
 				}
 
 				// Start per-resource monitoring and synchronization threads
-				Set<Resource<?,?>> newResources = AoCollections.newLinkedHashSet(resourceConfigurations.size());
-				for(ResourceConfiguration<?,?> resourceConfiguration : resourceConfigurations) {
-					Set<? extends ResourceNodeConfiguration<?,?>> resourceNodeConfigs = resourceConfiguration.getResourceNodeConfigurations();
-					Collection<ResourceNode<?,?>> newResourceNodes = new ArrayList<>(resourceNodeConfigs.size());
-					for(ResourceNodeConfiguration<?,?> resourceNodeConfig : resourceNodeConfigs) {
+				Set<Resource<?, ?>> newResources = AoCollections.newLinkedHashSet(resourceConfigurations.size());
+				for(ResourceConfiguration<?, ?> resourceConfiguration : resourceConfigurations) {
+					Set<? extends ResourceNodeConfiguration<?, ?>> resourceNodeConfigs = resourceConfiguration.getResourceNodeConfigurations();
+					Collection<ResourceNode<?, ?>> newResourceNodes = new ArrayList<>(resourceNodeConfigs.size());
+					for(ResourceNodeConfiguration<?, ?> resourceNodeConfig : resourceNodeConfigs) {
 						String nodeId = resourceNodeConfig.getNodeId();
 						Node node = getNode(nodeId);
 						if(node==null) throw new AppClusterConfigurationException(RESOURCES.getMessage("startUp.nodeNotFound", resourceConfiguration.getId(), nodeId));
 						newResourceNodes.add(resourceNodeConfig.newResourceNode(node));
 					}
-					Resource<?,?> resource = resourceConfiguration.newResource(this, newResourceNodes);
+					Resource<?, ?> resource = resourceConfiguration.newResource(this, newResourceNodes);
 					newResources.add(resource);
 					resource.start();
 				}
@@ -552,7 +552,7 @@ public class AppCluster {
 		synchronized(startedLock) {
 			if(started) {
 				// Stop per-resource monitoring and synchronization threads
-				for(Resource<?,?> resource : resources) {
+				for(Resource<?, ?> resource : resources) {
 					resource.stop();
 				}
 				resources = Collections.emptySet();
@@ -607,7 +607,7 @@ public class AppCluster {
 			ResourceStatus status = ResourceStatus.UNKNOWN;
 			if(!started) status = max(status, ResourceStatus.STOPPED);
 			if(!enabled) status = max(status, ResourceStatus.DISABLED);
-			for(Resource<?,?> resource : getResources()) {
+			for(Resource<?, ?> resource : getResources()) {
 				status = max(status, resource.getStatus());
 			}
 			return status;

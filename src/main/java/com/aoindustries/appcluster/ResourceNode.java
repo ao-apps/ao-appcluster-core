@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,13 +31,13 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-abstract public class ResourceNode<R extends Resource<R,RN>,RN extends ResourceNode<R,RN>> {
+abstract public class ResourceNode<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	private final Node node;
 	private final Set<? extends Name> nodeRecords;
 	private R resource;
 
-	protected ResourceNode(Node node, ResourceNodeConfiguration<R,RN> resourceNodeConfiguration) {
+	protected ResourceNode(Node node, ResourceNodeConfiguration<R, RN> resourceNodeConfiguration) {
 		this.node = node;
 		this.nodeRecords = AoCollections.unmodifiableCopySet(resourceNodeConfiguration.getNodeRecords());
 	}
@@ -53,8 +53,8 @@ abstract public class ResourceNode<R extends Resource<R,RN>,RN extends ResourceN
 
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof ResourceNode<?,?>)) return false;
-		ResourceNode<?,?> other = (ResourceNode<?,?>)o;
+		if(!(o instanceof ResourceNode<?, ?>)) return false;
+		ResourceNode<?, ?> other = (ResourceNode<?, ?>)o;
 		return
 			resource.equals(other.resource)
 			&& node.equals(other.node)
@@ -104,7 +104,7 @@ abstract public class ResourceNode<R extends Resource<R,RN>,RN extends ResourceN
 	 * or <code>null</code> if this is not a remote node.
 	 */
 	public ResourceStatus getSynchronizationStatus() {
-		ResourceSynchronizer<R,RN> synchronizer = resource.getSynchronizerMap().get(node);
+		ResourceSynchronizer<R, RN> synchronizer = resource.getSynchronizerMap().get(node);
 		return synchronizer==null ? null : synchronizer.getResultStatus();
 	}
 }

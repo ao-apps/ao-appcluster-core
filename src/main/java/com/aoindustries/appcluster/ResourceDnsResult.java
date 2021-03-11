@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -80,12 +80,12 @@ public class ResourceDnsResult implements ResourceResult {
 	 *
 	 * @exception  IllegalArgumentException  if any dnsRecord->nameserver result is missing.
 	 */
-	static Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getUnmodifiableDnsLookupResults(Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> dnsRecordLookups, Set<? extends Name> dnsRecords, Set<? extends Nameserver> nameservers) throws IllegalArgumentException {
-		Map<Name,Map<? extends Nameserver,? extends DnsLookupResult>> newDnsRecordLookups = AoCollections.newLinkedHashMap(dnsRecords.size());
+	static Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getUnmodifiableDnsLookupResults(Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> dnsRecordLookups, Set<? extends Name> dnsRecords, Set<? extends Nameserver> nameservers) throws IllegalArgumentException {
+		Map<Name, Map<? extends Nameserver, ? extends DnsLookupResult>> newDnsRecordLookups = AoCollections.newLinkedHashMap(dnsRecords.size());
 		for(Name dnsRecord : dnsRecords) {
-			Map<? extends Nameserver,? extends DnsLookupResult> dnsLookupResults = dnsRecordLookups.get(dnsRecord);
+			Map<? extends Nameserver, ? extends DnsLookupResult> dnsLookupResults = dnsRecordLookups.get(dnsRecord);
 			if(dnsLookupResults==null) throw new IllegalArgumentException("Missing DNS record " + dnsRecord);
-			Map<Nameserver,DnsLookupResult> newDnsLookupResults = AoCollections.newLinkedHashMap(nameservers.size());
+			Map<Nameserver, DnsLookupResult> newDnsLookupResults = AoCollections.newLinkedHashMap(nameservers.size());
 			for(Nameserver nameserver : nameservers) {
 				DnsLookupResult dnsLookupResult = dnsLookupResults.get(nameserver);
 				if(dnsLookupResult==null) throw new IllegalArgumentException("Missing DNS lookup result " + dnsLookupResult);
@@ -96,22 +96,22 @@ public class ResourceDnsResult implements ResourceResult {
 		return AoCollections.optimalUnmodifiableMap(newDnsRecordLookups);
 	}
 
-	private final Resource<?,?> resource;
+	private final Resource<?, ?> resource;
 	final long startTime;
 	final long endTime;
-	private final Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> masterRecordLookups;
+	private final Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> masterRecordLookups;
 	private final MasterDnsStatus masterStatus;
 	private final SortedSet<String> masterStatusMessages;
-	private final Map<? extends Node,? extends ResourceNodeDnsResult> nodeResults;
+	private final Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResults;
 
 	ResourceDnsResult(
-		Resource<?,?> resource,
+		Resource<?, ?> resource,
 		long startTime,
 		long endTime,
-		Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> masterRecordLookups,
+		Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> masterRecordLookups,
 		MasterDnsStatus masterStatus,
 		Collection<String> masterStatusMessages,
-		Map<? extends Node,? extends ResourceNodeDnsResult> nodeResults
+		Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResults
 	) {
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -119,9 +119,9 @@ public class ResourceDnsResult implements ResourceResult {
 		this.masterRecordLookups = masterRecordLookups==null ? null : getUnmodifiableDnsLookupResults(masterRecordLookups, resource.getMasterRecords(), resource.getEnabledNameservers());
 		this.masterStatus = masterStatus;
 		this.masterStatusMessages = getUnmodifiableSortedSet(masterStatusMessages, defaultLocaleCollator);
-		Set<? extends ResourceNode<?,?>> resourceNodes = resource.getResourceNodes();
-		Map<Node,ResourceNodeDnsResult> newNodeResults = AoCollections.newLinkedHashMap(resourceNodes.size());
-		for(ResourceNode<?,?> resourceNode : resourceNodes) {
+		Set<? extends ResourceNode<?, ?>> resourceNodes = resource.getResourceNodes();
+		Map<Node, ResourceNodeDnsResult> newNodeResults = AoCollections.newLinkedHashMap(resourceNodes.size());
+		for(ResourceNode<?, ?> resourceNode : resourceNodes) {
 			Node node = resourceNode.getNode();
 			ResourceNodeDnsResult nodeResult = nodeResults.get(node);
 			if(nodeResult==null) throw new IllegalArgumentException("Missing node " + node);
@@ -130,7 +130,7 @@ public class ResourceDnsResult implements ResourceResult {
 		this.nodeResults = AoCollections.optimalUnmodifiableMap(newNodeResults);
 	}
 
-	public Resource<?,?> getResource() {
+	public Resource<?, ?> getResource() {
 		return resource;
 	}
 
@@ -178,7 +178,7 @@ public class ResourceDnsResult implements ResourceResult {
 	 * Otherwise, it contains an entry for every masterRecord querying every enabled nameserver.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> getMasterRecordLookups() {
+	public Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getMasterRecordLookups() {
 		return masterRecordLookups;
 	}
 
@@ -203,7 +203,7 @@ public class ResourceDnsResult implements ResourceResult {
 	 * This has an entry for every node in this resource.
 	 */
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<? extends Node,? extends ResourceNodeDnsResult> getNodeResultMap() {
+	public Map<? extends Node, ? extends ResourceNodeDnsResult> getNodeResultMap() {
 		return nodeResults;
 	}
 
@@ -229,7 +229,7 @@ public class ResourceDnsResult implements ResourceResult {
 		// Master records
 		status = AppCluster.max(status, getMasterStatus().getResourceStatus());
 		if(masterRecordLookups!=null) {
-			for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : masterRecordLookups.values()) {
+			for(Map<? extends Nameserver, ? extends DnsLookupResult> lookups : masterRecordLookups.values()) {
 				for(DnsLookupResult lookup : lookups.values()) {
 					status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
 				}
@@ -239,9 +239,9 @@ public class ResourceDnsResult implements ResourceResult {
 		// Node records
 		for(ResourceNodeDnsResult nodeDnsResult : getNodeResultMap().values()) {
 			status = AppCluster.max(status, nodeDnsResult.getNodeStatus().getResourceStatus());
-			Map<? extends Name,? extends Map<? extends Nameserver,? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
+			Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeLookups = nodeDnsResult.getNodeRecordLookups();
 			if(nodeLookups!=null) {
-				for(Map<? extends Nameserver,? extends DnsLookupResult> lookups : nodeLookups.values()) {
+				for(Map<? extends Nameserver, ? extends DnsLookupResult> lookups : nodeLookups.values()) {
 					for(DnsLookupResult lookup : lookups.values()) {
 						status = AppCluster.max(status, lookup.getStatus().getResourceStatus());
 					}
