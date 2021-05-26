@@ -29,7 +29,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		<relativePath>../../../ao-oss-parent/pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.aoindustries</groupId><artifactId>ao-appcluster-core-devel</artifactId><version>1.1.4-SNAPSHOT</version>
+	<groupId>com.aoindustries</groupId><artifactId>ao-appcluster-core-devel</artifactId><version>1.2.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<name>AO AppCluster Core Devel</name>
