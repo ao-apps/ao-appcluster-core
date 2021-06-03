@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,7 +39,7 @@ public final class ApplicationResources extends EditableResourceBundle {
 	);
 
 	static File getSourceFile(String filename) {
-		return new File(System.getProperty("user.home") + "/maven2/ao/ao-appcluster/core/src/main/resources/com/aoindustries/appcluster", filename);
+		return new File(System.getProperty("user.home") + "/maven2/ao/oss/appcluster/core/src/main/resources/com/aoindustries/appcluster", filename);
 	}
 
 	public ApplicationResources() {
