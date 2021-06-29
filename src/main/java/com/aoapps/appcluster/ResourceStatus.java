@@ -23,6 +23,7 @@
 package com.aoapps.appcluster;
 
 import com.aoapps.lang.i18n.Resources;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 /**
@@ -43,7 +44,7 @@ public enum ResourceStatus {
 	ERROR("background-color:#ff4040;", Level.SEVERE),
 	INCONSISTENT("background-color:#ff0000;", Level.SEVERE);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, ResourceStatus.class);
 
 	private final String cssStyle;
 	private final Level logLevel;

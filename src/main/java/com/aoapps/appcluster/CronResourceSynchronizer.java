@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -63,7 +64,8 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
 
 	private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(CronResourceSynchronizer.class);
+	private static final Resources RESOURCES =
+		Resources.getResources(ResourceBundle::getBundle, CronResourceSynchronizer.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 2;
 

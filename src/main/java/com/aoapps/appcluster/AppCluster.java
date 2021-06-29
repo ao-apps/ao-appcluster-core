@@ -35,6 +35,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,7 +52,7 @@ public class AppCluster {
 
 	private static final Logger logger = Logger.getLogger(AppCluster.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(AppCluster.class);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, AppCluster.class);
 
 	private static final int EXECUTOR_THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 

@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -60,7 +61,8 @@ public class ResourceDnsMonitor {
 
 	private static final Logger logger = Logger.getLogger(ResourceDnsMonitor.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceDnsMonitor.class);
+	private static final Resources RESOURCES =
+		Resources.getResources(ResourceBundle::getBundle, ResourceDnsMonitor.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 

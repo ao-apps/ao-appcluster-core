@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,21 +20,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoapps.appcluster;
-
-import com.aoapps.hodgepodge.i18n.EditableResourceBundle;
-import java.util.Locale;
-
-/**
- * @author  AO Industries, Inc.
- */
-public final class ApplicationResources_ja extends EditableResourceBundle {
-
-	public ApplicationResources_ja() {
-		super(
-			Locale.JAPANESE,
-			ApplicationResources.bundleSet,
-			ApplicationResources.getSourceFile("ApplicationResources_ja.properties")
-		);
-	}
+module com.aoapps.appcluster.core {
+	exports com.aoapps.appcluster;
+	// Direct
+	requires com.aoapps.collections; // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
+	requires com.aoapps.cron; // <groupId>com.aoapps</groupId><artifactId>ao-cron</artifactId>
+	requires com.aoapps.lang; // <groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
+	requires com.aoapps.sql; // <groupId>com.aoapps</groupId><artifactId>ao-sql</artifactId>
+	requires org.dnsjava; // <groupId>dnsjava</groupId><artifactId>dnsjava</artifactId>
+	// Java SQL
+	requires java.sql;
 }

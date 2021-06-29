@@ -20,33 +20,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoapps.appcluster;
+package com.aoapps.appcluster.i18n;
 
-import com.aoapps.lang.i18n.Resources;
-import java.util.ResourceBundle;
+import com.aoapps.hodgepodge.i18n.EditableResourceBundle;
+import com.aoapps.hodgepodge.i18n.EditableResourceBundleSet;
+import java.io.File;
+import java.util.Locale;
 
 /**
- * Contains the results of one resource synchronization.
- *
  * @author  AO Industries, Inc.
  */
-public enum ResourceSynchronizationMode {
+public final class ApplicationResources extends EditableResourceBundle {
 
-	SYNCHRONIZE,
-	TEST_ONLY;
+	static final EditableResourceBundleSet bundleSet = new EditableResourceBundleSet(
+		ApplicationResources.class,
+		Locale.ROOT,
+		Locale.JAPANESE
+	);
 
-	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
-
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
+	static File getSourceFile(String filename) {
+		return new File(System.getProperty("user.home") + "/maven2/ao/oss/appcluster/core/src/main/resources/com/aoapps/appcluster/i18n", filename);
 	}
 
-	/**
-	 * JavaBeans compatibility.
-	 */
-	public String getName() {
-		return name();
+	public ApplicationResources() {
+		super(Locale.ROOT, bundleSet, getSourceFile("ApplicationResources.properties"));
 	}
 }

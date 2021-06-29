@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -20,33 +20,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aoapps.appcluster;
-
-import com.aoapps.lang.i18n.Resources;
-import java.util.ResourceBundle;
-
-/**
- * Contains the results of one resource synchronization.
- *
- * @author  AO Industries, Inc.
- */
-public enum ResourceSynchronizationMode {
-
-	SYNCHRONIZE,
-	TEST_ONLY;
-
-	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
-
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
-
-	/**
-	 * JavaBeans compatibility.
-	 */
-	public String getName() {
-		return name();
-	}
+module com.aoapps.appcluster.core.devel {
+	exports com.aoapps.appcluster.i18n;
+	// Direct
+	requires com.aoapps.hodgepodge; // <groupId>com.aoapps</groupId><artifactId>ao-hodgepodge</artifactId>
 }

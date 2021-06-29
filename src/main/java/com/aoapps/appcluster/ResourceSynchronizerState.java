@@ -23,12 +23,13 @@
 package com.aoapps.appcluster;
 
 import com.aoapps.lang.i18n.Resources;
+import java.util.ResourceBundle;
 
 /**
  * The possible states for resource synchronization.
  *
  * @see  Resource
- * 
+ *
  * @author  AO Industries, Inc.
  */
 public enum ResourceSynchronizerState {
@@ -38,7 +39,8 @@ public enum ResourceSynchronizerState {
 	TESTING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#00ff00;"),
 	SYNCHRONIZING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#8080ff;");
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceSynchronizerState.class);
+	private static final Resources RESOURCES =
+		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizerState.class);
 
 	private final ResourceStatus resourceStatus;
 	private final String cssStyle;

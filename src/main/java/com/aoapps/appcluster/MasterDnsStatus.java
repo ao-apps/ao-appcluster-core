@@ -23,6 +23,7 @@
 package com.aoapps.appcluster;
 
 import com.aoapps.lang.i18n.Resources;
+import java.util.ResourceBundle;
 
 /**
  * The master records for a resource have a specific status as a result of its configuration
@@ -39,7 +40,7 @@ public enum MasterDnsStatus {
 	WARNING(ResourceStatus.WARNING),
 	INCONSISTENT(ResourceStatus.INCONSISTENT);
 
-	private static final Resources RESOURCES = Resources.getResources(MasterDnsStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, MasterDnsStatus.class);
 
 	private final ResourceStatus resourceStatus;
 

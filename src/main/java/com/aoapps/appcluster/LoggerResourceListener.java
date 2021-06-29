@@ -27,6 +27,7 @@ import com.aoapps.lang.Strings;
 import com.aoapps.lang.i18n.Resources;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +42,8 @@ public class LoggerResourceListener implements ResourceListener {
 
 	private static final Logger logger = Logger.getLogger(LoggerResourceListener.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(LoggerResourceListener.class);
+	private static final Resources RESOURCES =
+		Resources.getResources(ResourceBundle::getBundle, LoggerResourceListener.class);
 
 	@Override
 	public void onResourceDnsResult(ResourceDnsResult oldResult, ResourceDnsResult newResult) {

@@ -23,6 +23,7 @@
 package com.aoapps.appcluster;
 
 import com.aoapps.lang.i18n.Resources;
+import java.util.ResourceBundle;
 
 /**
  * The set of statuses that apply to individual DNS records.
@@ -40,7 +41,7 @@ public enum DnsLookupStatus {
 	UNRECOVERABLE(ResourceStatus.ERROR),
 	ERROR(ResourceStatus.ERROR);
 
-	private static final Resources RESOURCES = Resources.getResources(DnsLookupStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, DnsLookupStatus.class);
 
 	private final ResourceStatus resourceStatus;
 
