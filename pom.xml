@@ -42,7 +42,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		<sonar.organization>aoindustries</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<!-- Dependencies -->
-		<dnsjava.version>3.4.0</dnsjava.version>
+		<dnsjava.version>3.4.1</dnsjava.version>
 	</properties>
 
 	<name>AO AppCluster Core</name>
