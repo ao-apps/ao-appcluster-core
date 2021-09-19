@@ -41,7 +41,7 @@ public enum DnsLookupStatus {
 	UNRECOVERABLE(ResourceStatus.ERROR),
 	ERROR(ResourceStatus.ERROR);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, DnsLookupStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(DnsLookupStatus.class, ResourceBundle::getBundle);
 
 	private final ResourceStatus resourceStatus;
 

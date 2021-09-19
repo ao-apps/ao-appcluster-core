@@ -43,7 +43,7 @@ public class LoggerResourceListener implements ResourceListener {
 	private static final Logger logger = Logger.getLogger(LoggerResourceListener.class.getName());
 
 	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, LoggerResourceListener.class);
+		Resources.getResources(LoggerResourceListener.class, ResourceBundle::getBundle);
 
 	@Override
 	public void onResourceDnsResult(ResourceDnsResult oldResult, ResourceDnsResult newResult) {

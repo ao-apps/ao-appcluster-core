@@ -40,7 +40,7 @@ public enum MasterDnsStatus {
 	WARNING(ResourceStatus.WARNING),
 	INCONSISTENT(ResourceStatus.INCONSISTENT);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, MasterDnsStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(MasterDnsStatus.class, ResourceBundle::getBundle);
 
 	private final ResourceStatus resourceStatus;
 

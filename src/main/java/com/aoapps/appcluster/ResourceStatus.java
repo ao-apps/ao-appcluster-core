@@ -44,7 +44,7 @@ public enum ResourceStatus {
 	ERROR("background-color:#ff4040;", Level.SEVERE),
 	INCONSISTENT("background-color:#ff0000;", Level.SEVERE);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, ResourceStatus.class);
+	private static final Resources RESOURCES = Resources.getResources(ResourceStatus.class, ResourceBundle::getBundle);
 
 	private final String cssStyle;
 	private final Level logLevel;

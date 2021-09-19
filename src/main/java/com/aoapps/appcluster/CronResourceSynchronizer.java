@@ -65,7 +65,7 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
 	private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
 	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, CronResourceSynchronizer.class);
+		Resources.getResources(CronResourceSynchronizer.class, ResourceBundle::getBundle);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 2;
 

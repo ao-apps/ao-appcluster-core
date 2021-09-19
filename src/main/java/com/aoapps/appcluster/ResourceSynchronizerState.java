@@ -40,7 +40,7 @@ public enum ResourceSynchronizerState {
 	SYNCHRONIZING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#8080ff;");
 
 	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizerState.class);
+		Resources.getResources(ResourceSynchronizerState.class, ResourceBundle::getBundle);
 
 	private final ResourceStatus resourceStatus;
 	private final String cssStyle;
