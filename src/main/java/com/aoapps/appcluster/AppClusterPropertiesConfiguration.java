@@ -54,7 +54,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 	private static final Logger logger = Logger.getLogger(AppClusterPropertiesConfiguration.class.getName());
 
 	private static final Resources RESOURCES =
-		Resources.getResources(AppClusterPropertiesConfiguration.class, ResourceBundle::getBundle);
+		Resources.getResources(ResourceBundle::getBundle, AppClusterPropertiesConfiguration.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY + 1;
 

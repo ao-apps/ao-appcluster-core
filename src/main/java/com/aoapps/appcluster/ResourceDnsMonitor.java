@@ -62,7 +62,7 @@ public class ResourceDnsMonitor {
 	private static final Logger logger = Logger.getLogger(ResourceDnsMonitor.class.getName());
 
 	private static final Resources RESOURCES =
-		Resources.getResources(ResourceDnsMonitor.class, ResourceBundle::getBundle);
+		Resources.getResources(ResourceBundle::getBundle, ResourceDnsMonitor.class);
 
 	private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 

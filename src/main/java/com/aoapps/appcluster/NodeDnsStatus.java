@@ -40,7 +40,7 @@ public enum NodeDnsStatus {
 	MASTER(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "font-weight:bold;"),
 	INCONSISTENT(ResourceStatus.INCONSISTENT, ResourceStatus.INCONSISTENT.getCssStyle());
 
-	private static final Resources RESOURCES = Resources.getResources(NodeDnsStatus.class, ResourceBundle::getBundle);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, NodeDnsStatus.class);
 
 	private final ResourceStatus resourceStatus;
 	private final String cssStyle;

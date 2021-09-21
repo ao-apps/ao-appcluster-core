@@ -52,7 +52,7 @@ public class AppCluster {
 
 	private static final Logger logger = Logger.getLogger(AppCluster.class.getName());
 
-	private static final Resources RESOURCES = Resources.getResources(AppCluster.class, ResourceBundle::getBundle);
+	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, AppCluster.class);
 
 	private static final int EXECUTOR_THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 
