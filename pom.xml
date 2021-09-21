@@ -44,7 +44,7 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 		<!-- TODO: Implement tests -->
 		<sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
 		<!-- Dependencies -->
-		<dnsjava.version>3.4.1</dnsjava.version>
+		<dnsjava.version>3.4.2</dnsjava.version>
 	</properties>
 
 	<name>AO AppCluster Core</name>
