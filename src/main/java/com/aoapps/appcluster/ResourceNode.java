@@ -31,7 +31,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-abstract public class ResourceNode<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class ResourceNode<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	private final Node node;
 	private final Set<? extends Name> nodeRecords;

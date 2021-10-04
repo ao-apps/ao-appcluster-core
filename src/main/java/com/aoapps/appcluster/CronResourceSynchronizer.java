@@ -60,7 +60,7 @@ import java.util.logging.Logger;
  *
  * @author  AO Industries, Inc.
  */
-abstract public class CronResourceSynchronizer<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceSynchronizer<R, RN> {
+public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceSynchronizer<R, RN> {
 
 	private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
@@ -412,10 +412,10 @@ abstract public class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
 	/**
 	 * Checks if a resource may be synchronized given the current DNS state of the nodes.
 	 */
-	abstract protected boolean canSynchronize(ResourceSynchronizationMode mode, ResourceNodeDnsResult localDnsResult, ResourceNodeDnsResult remoteDnsResult);
+	protected abstract boolean canSynchronize(ResourceSynchronizationMode mode, ResourceNodeDnsResult localDnsResult, ResourceNodeDnsResult remoteDnsResult);
 
 	/**
 	 * Synchronizes (or tests) the resource.
 	 */
-	abstract protected ResourceSynchronizationResult synchronize(ResourceSynchronizationMode mode, ResourceNodeDnsResult localDnsResult, ResourceNodeDnsResult remoteDnsResult);
+	protected abstract ResourceSynchronizationResult synchronize(ResourceSynchronizationMode mode, ResourceNodeDnsResult localDnsResult, ResourceNodeDnsResult remoteDnsResult);
 }

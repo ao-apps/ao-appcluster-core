@@ -39,7 +39,7 @@ package com.aoapps.appcluster;
  *
  * @author  AO Industries, Inc.
  */
-abstract public class ResourceSynchronizer<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class ResourceSynchronizer<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	protected final RN localResourceNode;
 	protected final RN remoteResourceNode;
@@ -74,23 +74,23 @@ abstract public class ResourceSynchronizer<R extends Resource<R, RN>, RN extends
 	/**
 	 * Gets the current synchronization state.
 	 */
-	abstract public ResourceSynchronizerState getState();
+	public abstract ResourceSynchronizerState getState();
 
 	/**
 	 * Gets a description of the current state or <code>null</code> for no
 	 * specific message.
 	 */
-	abstract public String getStateMessage();
+	public abstract String getStateMessage();
 
 	/**
 	 * Schedules an immediate synchronization if possible.
 	 */
-	abstract public void synchronizeNow(ResourceSynchronizationMode mode);
+	public abstract void synchronizeNow(ResourceSynchronizationMode mode);
 
 	/**
 	 * Gets the last synchronization result or <code>null</code> if unavailable.
 	 */
-	abstract public ResourceSynchronizationResult getLastResult();
+	public abstract ResourceSynchronizationResult getLastResult();
 
 	/**
 	 * Gets the synchronization result status.  Considered as STOPPED/DISABLED/STARTING if last result is not available.
@@ -106,10 +106,10 @@ abstract public class ResourceSynchronizer<R extends Resource<R, RN>, RN extends
 	/**
 	 * Starts the synchronizer.
 	 */
-	abstract protected void start();
+	protected abstract void start();
 
 	/**
 	 * Stops the synchronizer.
 	 */
-	abstract protected void stop();
+	protected abstract void stop();
 }

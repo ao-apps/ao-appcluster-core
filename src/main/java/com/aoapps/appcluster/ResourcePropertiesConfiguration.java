@@ -99,8 +99,8 @@ public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>,
 	}
 
 	@Override
-	abstract public Set<? extends ResourceNodePropertiesConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
+	public abstract Set<? extends ResourceNodePropertiesConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
 
 	@Override
-	abstract public R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;
+	public abstract R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;
 }

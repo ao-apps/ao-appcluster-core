@@ -29,7 +29,7 @@ import java.util.Collection;
  * 
  * @author  AO Industries, Inc.
  */
-abstract public class CronResource<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends Resource<R, RN> {
+public abstract class CronResource<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends Resource<R, RN> {
 
 	private final int synchronizeTimeout;
 	private final int testTimeout;
@@ -55,5 +55,5 @@ abstract public class CronResource<R extends CronResource<R, RN>, RN extends Cro
 	}
 
 	@Override
-	abstract protected CronResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
+	protected abstract CronResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
 }

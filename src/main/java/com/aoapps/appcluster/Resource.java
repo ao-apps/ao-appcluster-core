@@ -38,7 +38,7 @@ import org.xbill.DNS.Name;
  * 
  * @author  AO Industries, Inc.
  */
-abstract public class Resource<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
 	private final AppCluster cluster;
 	private final String id;
@@ -211,7 +211,7 @@ abstract public class Resource<R extends Resource<R, RN>, RN extends ResourceNod
 	/**
 	 * Gets if this resource allows multiple master servers.
 	 */
-	abstract public boolean getAllowMultiMaster();
+	public abstract boolean getAllowMultiMaster();
 
 	/**
 	 * Gets the replication type of this resource.
@@ -244,7 +244,7 @@ abstract public class Resource<R extends Resource<R, RN>, RN extends ResourceNod
 	 * Creates the resource synchronizer for this specific type of resource or <code>null</code>
 	 * if never performs any synchronization between these two nodes.
 	 */
-	abstract protected ResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
+	protected abstract ResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
 
 	/**
 	 * Gets the set of resource synchronizers.
