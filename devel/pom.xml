@@ -65,20 +65,20 @@ along with ao-appcluster-core.  If not, see <http://www.gnu.org/licenses />.
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/aoindustries/ao-appcluster-core.git</connection>
-		<developerConnection>scm:git:git@github.com:aoindustries/ao-appcluster-core.git</developerConnection>
-		<url>https://github.com/aoindustries/ao-appcluster-core</url>
+		<connection>scm:git:git://github.com/ao-apps/ao-appcluster-core.git</connection>
+		<developerConnection>scm:git:git@github.com:ao-apps/ao-appcluster-core.git</developerConnection>
+		<url>https://github.com/ao-apps/ao-appcluster-core</url>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/aoindustries/ao-appcluster-core/issues</url>
+		<url>https://github.com/ao-apps/ao-appcluster-core/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>GitHub Actions</system>
-		<url>https://github.com/aoindustries/ao-appcluster-core/actions</url>
+		<url>https://github.com/ao-apps/ao-appcluster-core/actions</url>
 	</ciManagement>
 
 	<repositories>
