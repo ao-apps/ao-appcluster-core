@@ -106,18 +106,21 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
 						fileMonitorThread = new Thread(
 							() -> {
 								final Thread currentThread = Thread.currentThread();
-								while(true) {
+								while(!currentThread.isInterrupted()) {
 									try {
 										try {
 											Thread.sleep(FILE_CHECK_INTERVAL);
 										} catch(InterruptedException exc) {
 											logger.log(Level.WARNING, null, exc);
+											// Restore the interrupted status
+											currentThread.interrupt();
+											break;
 										}
 										boolean notifyListeners = false;
 										synchronized(fileMonitorLock) {
-											if(currentThread!=fileMonitorThread) break;
+											if(currentThread != fileMonitorThread || currentThread.isInterrupted()) break;
 											long newLastModified = file.lastModified();
-											if(newLastModified!=fileLastModified) {
+											if(newLastModified != fileLastModified) {
 												// Reload the configuration
 												fileLastModified = newLastModified;
 												Properties newProperties = PropertiesUtils.loadFromFile(file);

@@ -251,9 +251,9 @@ public class ResourceDnsMonitor {
 								allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
 							}
 
-							while(true) {
+							while(!Thread.currentThread().isInterrupted()) {
 								synchronized(threadLock) {
-									if(currentThread!=thread) break;
+									if(currentThread != thread) break;
 								}
 								try {
 									long startTime = System.currentTimeMillis();
@@ -268,7 +268,11 @@ public class ResourceDnsMonitor {
 												nameserver,
 												executorService.submit(() -> {
 													try {
-														for(int attempt=0; attempt<DNS_ATTEMPTS; attempt++) {
+														for(
+															int attempt = 0;
+															attempt < DNS_ATTEMPTS && !Thread.currentThread().isInterrupted();
+															attempt++
+														) {
 															Lookup lookup = new Lookup(hostname, Type.A);
 															lookup.setCache(null);
 															lookup.setResolver(getSimpleResolver(nameserver));
@@ -638,6 +642,8 @@ public class ResourceDnsMonitor {
 									Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);
 								} catch(InterruptedException exc) {
 									logger.log(Level.WARNING, null, exc);
+									// Restore the interrupted status
+									Thread.currentThread().interrupt();
 								}
 							}
 						},
