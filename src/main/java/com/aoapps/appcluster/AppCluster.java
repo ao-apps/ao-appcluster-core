@@ -502,28 +502,22 @@ public class AppCluster {
 				}
 
 				// Start the executor services
-				executorService = Executors.newCachedThreadPool(
-					(Runnable r) -> {
-						Thread thread = new Thread(r, AppCluster.class.getName()+".executorService");
+				executorService = Executors.newCachedThreadPool(r -> {
+					Thread thread = new Thread(r, AppCluster.class.getName() + ".executorService");
+					thread.setPriority(EXECUTOR_THREAD_PRIORITY);
+					return thread;
+				});
+				synchronized(resourceListeners) {
+					resourceListenersOnDnsResultExecutorService = Executors.newSingleThreadExecutor(r -> {
+						Thread thread = new Thread(r, AppCluster.class.getName() + ".resourceListenersOnDnsResultExecutorService");
 						thread.setPriority(EXECUTOR_THREAD_PRIORITY);
 						return thread;
-					}
-				);
-				synchronized(resourceListeners) {
-					resourceListenersOnDnsResultExecutorService = Executors.newSingleThreadExecutor(
-						(Runnable r) -> {
-							Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnDnsResultExecutorService");
-							thread.setPriority(EXECUTOR_THREAD_PRIORITY);
-							return thread;
-						}
-					);
-					resourceListenersOnSynchronizationResultExecutorService = Executors.newSingleThreadExecutor(
-						(Runnable r) -> {
-							Thread thread = new Thread(r, AppCluster.class.getName()+".resourceListenersOnSynchronizationResultExecutorService");
-							thread.setPriority(EXECUTOR_THREAD_PRIORITY);
-							return thread;
-						}
-					);
+					});
+					resourceListenersOnSynchronizationResultExecutorService = Executors.newSingleThreadExecutor(r -> {
+						Thread thread = new Thread(r, AppCluster.class.getName() + ".resourceListenersOnSynchronizationResultExecutorService");
+						thread.setPriority(EXECUTOR_THREAD_PRIORITY);
+						return thread;
+					});
 				}
 
 				// Start per-resource monitoring and synchronization threads
