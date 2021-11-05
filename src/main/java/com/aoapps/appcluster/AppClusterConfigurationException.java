@@ -32,6 +32,7 @@ public class AppClusterConfigurationException extends AppClusterException {
 	private static final long serialVersionUID = 8980544839280152074L;
 
 	public AppClusterConfigurationException() {
+		// Do nothing
 	}
 
 	public AppClusterConfigurationException(String message) {
