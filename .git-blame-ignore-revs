@@ -1,2 +1,6 @@
 # Significant manual code formatting clean-up…
 dcfba37cc53ef22066d65ec2dd5f0104d388f567
+# Generics whitespace consistency
+9b59144a9df2638d6c899dfc84caaab4da7fc8dd
+# Added javadoc top section with contents equivalent to README.md.
+ca7477c0985b09a2f82abebd718ce6842439250b
