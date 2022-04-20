@@ -32,12 +32,12 @@ import java.sql.Timestamp;
  */
 public interface ResourceResult {
 
-	Timestamp getStartTime();
+  Timestamp getStartTime();
 
-	Timestamp getEndTime();
+  Timestamp getEndTime();
 
-	/**
-	 * Gets the ResourceStatus this result will cause.
-	 */
-	ResourceStatus getResourceStatus();
+  /**
+   * Gets the ResourceStatus this result will cause.
+   */
+  ResourceStatus getResourceStatus();
 }

@@ -38,27 +38,27 @@ import org.junit.Test;
  */
 public class PropertiesConfigurationTestTODO {
 
-	@Test
-	public void testRealWorldConfig() throws IOException, AppClusterConfigurationException, InterruptedException {
-		URL url = PropertiesConfigurationTestTODO.class.getResource("appcluster.properties");
-		AppClusterPropertiesConfiguration config;
-		if(url.getProtocol().equals("file")) {
-			config = new AppClusterPropertiesConfiguration(new File(url.getPath()));
-		} else {
-			Properties props = new Properties();
-			try (InputStream in = url.openStream()) {
-				props.load(in);
-			}
-			config = new AppClusterPropertiesConfiguration(props);
-		}
-		AppCluster cluster = new AppCluster(config);
-		cluster.addResourceListener(new LoggerResourceListener());
-		cluster.start();
-		try {
-			assertEquals("Production Cluster", cluster.getDisplay());
-			Thread.sleep(60000);
-		} finally {
-			cluster.stop();
-		}
-	}
+  @Test
+  public void testRealWorldConfig() throws IOException, AppClusterConfigurationException, InterruptedException {
+    URL url = PropertiesConfigurationTestTODO.class.getResource("appcluster.properties");
+    AppClusterPropertiesConfiguration config;
+    if (url.getProtocol().equals("file")) {
+      config = new AppClusterPropertiesConfiguration(new File(url.getPath()));
+    } else {
+      Properties props = new Properties();
+      try (InputStream in = url.openStream()) {
+        props.load(in);
+      }
+      config = new AppClusterPropertiesConfiguration(props);
+    }
+    AppCluster cluster = new AppCluster(config);
+    cluster.addResourceListener(new LoggerResourceListener());
+    cluster.start();
+    try {
+      assertEquals("Production Cluster", cluster.getDisplay());
+      Thread.sleep(60000);
+    } finally {
+      cluster.stop();
+    }
+  }
 }

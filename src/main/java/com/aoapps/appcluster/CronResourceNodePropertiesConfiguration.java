@@ -30,10 +30,10 @@ package com.aoapps.appcluster;
  */
 public abstract class CronResourceNodePropertiesConfiguration<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceNodePropertiesConfiguration<R, RN> implements CronResourceNodeConfiguration<R, RN> {
 
-	protected CronResourceNodePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String resourceId, String nodeId) throws AppClusterConfigurationException {
-		super(properties, resourceId, nodeId);
-	}
+  protected CronResourceNodePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String resourceId, String nodeId) throws AppClusterConfigurationException {
+    super(properties, resourceId, nodeId);
+  }
 
-	@Override
-	public abstract RN newResourceNode(Node node) throws AppClusterConfigurationException;
+  @Override
+  public abstract RN newResourceNode(Node node) throws AppClusterConfigurationException;
 }

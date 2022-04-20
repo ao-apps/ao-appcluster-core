@@ -33,31 +33,31 @@ import java.util.ResourceBundle;
  * @author  AO Industries, Inc.
  */
 public enum MasterDnsStatus {
-	UNKNOWN(ResourceStatus.UNKNOWN),
-	DISABLED(ResourceStatus.DISABLED),
-	STOPPED(ResourceStatus.STOPPED),
-	STARTING(ResourceStatus.STARTING),
-	CONSISTENT(ResourceStatus.HEALTHY),
-	WARNING(ResourceStatus.WARNING),
-	INCONSISTENT(ResourceStatus.INCONSISTENT);
+  UNKNOWN(ResourceStatus.UNKNOWN),
+  DISABLED(ResourceStatus.DISABLED),
+  STOPPED(ResourceStatus.STOPPED),
+  STARTING(ResourceStatus.STARTING),
+  CONSISTENT(ResourceStatus.HEALTHY),
+  WARNING(ResourceStatus.WARNING),
+  INCONSISTENT(ResourceStatus.INCONSISTENT);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, MasterDnsStatus.class);
+  private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, MasterDnsStatus.class);
 
-	private final ResourceStatus resourceStatus;
+  private final ResourceStatus resourceStatus;
 
-	private MasterDnsStatus(ResourceStatus resourceStatus) {
-		this.resourceStatus = resourceStatus;
-	}
+  private MasterDnsStatus(ResourceStatus resourceStatus) {
+    this.resourceStatus = resourceStatus;
+  }
 
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
+  @Override
+  public String toString() {
+    return RESOURCES.getMessage(name());
+  }
 
-	/**
-	 * Gets the resource status that this master DNS status will cause.
-	 */
-	public ResourceStatus getResourceStatus() {
-		return resourceStatus;
-	}
+  /**
+   * Gets the resource status that this master DNS status will cause.
+   */
+  public ResourceStatus getResourceStatus() {
+    return resourceStatus;
+  }
 }

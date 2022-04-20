@@ -35,49 +35,49 @@ import java.util.logging.Level;
  * @author  AO Industries, Inc.
  */
 public enum ResourceStatus {
-	// These are arranged from healthies to least healthy, each higher will override the previous.
-	UNKNOWN("background-color:#606060;", Level.FINE),
-	DISABLED("background-color:#808080;", Level.FINE),
-	STOPPED("background-color:#c0c0c0;", Level.FINE),
-	HEALTHY("", Level.INFO),
-	STARTING("background-color:#e0e0e0;", Level.INFO),
-	WARNING("background-color:#ff8080;", Level.WARNING),
-	ERROR("background-color:#ff4040;", Level.SEVERE),
-	INCONSISTENT("background-color:#ff0000;", Level.SEVERE);
+  // These are arranged from healthies to least healthy, each higher will override the previous.
+  UNKNOWN("background-color:#606060;", Level.FINE),
+  DISABLED("background-color:#808080;", Level.FINE),
+  STOPPED("background-color:#c0c0c0;", Level.FINE),
+  HEALTHY("", Level.INFO),
+  STARTING("background-color:#e0e0e0;", Level.INFO),
+  WARNING("background-color:#ff8080;", Level.WARNING),
+  ERROR("background-color:#ff4040;", Level.SEVERE),
+  INCONSISTENT("background-color:#ff0000;", Level.SEVERE);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, ResourceStatus.class);
+  private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, ResourceStatus.class);
 
-	private final String cssStyle;
-	private final Level logLevel;
+  private final String cssStyle;
+  private final Level logLevel;
 
-	private ResourceStatus(String cssStyle, Level logLevel) {
-		this.cssStyle = cssStyle;
-		this.logLevel = logLevel;
-	}
+  private ResourceStatus(String cssStyle, Level logLevel) {
+    this.cssStyle = cssStyle;
+    this.logLevel = logLevel;
+  }
 
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
+  @Override
+  public String toString() {
+    return RESOURCES.getMessage(name());
+  }
 
-	/**
-	 * JavaBeans compatibility.
-	 */
-	public String getName() {
-		return name();
-	}
+  /**
+   * JavaBeans compatibility.
+   */
+  public String getName() {
+    return name();
+  }
 
-	/**
-	 * Gets the CSS style to use for this status or "" for no specific style requirement.
-	 */
-	public String getCssStyle() {
-		return cssStyle;
-	}
+  /**
+   * Gets the CSS style to use for this status or "" for no specific style requirement.
+   */
+  public String getCssStyle() {
+    return cssStyle;
+  }
 
-	/**
-	 * Gets the log level recommended for messages associated with this status.
-	 */
-	public Level getLogLevel() {
-		return logLevel;
-	}
+  /**
+   * Gets the log level recommended for messages associated with this status.
+   */
+  public Level getLogLevel() {
+    return logLevel;
+  }
 }

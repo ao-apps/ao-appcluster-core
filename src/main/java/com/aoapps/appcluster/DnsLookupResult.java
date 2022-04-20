@@ -34,65 +34,67 @@ import org.xbill.DNS.Name;
  */
 public class DnsLookupResult {
 
-	private final Name name;
-	private final DnsLookupStatus status;
-	private final SortedSet<String> statusMessages;
-	private final SortedSet<String> addresses;
+  private final Name name;
+  private final DnsLookupStatus status;
+  private final SortedSet<String> statusMessages;
+  private final SortedSet<String> addresses;
 
-	/**
-	 * Sorts the addresses as they are added.
-	 */
-	DnsLookupResult(
-		Name name,
-		DnsLookupStatus status,
-		Collection<String> statusMessages,
-		String[] addresses
-	) {
-		this.name = name;
-		this.status = status;
-		this.statusMessages = ResourceDnsResult.getUnmodifiableSortedSet(statusMessages, ResourceDnsResult.defaultLocaleCollator);
-		this.addresses = ResourceDnsResult.getUnmodifiableSortedSet(addresses, null); // Sorts lexically for speed since not human readable
-		assert status==DnsLookupStatus.SUCCESSFUL || status==DnsLookupStatus.WARNING ? !this.addresses.isEmpty() : this.addresses.isEmpty();
-	}
+  /**
+   * Sorts the addresses as they are added.
+   */
+  DnsLookupResult(
+    Name name,
+    DnsLookupStatus status,
+    Collection<String> statusMessages,
+    String[] addresses
+  ) {
+    this.name = name;
+    this.status = status;
+    this.statusMessages = ResourceDnsResult.getUnmodifiableSortedSet(statusMessages, ResourceDnsResult.defaultLocaleCollator);
+    this.addresses = ResourceDnsResult.getUnmodifiableSortedSet(addresses, null); // Sorts lexically for speed since not human readable
+    assert status == DnsLookupStatus.SUCCESSFUL || status == DnsLookupStatus.WARNING ? !this.addresses.isEmpty() : this.addresses.isEmpty();
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if(!(o instanceof DnsLookupResult)) return false;
-		DnsLookupResult other = (DnsLookupResult)o;
-		return
-			name.equals(other.name)
-			&& status==other.status
-			&& statusMessages.equals(other.statusMessages)
-			&& addresses.equals(other.addresses)
-		;
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof DnsLookupResult)) {
+      return false;
+    }
+    DnsLookupResult other = (DnsLookupResult)o;
+    return
+      name.equals(other.name)
+      && status == other.status
+      && statusMessages.equals(other.statusMessages)
+      && addresses.equals(other.addresses)
+    ;
+  }
 
-	@Override
-	public int hashCode() {
-		return name.hashCode() * 31 + status.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return name.hashCode() * 31 + status.hashCode();
+  }
 
-	public Name getName() {
-		return name;
-	}
+  public Name getName() {
+    return name;
+  }
 
-	public DnsLookupStatus getStatus() {
-		return status;
-	}
+  public DnsLookupStatus getStatus() {
+    return status;
+  }
 
-	/**
-	 * Gets the status messages for this lookup.
-	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public SortedSet<String> getStatusMessages() {
-		return statusMessages;
-	}
+  /**
+   * Gets the status messages for this lookup.
+   */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
+  public SortedSet<String> getStatusMessages() {
+    return statusMessages;
+  }
 
-	/**
-	 * Only relevant for SUCCESSFUL lookups.
-	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public SortedSet<String> getAddresses() {
-		return addresses;
-	}
+  /**
+   * Only relevant for SUCCESSFUL lookups.
+   */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
+  public SortedSet<String> getAddresses() {
+    return addresses;
+  }
 }

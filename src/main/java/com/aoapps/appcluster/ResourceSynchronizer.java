@@ -42,75 +42,81 @@ package com.aoapps.appcluster;
  */
 public abstract class ResourceSynchronizer<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
-	protected final RN localResourceNode;
-	protected final RN remoteResourceNode;
+  protected final RN localResourceNode;
+  protected final RN remoteResourceNode;
 
-	protected ResourceSynchronizer(RN localResourceNode, RN remoteResourceNode) {
-		R resource = localResourceNode.getResource();
-		if(resource != remoteResourceNode.getResource()) throw new IllegalArgumentException("localResourceNode.resource != remoteResourceNode.resource");
-		if(!localResourceNode.getNode().equals(resource.getCluster().getLocalNode())) throw new IllegalArgumentException("localResourceNode.node != localResourceNode.resource.cluster.localNode");
-		this.localResourceNode = localResourceNode;
-		this.remoteResourceNode = remoteResourceNode;
-	}
+  protected ResourceSynchronizer(RN localResourceNode, RN remoteResourceNode) {
+    R resource = localResourceNode.getResource();
+    if (resource != remoteResourceNode.getResource()) {
+      throw new IllegalArgumentException("localResourceNode.resource != remoteResourceNode.resource");
+    }
+    if (!localResourceNode.getNode().equals(resource.getCluster().getLocalNode())) {
+      throw new IllegalArgumentException("localResourceNode.node != localResourceNode.resource.cluster.localNode");
+    }
+    this.localResourceNode = localResourceNode;
+    this.remoteResourceNode = remoteResourceNode;
+  }
 
-	@Override
-	public String toString() {
-		return localResourceNode.getResource()+": "+localResourceNode.getNode()+" -> "+remoteResourceNode.getNode();
-	}
+  @Override
+  public String toString() {
+    return localResourceNode.getResource()+": "+localResourceNode.getNode()+" -> "+remoteResourceNode.getNode();
+  }
 
-	/**
-	 * Gets the local resource node.
-	 */
-	public RN getLocalResourceNode() {
-		return localResourceNode;
-	}
+  /**
+   * Gets the local resource node.
+   */
+  public RN getLocalResourceNode() {
+    return localResourceNode;
+  }
 
-	/**
-	 * Gets the remote resource node.
-	 */
-	public RN getRemoteResourceNode() {
-		return remoteResourceNode;
-	}
+  /**
+   * Gets the remote resource node.
+   */
+  public RN getRemoteResourceNode() {
+    return remoteResourceNode;
+  }
 
-	/**
-	 * Gets the current synchronization state.
-	 */
-	public abstract ResourceSynchronizerState getState();
+  /**
+   * Gets the current synchronization state.
+   */
+  public abstract ResourceSynchronizerState getState();
 
-	/**
-	 * Gets a description of the current state or <code>null</code> for no
-	 * specific message.
-	 */
-	public abstract String getStateMessage();
+  /**
+   * Gets a description of the current state or <code>null</code> for no
+   * specific message.
+   */
+  public abstract String getStateMessage();
 
-	/**
-	 * Schedules an immediate synchronization if possible.
-	 */
-	public abstract void synchronizeNow(ResourceSynchronizationMode mode);
+  /**
+   * Schedules an immediate synchronization if possible.
+   */
+  public abstract void synchronizeNow(ResourceSynchronizationMode mode);
 
-	/**
-	 * Gets the last synchronization result or <code>null</code> if unavailable.
-	 */
-	public abstract ResourceSynchronizationResult getLastResult();
+  /**
+   * Gets the last synchronization result or <code>null</code> if unavailable.
+   */
+  public abstract ResourceSynchronizationResult getLastResult();
 
-	/**
-	 * Gets the synchronization result status.  Considered as STOPPED/DISABLED/STARTING if last result is not available.
-	 */
-	public ResourceStatus getResultStatus() {
-		ResourceSynchronizationResult result = getLastResult();
-		if(result!=null) return result.getResourceStatus();
-		// No result, base off synchronizer state for STOPPED/DISABLED/STARTING
-		ResourceStatus status = getState().getResourceStatus();
-		return status==ResourceStatus.HEALTHY ? ResourceStatus.STARTING : status;
-	}
+  /**
+   * Gets the synchronization result status.  Considered as STOPPED/DISABLED/STARTING if last result is not available.
+   */
+  public ResourceStatus getResultStatus() {
+    ResourceSynchronizationResult result = getLastResult();
+    if (result != null) {
+      return result.getResourceStatus();
+    }
+    // No result, base off synchronizer state for STOPPED/DISABLED/STARTING
+    ResourceStatus status = getState().getResourceStatus();
+    return status == ResourceStatus.HEALTHY ? ResourceStatus.STARTING : status;
+  }
 
-	/**
-	 * Starts the synchronizer.
-	 */
-	protected abstract void start();
+  /**
+   * Starts the synchronizer.
+   */
+  protected abstract void start();
 
-	/**
-	 * Stops the synchronizer.
-	 */
-	protected abstract void stop();
+  /**
+   * Stops the synchronizer.
+   */
+  protected abstract void stop();
 }

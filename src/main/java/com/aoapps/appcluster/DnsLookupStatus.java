@@ -34,31 +34,31 @@ import java.util.ResourceBundle;
  * @author  AO Industries, Inc.
  */
 public enum DnsLookupStatus {
-	SUCCESSFUL(ResourceStatus.HEALTHY),
-	WARNING(ResourceStatus.WARNING),
-	TRY_AGAIN(ResourceStatus.WARNING),
-	HOST_NOT_FOUND(ResourceStatus.ERROR),
-	TYPE_NOT_FOUND(ResourceStatus.ERROR),
-	UNRECOVERABLE(ResourceStatus.ERROR),
-	ERROR(ResourceStatus.ERROR);
+  SUCCESSFUL(ResourceStatus.HEALTHY),
+  WARNING(ResourceStatus.WARNING),
+  TRY_AGAIN(ResourceStatus.WARNING),
+  HOST_NOT_FOUND(ResourceStatus.ERROR),
+  TYPE_NOT_FOUND(ResourceStatus.ERROR),
+  UNRECOVERABLE(ResourceStatus.ERROR),
+  ERROR(ResourceStatus.ERROR);
 
-	private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, DnsLookupStatus.class);
+  private static final Resources RESOURCES = Resources.getResources(ResourceBundle::getBundle, DnsLookupStatus.class);
 
-	private final ResourceStatus resourceStatus;
+  private final ResourceStatus resourceStatus;
 
-	private DnsLookupStatus(ResourceStatus resourceStatus) {
-		this.resourceStatus = resourceStatus;
-	}
+  private DnsLookupStatus(ResourceStatus resourceStatus) {
+    this.resourceStatus = resourceStatus;
+  }
 
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
+  @Override
+  public String toString() {
+    return RESOURCES.getMessage(name());
+  }
 
-	/**
-	 * Gets the resource status that this DNS lookup status will cause.
-	 */
-	public ResourceStatus getResourceStatus() {
-		return resourceStatus;
-	}
+  /**
+   * Gets the resource status that this DNS lookup status will cause.
+   */
+  public ResourceStatus getResourceStatus() {
+    return resourceStatus;
+  }
 }

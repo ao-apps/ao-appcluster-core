@@ -34,52 +34,52 @@ import org.xbill.DNS.Name;
  */
 public interface ResourceConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
 
-	@Override
-	String toString();
+  @Override
+  String toString();
 
-	@Override
-	boolean equals(Object o);
+  @Override
+  boolean equals(Object o);
 
-	@Override
-	int hashCode();
+  @Override
+  int hashCode();
 
-	/**
-	 * @see Resource#getId()
-	 */
-	String getId();
+  /**
+   * @see Resource#getId()
+   */
+  String getId();
 
-	/**
-	 * @see Resource#isEnabled()
-	 */
-	boolean isEnabled();
+  /**
+   * @see Resource#isEnabled()
+   */
+  boolean isEnabled();
 
-	/**
-	 * @see Resource#getDisplay()
-	 */
-	String getDisplay();
+  /**
+   * @see Resource#getDisplay()
+   */
+  String getDisplay();
 
-	/**
-	 * @see Resource#getMasterRecords()
-	 */
-	Set<? extends Name> getMasterRecords();
+  /**
+   * @see Resource#getMasterRecords()
+   */
+  Set<? extends Name> getMasterRecords();
 
-	/**
-	 * @see Resource#getMasterRecordsTtl()
-	 */
-	int getMasterRecordsTtl();
+  /**
+   * @see Resource#getMasterRecordsTtl()
+   */
+  int getMasterRecordsTtl();
 
-	/**
-	 * @see Resource#getType()
-	 */
-	String getType();
+  /**
+   * @see Resource#getType()
+   */
+  String getType();
 
-	/**
-	 * Gets the source of per-node resource configurations.
-	 */
-	Set<? extends ResourceNodeConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
+  /**
+   * Gets the source of per-node resource configurations.
+   */
+  Set<? extends ResourceNodeConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
 
-	/**
-	 * Creates a new resource from this configuration.
-	 */
-	R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;
+  /**
+   * Creates a new resource from this configuration.
+   */
+  R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;
 }

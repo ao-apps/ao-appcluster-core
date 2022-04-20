@@ -35,50 +35,50 @@ import org.xbill.DNS.Name;
  */
 public class ResourceNodeDnsResult {
 
-	private final ResourceNode<?, ?> resourceNode;
-	private final Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups;
-	private final NodeDnsStatus nodeStatus;
-	private final SortedSet<String> nodeStatusMessages;
+  private final ResourceNode<?, ?> resourceNode;
+  private final Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups;
+  private final NodeDnsStatus nodeStatus;
+  private final SortedSet<String> nodeStatusMessages;
 
-	ResourceNodeDnsResult(
-		ResourceNode<?, ?> resourceNode,
-		Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
-		NodeDnsStatus nodeStatus,
-		Collection<String> nodeStatusMessages
-	) {
-		this.resourceNode = resourceNode;
-		this.nodeRecordLookups = nodeRecordLookups==null ? null : ResourceDnsResult.getUnmodifiableDnsLookupResults(nodeRecordLookups, resourceNode.getNodeRecords(), resourceNode.getResource().getEnabledNameservers());
-		this.nodeStatus = nodeStatus;
-		this.nodeStatusMessages = ResourceDnsResult.getUnmodifiableSortedSet(nodeStatusMessages, ResourceDnsResult.defaultLocaleCollator);
-	}
+  ResourceNodeDnsResult(
+    ResourceNode<?, ?> resourceNode,
+    Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
+    NodeDnsStatus nodeStatus,
+    Collection<String> nodeStatusMessages
+  ) {
+    this.resourceNode = resourceNode;
+    this.nodeRecordLookups = nodeRecordLookups == null ? null : ResourceDnsResult.getUnmodifiableDnsLookupResults(nodeRecordLookups, resourceNode.getNodeRecords(), resourceNode.getResource().getEnabledNameservers());
+    this.nodeStatus = nodeStatus;
+    this.nodeStatusMessages = ResourceDnsResult.getUnmodifiableSortedSet(nodeStatusMessages, ResourceDnsResult.defaultLocaleCollator);
+  }
 
-	public ResourceNode<?, ?> getResourceNode() {
-		return resourceNode;
-	}
+  public ResourceNode<?, ?> getResourceNode() {
+    return resourceNode;
+  }
 
-	/**
-	 * Gets the mapping of all nodeRecord DNS lookups in the form nodeRecord-&gt;enabledNameserver-&gt;result.
-	 * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
-	 * Otherwise, it contains an entry for every nodeRecord querying every enabled nameserver.
-	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getNodeRecordLookups() {
-		return nodeRecordLookups;
-	}
+  /**
+   * Gets the mapping of all nodeRecord DNS lookups in the form nodeRecord-&gt;enabledNameserver-&gt;result.
+   * If no lookups have been performed, such as during STOPPED or UNKNOWN state, returns <code>null</code>.
+   * Otherwise, it contains an entry for every nodeRecord querying every enabled nameserver.
+   */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
+  public Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getNodeRecordLookups() {
+    return nodeRecordLookups;
+  }
 
-	/**
-	 * Gets the status of the node.
-	 */
-	public NodeDnsStatus getNodeStatus() {
-		return nodeStatus;
-	}
+  /**
+   * Gets the status of the node.
+   */
+  public NodeDnsStatus getNodeStatus() {
+    return nodeStatus;
+  }
 
-	/**
-	 * Gets the node status messages.
-	 * If no message, returns an empty set.
-	 */
-	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public SortedSet<String> getNodeStatusMessages() {
-		return nodeStatusMessages;
-	}
+  /**
+   * Gets the node status messages.
+   * If no message, returns an empty set.
+   */
+  @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
+  public SortedSet<String> getNodeStatusMessages() {
+    return nodeStatusMessages;
+  }
 }

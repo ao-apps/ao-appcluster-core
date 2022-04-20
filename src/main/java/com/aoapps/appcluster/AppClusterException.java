@@ -30,27 +30,27 @@ import com.aoapps.lang.Throwables;
  */
 public class AppClusterException extends Exception {
 
-	private static final long serialVersionUID = 4796418579890653703L;
+  private static final long serialVersionUID = 4796418579890653703L;
 
-	public AppClusterException() {
-		// Do nothing
-	}
+  public AppClusterException() {
+    // Do nothing
+  }
 
-	public AppClusterException(String message) {
-		super(message);
-	}
+  public AppClusterException(String message) {
+    super(message);
+  }
 
-	public AppClusterException(Throwable cause) {
-		super(cause);
-	}
+  public AppClusterException(Throwable cause) {
+    super(cause);
+  }
 
-	public AppClusterException(String message, Throwable cause) {
-		super(message, cause);
-	}
+  public AppClusterException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	static {
-		Throwables.registerSurrogateFactory(AppClusterException.class, (template, cause) ->
-			new AppClusterException(template.getMessage(), cause)
-		);
-	}
+  static {
+    Throwables.registerSurrogateFactory(AppClusterException.class, (template, cause) ->
+      new AppClusterException(template.getMessage(), cause)
+    );
+  }
 }

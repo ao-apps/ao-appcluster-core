@@ -33,21 +33,21 @@ import java.util.ResourceBundle;
  */
 public enum ResourceSynchronizationMode {
 
-	SYNCHRONIZE,
-	TEST_ONLY;
+  SYNCHRONIZE,
+  TEST_ONLY;
 
-	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
+  private static final Resources RESOURCES =
+    Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
 
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
+  @Override
+  public String toString() {
+    return RESOURCES.getMessage(name());
+  }
 
-	/**
-	 * JavaBeans compatibility.
-	 */
-	public String getName() {
-		return name();
-	}
+  /**
+   * JavaBeans compatibility.
+   */
+  public String getName() {
+    return name();
+  }
 }

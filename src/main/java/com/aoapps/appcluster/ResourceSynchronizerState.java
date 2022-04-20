@@ -34,46 +34,46 @@ import java.util.ResourceBundle;
  * @author  AO Industries, Inc.
  */
 public enum ResourceSynchronizerState {
-	DISABLED(ResourceStatus.DISABLED, ResourceStatus.DISABLED.getCssStyle()),
-	STOPPED(ResourceStatus.STOPPED, ResourceStatus.STOPPED.getCssStyle()),
-	SLEEPING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle()),
-	TESTING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#00ff00;"),
-	SYNCHRONIZING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#8080ff;");
+  DISABLED(ResourceStatus.DISABLED, ResourceStatus.DISABLED.getCssStyle()),
+  STOPPED(ResourceStatus.STOPPED, ResourceStatus.STOPPED.getCssStyle()),
+  SLEEPING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle()),
+  TESTING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#00ff00;"),
+  SYNCHRONIZING(ResourceStatus.HEALTHY, ResourceStatus.HEALTHY.getCssStyle() + "background-color:#8080ff;");
 
-	private static final Resources RESOURCES =
-		Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizerState.class);
+  private static final Resources RESOURCES =
+    Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizerState.class);
 
-	private final ResourceStatus resourceStatus;
-	private final String cssStyle;
+  private final ResourceStatus resourceStatus;
+  private final String cssStyle;
 
-	private ResourceSynchronizerState(ResourceStatus resourceStatus, String cssStyle) {
-		this.resourceStatus = resourceStatus;
-		this.cssStyle = cssStyle;
-	}
+  private ResourceSynchronizerState(ResourceStatus resourceStatus, String cssStyle) {
+    this.resourceStatus = resourceStatus;
+    this.cssStyle = cssStyle;
+  }
 
-	@Override
-	public String toString() {
-		return RESOURCES.getMessage(name());
-	}
+  @Override
+  public String toString() {
+    return RESOURCES.getMessage(name());
+  }
 
-	/**
-	 * Gets the resource status that this synchronization status will cause.
-	 */
-	public ResourceStatus getResourceStatus() {
-		return resourceStatus;
-	}
+  /**
+   * Gets the resource status that this synchronization status will cause.
+   */
+  public ResourceStatus getResourceStatus() {
+    return resourceStatus;
+  }
 
-	/**
-	 * JavaBeans compatibility.
-	 */
-	public String getName() {
-		return name();
-	}
+  /**
+   * JavaBeans compatibility.
+   */
+  public String getName() {
+    return name();
+  }
 
-	/**
-	 * Gets the CSS style to use for this status or "" for no specific style requirement.
-	 */
-	public String getCssStyle() {
-		return cssStyle;
-	}
+  /**
+   * Gets the CSS style to use for this status or "" for no specific style requirement.
+   */
+  public String getCssStyle() {
+    return cssStyle;
+  }
 }

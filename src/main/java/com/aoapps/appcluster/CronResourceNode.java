@@ -30,7 +30,7 @@ package com.aoapps.appcluster;
  */
 public abstract class CronResourceNode<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceNode<R, RN> {
 
-	protected CronResourceNode(Node node, CronResourceNodeConfiguration<R, RN> resourceNodeConfiguration) {
-		super(node, resourceNodeConfiguration);
-	}
+  protected CronResourceNode(Node node, CronResourceNodeConfiguration<R, RN> resourceNodeConfiguration) {
+    super(node, resourceNodeConfiguration);
+  }
 }

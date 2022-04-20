@@ -33,42 +33,42 @@ import org.xbill.DNS.Name;
  */
 public interface NodeConfiguration {
 
-	@Override
-	String toString();
+  @Override
+  String toString();
 
-	@Override
-	boolean equals(Object o);
+  @Override
+  boolean equals(Object o);
 
-	@Override
-	int hashCode();
+  @Override
+  int hashCode();
 
-	/**
-	 * @see Node#getId()
-	 */
-	String getId();
+  /**
+   * @see Node#getId()
+   */
+  String getId();
 
-	/**
-	 * @see Node#isEnabled()
-	 */
-	boolean isEnabled();
+  /**
+   * @see Node#isEnabled()
+   */
+  boolean isEnabled();
 
-	/**
-	 * @see Node#getDisplay()
-	 */
-	String getDisplay();
+  /**
+   * @see Node#getDisplay()
+   */
+  String getDisplay();
 
-	/**
-	 * @see Node#getHostname()
-	 */
-	Name getHostname();
+  /**
+   * @see Node#getHostname()
+   */
+  Name getHostname();
 
-	/**
-	 * @see Node#getUsername()
-	 */
-	String getUsername();
+  /**
+   * @see Node#getUsername()
+   */
+  String getUsername();
 
-	/**
-	 * @see Node#getNameservers()
-	 */
-	Set<? extends Name> getNameservers();
+  /**
+   * @see Node#getNameservers()
+   */
+  Set<? extends Name> getNameservers();
 }

@@ -32,43 +32,43 @@ import java.util.Set;
  */
 public interface AppClusterConfiguration {
 
-	/**
-	 * Called as the AppCluster starts, before any configuration values are accessed or listeners are added.
-	 */
-	void start() throws AppClusterConfigurationException;
+  /**
+   * Called as the AppCluster starts, before any configuration values are accessed or listeners are added.
+   */
+  void start() throws AppClusterConfigurationException;
 
-	/**
-	 * Called as the AppCluster stops, after all configuration values have been accessed and all listeners have been removed.
-	 */
-	void stop();
+  /**
+   * Called as the AppCluster stops, after all configuration values have been accessed and all listeners have been removed.
+   */
+  void stop();
 
-	/**
-	 * Will be called when the configuration has changed in any way.
-	 */
-	void addConfigurationListener(AppClusterConfigurationListener listener);
+  /**
+   * Will be called when the configuration has changed in any way.
+   */
+  void addConfigurationListener(AppClusterConfigurationListener listener);
 
-	/**
-	 * Removes listener of configuration changes.
-	 */
-	void removeConfigurationListener(AppClusterConfigurationListener listener);
+  /**
+   * Removes listener of configuration changes.
+   */
+  void removeConfigurationListener(AppClusterConfigurationListener listener);
 
-	/**
-	 * @see  AppCluster#isEnabled()
-	 */
-	boolean isEnabled() throws AppClusterConfigurationException;
+  /**
+   * @see  AppCluster#isEnabled()
+   */
+  boolean isEnabled() throws AppClusterConfigurationException;
 
-	/**
-	 * @see  AppCluster#getDisplay()
-	 */
-	String getDisplay() throws AppClusterConfigurationException;
+  /**
+   * @see  AppCluster#getDisplay()
+   */
+  String getDisplay() throws AppClusterConfigurationException;
 
-	/**
-	 * Gets the set of nodes for the cluster.
-	 */
-	Set<? extends NodeConfiguration> getNodeConfigurations() throws AppClusterConfigurationException;
+  /**
+   * Gets the set of nodes for the cluster.
+   */
+  Set<? extends NodeConfiguration> getNodeConfigurations() throws AppClusterConfigurationException;
 
-	/**
-	 * Gets the set of resources for the cluster.
-	 */
-	Set<? extends ResourceConfiguration<?, ?>> getResourceConfigurations() throws AppClusterConfigurationException;
+  /**
+   * Gets the set of resources for the cluster.
+   */
+  Set<? extends ResourceConfiguration<?, ?>> getResourceConfigurations() throws AppClusterConfigurationException;
 }

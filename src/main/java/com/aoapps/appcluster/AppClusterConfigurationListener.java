@@ -28,5 +28,5 @@ package com.aoapps.appcluster;
  */
 @FunctionalInterface
 public interface AppClusterConfigurationListener {
-	void onConfigurationChanged();
+  void onConfigurationChanged();
 }
