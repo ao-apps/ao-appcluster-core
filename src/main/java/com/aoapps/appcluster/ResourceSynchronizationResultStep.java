@@ -58,13 +58,13 @@ public class ResourceSynchronizationResultStep implements ResourceResult {
    * @param error <code>null</code> or empty is converted to empty list
    */
   public ResourceSynchronizationResultStep(
-    long startTime,
-    long endTime,
-    ResourceStatus resourceStatus,
-    String description,
-    CharSequence output,
-    CharSequence warning,
-    CharSequence error
+      long startTime,
+      long endTime,
+      ResourceStatus resourceStatus,
+      String description,
+      CharSequence output,
+      CharSequence warning,
+      CharSequence error
   ) {
     this.startTime = startTime;
     this.endTime = endTime;
@@ -85,13 +85,13 @@ public class ResourceSynchronizationResultStep implements ResourceResult {
    * @param errors <code>null</code> is converted to empty list and a defensive copy is made
    */
   public ResourceSynchronizationResultStep(
-    long startTime,
-    long endTime,
-    ResourceStatus resourceStatus,
-    String description,
-    Collection<String> outputs,
-    Collection<String> warnings,
-    Collection<String> errors
+      long startTime,
+      long endTime,
+      ResourceStatus resourceStatus,
+      String description,
+      Collection<String> outputs,
+      Collection<String> warnings,
+      Collection<String> errors
   ) {
     this.startTime = startTime;
     this.endTime = endTime;

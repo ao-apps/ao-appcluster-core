@@ -45,11 +45,11 @@ public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>,
   protected ResourcePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException {
     this.properties = properties;
     this.id = id;
-    this.enabled = properties.getBoolean("appcluster.resource."+id+".enabled");
-    this.display = properties.getString("appcluster.resource."+id+".display", true);
-    this.masterRecords = properties.getUniqueNames("appcluster.resource."+id+".masterRecords");
-    this.masterRecordsTtl = properties.getInt("appcluster.resource."+id+".masterRecordsTtl");
-    this.type = properties.getString("appcluster.resource."+id+".type", true);
+    this.enabled = properties.getBoolean("appcluster.resource." + id + ".enabled");
+    this.display = properties.getString("appcluster.resource." + id + ".display", true);
+    this.masterRecords = properties.getUniqueNames("appcluster.resource." + id + ".masterRecords");
+    this.masterRecordsTtl = properties.getInt("appcluster.resource." + id + ".masterRecordsTtl");
+    this.type = properties.getString("appcluster.resource." + id + ".type", true);
   }
 
   @Override
@@ -62,7 +62,7 @@ public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>,
     if (!(o instanceof ResourceConfiguration)) {
       return false;
     }
-    return id.equals(((ResourceConfiguration)o).getId());
+    return id.equals(((ResourceConfiguration) o).getId());
   }
 
   @Override

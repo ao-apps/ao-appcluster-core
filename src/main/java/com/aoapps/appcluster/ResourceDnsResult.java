@@ -47,14 +47,14 @@ public class ResourceDnsResult implements ResourceResult {
    * The warning is 10 seconds after the longest check time including timeouts.
    */
   public static final int WARNING_SECONDS =
-    10 + (int)(
-      (
-        ResourceDnsMonitor.DNS_CHECK_INTERVAL.toMillis()
-        + ResourceDnsMonitor.DNS_ATTEMPTS * ResourceDnsMonitor.DNS_CHECK_TIMEOUT.toMillis()
-      ) / 1000
-    );
+      10 + (int) (
+          (
+              ResourceDnsMonitor.DNS_CHECK_INTERVAL.toMillis()
+                  + ResourceDnsMonitor.DNS_ATTEMPTS * ResourceDnsMonitor.DNS_CHECK_TIMEOUT.toMillis()
+          ) / 1000
+      );
 
-  public static final int ERROR_SECONDS = WARNING_SECONDS + (int)ResourceDnsMonitor.DNS_CHECK_INTERVAL.getSeconds();
+  public static final int ERROR_SECONDS = WARNING_SECONDS + (int) ResourceDnsMonitor.DNS_CHECK_INTERVAL.getSeconds();
 
   static final Comparator<Object> defaultLocaleCollator = Collator.getInstance();
 
@@ -118,13 +118,13 @@ public class ResourceDnsResult implements ResourceResult {
   private final Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResults;
 
   ResourceDnsResult(
-    Resource<?, ?> resource,
-    long startTime,
-    long endTime,
-    Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> masterRecordLookups,
-    MasterDnsStatus masterStatus,
-    Collection<String> masterStatusMessages,
-    Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResults
+      Resource<?, ?> resource,
+      long startTime,
+      long endTime,
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> masterRecordLookups,
+      MasterDnsStatus masterStatus,
+      Collection<String> masterStatusMessages,
+      Map<? extends Node, ? extends ResourceNodeDnsResult> nodeResults
   ) {
     this.startTime = startTime;
     this.endTime = endTime;
@@ -191,11 +191,11 @@ public class ResourceDnsResult implements ResourceResult {
       return ResourceStatus.UNKNOWN;
     }
     // Error if result more than ERROR_SECONDS seconds ago
-    if (secondsSince<-ERROR_SECONDS || secondsSince>ERROR_SECONDS) {
+    if (secondsSince < -ERROR_SECONDS || secondsSince > ERROR_SECONDS) {
       return ResourceStatus.ERROR;
     }
     // Warning if result more than WARNING_SECONDS seconds ago
-    if (secondsSince<-WARNING_SECONDS || secondsSince>WARNING_SECONDS) {
+    if (secondsSince < -WARNING_SECONDS || secondsSince > WARNING_SECONDS) {
       return ResourceStatus.WARNING;
     }
     return ResourceStatus.HEALTHY;

@@ -64,11 +64,11 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
     this.masterRecordsTtl = resourceConfiguration.getMasterRecordsTtl();
     this.type = resourceConfiguration.getType();
     @SuppressWarnings("unchecked")
-    R rThis = (R)this;
+    R rThis = (R) this;
     Set<RN> newResourceNodes = AoCollections.newLinkedHashSet(resourceNodes.size());
     for (ResourceNode<?, ?> resourceNode : resourceNodes) {
       @SuppressWarnings("unchecked")
-      RN rn = (RN)resourceNode;
+      RN rn = (RN) resourceNode;
       rn.init(rThis);
       newResourceNodes.add(rn);
     }
@@ -126,7 +126,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
     if (!(o instanceof Resource)) {
       return false;
     }
-    return id.equals(((Resource)o).getId());
+    return id.equals(((Resource) o).getId());
   }
 
   @Override

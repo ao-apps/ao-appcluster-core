@@ -44,11 +44,11 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
   protected NodePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException {
     this.properties = properties;
     this.id = id;
-    this.enabled = properties.getBoolean("appcluster.node."+id+".enabled");
-    this.display = properties.getString("appcluster.node."+id+".display", true);
-    this.hostname = properties.getName("appcluster.node."+id+".hostname");
-    this.username = properties.getString("appcluster.node."+id+".username", true);
-    this.nameservers = properties.getUniqueNames("appcluster.node."+id+".nameservers");
+    this.enabled = properties.getBoolean("appcluster.node." + id + ".enabled");
+    this.display = properties.getString("appcluster.node." + id + ".display", true);
+    this.hostname = properties.getName("appcluster.node." + id + ".hostname");
+    this.username = properties.getString("appcluster.node." + id + ".username", true);
+    this.nameservers = properties.getUniqueNames("appcluster.node." + id + ".nameservers");
   }
 
   @Override
@@ -61,7 +61,7 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
     if (!(o instanceof NodeConfiguration)) {
       return false;
     }
-    return id.equals(((NodeConfiguration)o).getId());
+    return id.equals(((NodeConfiguration) o).getId());
   }
 
   @Override

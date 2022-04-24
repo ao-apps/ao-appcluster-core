@@ -55,7 +55,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
   private static final Logger logger = Logger.getLogger(AppClusterPropertiesConfiguration.class.getName());
 
   private static final Resources RESOURCES =
-    Resources.getResources(ResourceBundle::getBundle, AppClusterPropertiesConfiguration.class);
+      Resources.getResources(ResourceBundle::getBundle, AppClusterPropertiesConfiguration.class);
 
   private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY + 1;
 
@@ -105,53 +105,53 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
             fileLastModified = file.lastModified();
             this.properties = PropertiesUtils.loadFromFile(file);
             fileMonitorThread = new Thread(
-              () -> {
-                final Thread currentThread = Thread.currentThread();
-                while (!currentThread.isInterrupted()) {
-                  try {
+                () -> {
+                  final Thread currentThread = Thread.currentThread();
+                  while (!currentThread.isInterrupted()) {
                     try {
-                      Thread.sleep(FILE_CHECK_INTERVAL);
-                    } catch (InterruptedException exc) {
-                      logger.log(Level.WARNING, null, exc);
-                      // Restore the interrupted status
-                      currentThread.interrupt();
-                      break;
-                    }
-                    boolean notifyListeners = false;
-                    synchronized (fileMonitorLock) {
-                      if (currentThread != fileMonitorThread || currentThread.isInterrupted()) {
+                      try {
+                        Thread.sleep(FILE_CHECK_INTERVAL);
+                      } catch (InterruptedException exc) {
+                        logger.log(Level.WARNING, null, exc);
+                        // Restore the interrupted status
+                        currentThread.interrupt();
                         break;
                       }
-                      long newLastModified = file.lastModified();
-                      if (newLastModified != fileLastModified) {
-                        // Reload the configuration
-                        fileLastModified = newLastModified;
-                        Properties newProperties = PropertiesUtils.loadFromFile(file);
-                        AppClusterPropertiesConfiguration.this.properties = newProperties;
-                        notifyListeners = true;
+                      boolean notifyListeners = false;
+                      synchronized (fileMonitorLock) {
+                        if (currentThread != fileMonitorThread || currentThread.isInterrupted()) {
+                          break;
+                        }
+                        long newLastModified = file.lastModified();
+                        if (newLastModified != fileLastModified) {
+                          // Reload the configuration
+                          fileLastModified = newLastModified;
+                          Properties newProperties = PropertiesUtils.loadFromFile(file);
+                          AppClusterPropertiesConfiguration.this.properties = newProperties;
+                          notifyListeners = true;
+                        }
                       }
-                    }
-                    if (notifyListeners) {
-                      synchronized (listeners) {
-                        for (AppClusterConfigurationListener listener : listeners) {
-                          try {
-                            listener.onConfigurationChanged();
-                          } catch (ThreadDeath td) {
-                            throw td;
-                          } catch (Throwable t) {
-                            logger.log(Level.SEVERE, null, t);
+                      if (notifyListeners) {
+                        synchronized (listeners) {
+                          for (AppClusterConfigurationListener listener : listeners) {
+                            try {
+                              listener.onConfigurationChanged();
+                            } catch (ThreadDeath td) {
+                              throw td;
+                            } catch (Throwable t) {
+                              logger.log(Level.SEVERE, null, t);
+                            }
                           }
                         }
                       }
+                    } catch (ThreadDeath td) {
+                      throw td;
+                    } catch (Throwable t) {
+                      logger.log(Level.SEVERE, null, t);
                     }
-                  } catch (ThreadDeath td) {
-                    throw td;
-                  } catch (Throwable t) {
-                    logger.log(Level.SEVERE, null, t);
                   }
-                }
-              },
-              AppClusterPropertiesConfiguration.class.getName()+".fileMonitorThread"
+                },
+                AppClusterPropertiesConfiguration.class.getName() + ".fileMonitorThread"
             );
             fileMonitorThread.setPriority(THREAD_PRIORITY);
             fileMonitorThread.start();
@@ -193,7 +193,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
   @SuppressWarnings("AssignmentToForLoopParameter")
   public void removeConfigurationListener(AppClusterConfigurationListener listener) {
     synchronized (listeners) {
-      for (int i=0; i<listeners.size(); i++) {
+      for (int i = 0; i < listeners.size(); i++) {
         if (listeners.get(i) == listener) {
           listeners.remove(i--);
         }
@@ -210,7 +210,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
     synchronized (fileMonitorLock) {
       value = properties.getProperty(propertyName);
     }
-    if (value == null || (value=value.trim()).length() == 0) {
+    if (value == null || (value = value.trim()).length() == 0) {
       if (required) {
         throw new AppClusterConfigurationException(RESOURCES.getMessage("getString.missingValue", propertyName));
       } else {
@@ -269,9 +269,9 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
     Set<String> set = AoCollections.newLinkedHashSet(values.size());
     for (String value : values) {
       value = value.trim();
-      if (value.length()>0 && !set.add(value)) {
+      if (value.length() > 0 && !set.add(value)) {
         throw new AppClusterConfigurationException(
-          RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
+            RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
         );
       }
     }
@@ -291,9 +291,9 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
       Set<Name> set = AoCollections.newLinkedHashSet(values.size());
       for (String value : values) {
         value = value.trim();
-        if (value.length()>0 && !set.add(Name.fromString(value))) {
+        if (value.length() > 0 && !set.add(Name.fromString(value))) {
           throw new AppClusterConfigurationException(
-            RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
+              RESOURCES.getMessage("getStrings.duplicate", propertyName, value)
           );
         }
       }
@@ -321,9 +321,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
     Set<String> ids = getUniqueStrings("appcluster.nodes", true);
     Set<NodePropertiesConfiguration> nodes = AoCollections.newLinkedHashSet(ids.size());
     for (String id : ids) {
-      if (
-        !nodes.add(new NodePropertiesConfiguration(this, id))
-      ) {
+      if (!nodes.add(new NodePropertiesConfiguration(this, id))) {
         throw new AssertionError();
       }
     }
@@ -331,6 +329,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
   }
 
   private static final Map<String, ResourcePropertiesConfigurationFactory<?, ?>> factoryCache = new HashMap<>();
+
   @SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
   private static ResourcePropertiesConfigurationFactory<?, ?> getResourcePropertiesConfigurationFactory(String classname) throws AppClusterConfigurationException {
     synchronized (factoryCache) {
@@ -359,12 +358,12 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
     Set<String> types = getUniqueStrings("appcluster.resourceTypes", true);
     Map<String, ResourcePropertiesConfigurationFactory<?, ?>> factories = AoCollections.newHashMap(types.size());
     for (String type : types) {
-      factories.put(type, getResourcePropertiesConfigurationFactory(getString("appcluster.resourceType."+type+".factory", true)));
+      factories.put(type, getResourcePropertiesConfigurationFactory(getString("appcluster.resourceType." + type + ".factory", true)));
     }
     Set<String> ids = getUniqueStrings("appcluster.resources", true);
     Set<ResourceConfiguration<?, ?>> resources = AoCollections.newLinkedHashSet(ids.size());
     for (String id : ids) {
-      String propertyName = "appcluster.resource."+id+".type";
+      String propertyName = "appcluster.resource." + id + ".type";
       String type = getString(propertyName, true);
       ResourcePropertiesConfigurationFactory<?, ?> factory = factories.get(type);
       if (factory == null) {

@@ -66,7 +66,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
   private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
   private static final Resources RESOURCES =
-    Resources.getResources(ResourceBundle::getBundle, CronResourceSynchronizer.class);
+      Resources.getResources(ResourceBundle::getBundle, CronResourceSynchronizer.class);
 
   private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 2;
 
@@ -280,13 +280,13 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
                 final ResourceNodeDnsResult localDnsResult = nodeResultMap.get(localResourceNode.getNode());
                 final ResourceNodeDnsResult remoteDnsResult = nodeResultMap.get(remoteResourceNode.getNode());
                 if (
-                  (
-                    synchronizeNowMode == ResourceSynchronizationMode.SYNCHRONIZE
-                    || (
-                      synchronizeNowMode == null
-                      && synchronizeSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
-                    )
-                  ) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
+                    (
+                        synchronizeNowMode == ResourceSynchronizationMode.SYNCHRONIZE
+                            || (
+                            synchronizeNowMode == null
+                                && synchronizeSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
+                        )
+                    ) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
                 ) {
                   // Perform synchronization
                   synchronized (jobLock) {
@@ -314,20 +314,20 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
                     throw td;
                   } catch (Throwable t) {
                     result = new ResourceSynchronizationResult(
-                      localResourceNode,
-                      remoteResourceNode,
-                      ResourceSynchronizationMode.SYNCHRONIZE,
-                      Collections.singletonList(
-                        new ResourceSynchronizationResultStep(
-                          startTime,
-                          System.currentTimeMillis(),
-                          ResourceStatus.ERROR,
-                          "future.get",
-                          null,
-                          null,
-                          Collections.singletonList(ErrorPrinter.getStackTraces(t))
+                        localResourceNode,
+                        remoteResourceNode,
+                        ResourceSynchronizationMode.SYNCHRONIZE,
+                        Collections.singletonList(
+                            new ResourceSynchronizationResultStep(
+                                startTime,
+                                System.currentTimeMillis(),
+                                ResourceStatus.ERROR,
+                                "future.get",
+                                null,
+                                null,
+                                Collections.singletonList(ErrorPrinter.getStackTraces(t))
+                            )
                         )
-                      )
                     );
                   }
                   synchronized (jobLock) {
@@ -339,13 +339,13 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
                     setLastResult(result);
                   }
                 } else if (
-                  (
-                    synchronizeNowMode == ResourceSynchronizationMode.TEST_ONLY
-                    || (
-                      synchronizeNowMode == null
-                      && testSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
-                    )
-                  ) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
+                    (
+                        synchronizeNowMode == ResourceSynchronizationMode.TEST_ONLY
+                            || (
+                            synchronizeNowMode == null
+                                && testSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
+                        )
+                    ) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
                 ) {
                   // Perform test
                   synchronized (jobLock) {
@@ -373,20 +373,20 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
                     throw td;
                   } catch (Throwable t) {
                     result = new ResourceSynchronizationResult(
-                      localResourceNode,
-                      remoteResourceNode,
-                      ResourceSynchronizationMode.TEST_ONLY,
-                      Collections.singletonList(
-                        new ResourceSynchronizationResultStep(
-                          startTime,
-                          System.currentTimeMillis(),
-                          ResourceStatus.ERROR,
-                          "future.get",
-                          null,
-                          null,
-                          Collections.singletonList(ErrorPrinter.getStackTraces(t))
+                        localResourceNode,
+                        remoteResourceNode,
+                        ResourceSynchronizationMode.TEST_ONLY,
+                        Collections.singletonList(
+                            new ResourceSynchronizationResultStep(
+                                startTime,
+                                System.currentTimeMillis(),
+                                ResourceStatus.ERROR,
+                                "future.get",
+                                null,
+                                null,
+                                Collections.singletonList(ErrorPrinter.getStackTraces(t))
+                            )
                         )
-                      )
                     );
                   }
                   synchronized (jobLock) {

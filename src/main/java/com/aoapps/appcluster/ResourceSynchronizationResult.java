@@ -44,10 +44,10 @@ public class ResourceSynchronizationResult implements ResourceResult {
    * @param steps At least one step is required.
    */
   public ResourceSynchronizationResult(
-    ResourceNode<?, ?> localResourceNode,
-    ResourceNode<?, ?> remoteResourceNode,
-    ResourceSynchronizationMode mode,
-    Collection<ResourceSynchronizationResultStep> steps
+      ResourceNode<?, ?> localResourceNode,
+      ResourceNode<?, ?> remoteResourceNode,
+      ResourceSynchronizationMode mode,
+      Collection<ResourceSynchronizationResultStep> steps
   ) {
     this.localResourceNode = localResourceNode;
     this.remoteResourceNode = remoteResourceNode;

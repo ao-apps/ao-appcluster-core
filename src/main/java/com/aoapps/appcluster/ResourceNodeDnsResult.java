@@ -41,10 +41,10 @@ public class ResourceNodeDnsResult {
   private final SortedSet<String> nodeStatusMessages;
 
   ResourceNodeDnsResult(
-    ResourceNode<?, ?> resourceNode,
-    Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
-    NodeDnsStatus nodeStatus,
-    Collection<String> nodeStatusMessages
+      ResourceNode<?, ?> resourceNode,
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
+      NodeDnsStatus nodeStatus,
+      Collection<String> nodeStatusMessages
   ) {
     this.resourceNode = resourceNode;
     this.nodeRecordLookups = nodeRecordLookups == null ? null : ResourceDnsResult.getUnmodifiableDnsLookupResults(nodeRecordLookups, resourceNode.getNodeRecords(), resourceNode.getResource().getEnabledNameservers());

@@ -63,7 +63,7 @@ public class ResourceDnsMonitor {
   private static final Logger logger = Logger.getLogger(ResourceDnsMonitor.class.getName());
 
   private static final Resources RESOURCES =
-    Resources.getResources(ResourceBundle::getBundle, ResourceDnsMonitor.class);
+      Resources.getResources(ResourceBundle::getBundle, ResourceDnsMonitor.class);
 
   private static final int THREAD_PRIORITY = Thread.NORM_PRIORITY - 1;
 
@@ -86,6 +86,7 @@ public class ResourceDnsMonitor {
    * Only one resolver will be created for each unique nameserver (case-insensitive on unique)
    */
   private static final ConcurrentMap<Nameserver, SimpleResolver> resolvers = new ConcurrentHashMap<>();
+
   private static SimpleResolver getSimpleResolver(Nameserver hostname) throws UnknownHostException {
     SimpleResolver resolver = resolvers.get(hostname);
     if (resolver == null) {
@@ -107,13 +108,13 @@ public class ResourceDnsMonitor {
     Map<Node, ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
     for (ResourceNode<?, ?> resourceNode : resourceNodes) {
       nodeResults.put(
-        resourceNode.getNode(),
-        new ResourceNodeDnsResult(
-          resourceNode,
-          nodeRecordLookups,
-          nodeStatus,
-          nodeStatusMessages
-        )
+          resourceNode.getNode(),
+          new ResourceNodeDnsResult(
+              resourceNode,
+              nodeRecordLookups,
+              nodeStatus,
+              nodeStatusMessages
+          )
       );
     }
     return nodeResults;
@@ -129,13 +130,13 @@ public class ResourceDnsMonitor {
     this.resource = resource;
     long currentTime = System.currentTimeMillis();
     this.lastResult = new ResourceDnsResult(
-      resource,
-      currentTime,
-      currentTime,
-      null,
-      MasterDnsStatus.STOPPED,
-      null,
-      getNodeResults(resource, null, NodeDnsStatus.STOPPED, null)
+        resource,
+        currentTime,
+        currentTime,
+        null,
+        MasterDnsStatus.STOPPED,
+        null,
+        getNodeResults(resource, null, NodeDnsStatus.STOPPED, null)
     );
   }
 
@@ -176,29 +177,29 @@ public class ResourceDnsMonitor {
         long currentTime = System.currentTimeMillis();
         Collection<String> messages = Collections.singleton(RESOURCES.getMessage("start.clusterDisabled.statusMessage"));
         setDnsResult(
-          new ResourceDnsResult(
-            resource,
-            currentTime,
-            currentTime,
-            null,
-            MasterDnsStatus.DISABLED,
-            messages,
-            getNodeResults(resource, null, NodeDnsStatus.DISABLED, messages)
-          )
+            new ResourceDnsResult(
+                resource,
+                currentTime,
+                currentTime,
+                null,
+                MasterDnsStatus.DISABLED,
+                messages,
+                getNodeResults(resource, null, NodeDnsStatus.DISABLED, messages)
+            )
         );
       } else if (!resource.isEnabled()) {
         long currentTime = System.currentTimeMillis();
         Collection<String> messages = Collections.singleton(RESOURCES.getMessage("start.resourceDisabled.statusMessage"));
         setDnsResult(
-          new ResourceDnsResult(
-            resource,
-            currentTime,
-            currentTime,
-            null,
-            MasterDnsStatus.DISABLED,
-            messages,
-            getNodeResults(resource, null, NodeDnsStatus.DISABLED, messages)
-          )
+            new ResourceDnsResult(
+                resource,
+                currentTime,
+                currentTime,
+                null,
+                MasterDnsStatus.DISABLED,
+                messages,
+                getNodeResults(resource, null, NodeDnsStatus.DISABLED, messages)
+            )
         );
       } else {
         if (thread == null) {
@@ -211,460 +212,460 @@ public class ResourceDnsMonitor {
             Node node = resourceNode.getNode();
             if (node.isEnabled()) {
               nodeResults.put(
-                node,
-                new ResourceNodeDnsResult(resourceNode, null, NodeDnsStatus.STARTING, unknownMessage)
+                  node,
+                  new ResourceNodeDnsResult(resourceNode, null, NodeDnsStatus.STARTING, unknownMessage)
               );
             } else {
               nodeResults.put(
-                node,
-                new ResourceNodeDnsResult(resourceNode, null, NodeDnsStatus.DISABLED, nodeDisabledMessages)
+                  node,
+                  new ResourceNodeDnsResult(resourceNode, null, NodeDnsStatus.DISABLED, nodeDisabledMessages)
               );
             }
           }
           setDnsResult(
-            new ResourceDnsResult(
-              resource,
-              currentTime,
-              currentTime,
-              null,
-              MasterDnsStatus.STARTING,
-              unknownMessage,
-              nodeResults
-            )
+              new ResourceDnsResult(
+                  resource,
+                  currentTime,
+                  currentTime,
+                  null,
+                  MasterDnsStatus.STARTING,
+                  unknownMessage,
+                  nodeResults
+              )
           );
           final ExecutorService executorService = resource.getCluster().getExecutorService();
           thread = new Thread(
-            () -> {
-              final Thread currentThread = Thread.currentThread();
-              final Set<? extends Name> masterRecords = resource.getMasterRecords();
-              final int masterRecordsTtl = resource.getMasterRecordsTtl();
-              final boolean allowMultiMaster = resource.getAllowMultiMaster();
-              final Nameserver[] enabledNameservers = resource.getEnabledNameservers().toArray(new Nameserver[resource.getEnabledNameservers().size()]);
+              () -> {
+                final Thread currentThread = Thread.currentThread();
+                final Set<? extends Name> masterRecords = resource.getMasterRecords();
+                final int masterRecordsTtl = resource.getMasterRecordsTtl();
+                final boolean allowMultiMaster = resource.getAllowMultiMaster();
+                final Nameserver[] enabledNameservers = resource.getEnabledNameservers().toArray(new Nameserver[resource.getEnabledNameservers().size()]);
 
-              final ResourceNode<?, ?>[] _resourceNodes = resource.getResourceNodes().toArray(new ResourceNode<?, ?>[resource.getResourceNodes().size()]);
+                final ResourceNode<?, ?>[] _resourceNodes = resource.getResourceNodes().toArray(new ResourceNode<?, ?>[resource.getResourceNodes().size()]);
 
-              // Find all the unique hostnames and nameservers that will be queried
-              final Name[] allHostnames;
-              {
-                final Set<Name> allHostnamesSet = new HashSet<>();
-                allHostnamesSet.addAll(masterRecords);
-                for (ResourceNode<?, ?> resourceNode : _resourceNodes) {
-                  if (resourceNode.getNode().isEnabled()) {
-                    allHostnamesSet.addAll(resourceNode.getNodeRecords());
+                // Find all the unique hostnames and nameservers that will be queried
+                final Name[] allHostnames;
+                {
+                  final Set<Name> allHostnamesSet = new HashSet<>();
+                  allHostnamesSet.addAll(masterRecords);
+                  for (ResourceNode<?, ?> resourceNode : _resourceNodes) {
+                    if (resourceNode.getNode().isEnabled()) {
+                      allHostnamesSet.addAll(resourceNode.getNodeRecords());
+                    }
                   }
+                  allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
                 }
-                allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
-              }
 
-              while (!Thread.currentThread().isInterrupted()) {
-                synchronized (threadLock) {
-                  if (currentThread != thread) {
-                    break;
-                  }
-                }
-                try {
-                  long startTime = System.currentTimeMillis();
-
-                  // Query all enabled nameservers for all involved dns entries in parallel, getting all A records
-                  final Map<Name, Map<Nameserver, Future<DnsLookupResult>>> allHostnameFutures = AoCollections.newHashMap(allHostnames.length);
-                  for (final Name hostname : allHostnames) {
-                    Map<Nameserver, Future<DnsLookupResult>> hostnameFutures = AoCollections.newHashMap(enabledNameservers.length);
-                    allHostnameFutures.put(hostname, hostnameFutures);
-                    for (final Nameserver nameserver : enabledNameservers) {
-                      hostnameFutures.put(
-                        nameserver,
-                        executorService.submit(() -> {
-                          try {
-                            for (
-                              int attempt = 0;
-                              attempt < DNS_ATTEMPTS && !Thread.currentThread().isInterrupted();
-                              attempt++
-                            ) {
-                              Lookup lookup = new Lookup(hostname, Type.A);
-                              lookup.setCache(null);
-                              lookup.setResolver(getSimpleResolver(nameserver));
-                              lookup.setSearchPath(emptySearchPath);
-                              Record[] records = lookup.run();
-                              int result = lookup.getResult();
-                              switch (result) {
-                                case Lookup.SUCCESSFUL :
-                                  if (records == null || records.length == 0) {
-                                    return new DnsLookupResult(
-                                      hostname,
-                                      DnsLookupStatus.HOST_NOT_FOUND,
-                                      null,
-                                      null
-                                    );
-                                  }
-                                  String[] addresses = new String[records.length];
-                                  Collection<String> statusMessages = null;
-                                  for (int c=0;c<records.length;c++) {
-                                    ARecord aRecord = (ARecord)records[c];
-                                    // Verify masterDomain TTL settings match expected values, issue as a warning
-                                    if (masterRecords.contains(hostname)) {
-                                      long ttl = aRecord.getTTL();
-                                      if (ttl != masterRecordsTtl) {
-                                        if (statusMessages == null) {
-                                          statusMessages = new ArrayList<>();
-                                        }
-                                        statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl", masterRecordsTtl, ttl));
-                                      }
-                                    }
-                                    addresses[c] = aRecord.getAddress().getHostAddress();
-                                  }
-                                  return new DnsLookupResult(
-                                    hostname,
-                                    statusMessages == null ? DnsLookupStatus.SUCCESSFUL : DnsLookupStatus.WARNING,
-                                    statusMessages,
-                                    addresses
-                                  );
-                                case Lookup.UNRECOVERABLE :
-                                  return new DnsLookupResult(
-                                    hostname,
-                                    DnsLookupStatus.UNRECOVERABLE,
-                                    null,
-                                    null
-                                  );
-                                case Lookup.TRY_AGAIN :
-                                  // Fall-through to try again loop
-                                  break;
-                                case Lookup.HOST_NOT_FOUND :
-                                  return new DnsLookupResult(
-                                    hostname,
-                                    DnsLookupStatus.HOST_NOT_FOUND,
-                                    null,
-                                    null
-                                  );
-                                case Lookup.TYPE_NOT_FOUND :
-                                  return new DnsLookupResult(
-                                    hostname,
-                                    DnsLookupStatus.TYPE_NOT_FOUND,
-                                    null,
-                                    null
-                                  );
-                                default :
-                                  return new DnsLookupResult(
-                                    hostname,
-                                    DnsLookupStatus.ERROR,
-                                    Collections.singleton(RESOURCES.getMessage("lookup.unexpectedResultCode", result)),
-                                    null
-                                  );
-                              }
-                            }
-                            return new DnsLookupResult(
-                              hostname,
-                              DnsLookupStatus.TRY_AGAIN,
-                              null,
-                              null
-                            );
-                          } catch (ThreadDeath td) {
-                            throw td;
-                          } catch (Throwable t) {
-                            return new DnsLookupResult(
-                              hostname,
-                              DnsLookupStatus.ERROR,
-                              Collections.singleton(ErrorPrinter.getStackTraces(t)),
-                              null
-                            );
-                          }
-                        })
-                      );
-                    }
-                  }
-
-                  // Get all the masterRecord results
-                  Map<Name, Map<Nameserver, DnsLookupResult>> masterRecordLookups = AoCollections.newHashMap(masterRecords.size());
-                  MasterDnsStatus masterStatus = MasterDnsStatus.CONSISTENT;
-                  List<String> masterStatusMessages = new ArrayList<>();
-                  Nameserver firstMasterNameserver = null;
-                  Name firstMasterRecord = null;
-                  Set<String> firstMasterAddresses = null;
-                  for (Name masterRecord : masterRecords) {
-                    Map<Nameserver, DnsLookupResult> masterLookups = AoCollections.newHashMap(enabledNameservers.length);
-                    masterRecordLookups.put(masterRecord, masterLookups);
-                    Map<Nameserver, Future<DnsLookupResult>> masterFutures = allHostnameFutures.get(masterRecord);
-                    boolean foundSuccessful = false;
-                    for (Nameserver enabledNameserver : enabledNameservers) {
-                      try {
-                        DnsLookupResult result = masterFutures.get(enabledNameserver).get();
-                        masterLookups.put(enabledNameserver, result);
-                        if (result.getStatus() == DnsLookupStatus.SUCCESSFUL || result.getStatus() == DnsLookupStatus.WARNING) {
-                          if (result.getStatus() == DnsLookupStatus.WARNING) {
-                            masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.WARNING);
-                          }
-                          foundSuccessful = true;
-                          Set<String> addresses = result.getAddresses();
-                          // Check for multi-master violation
-                          if (addresses.size()>1 && !allowMultiMaster) {
-                            masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
-                            masterStatusMessages.add(
-                              RESOURCES.getMessage(
-                                "masterRecord.multiMasterNotAllowed",
-                                enabledNameserver,
-                                Strings.join(addresses, ", ")
-                              )
-                            );
-                          }
-                          if (firstMasterAddresses == null) {
-                            firstMasterNameserver = enabledNameserver;
-                            firstMasterRecord = masterRecord;
-                            firstMasterAddresses = addresses;
-                          } else {
-                            // All multi-record masters must have the same IP address(es) within a single node (like for domain aliases)
-                            if (!firstMasterAddresses.equals(addresses)) {
-                              masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
-                              masterStatusMessages.add(
-                                RESOURCES.getMessage(
-                                  "multiRecordMaster.mismatch",
-                                  firstMasterNameserver,
-                                  firstMasterRecord,
-                                  Strings.join(firstMasterAddresses, ", "),
-                                  enabledNameserver,
-                                  masterRecord,
-                                  Strings.join(addresses, ", ")
-                                )
-                              );
-                            }
-                          }
-                        }
-                      } catch (ThreadDeath td) {
-                        throw td;
-                      } catch (Throwable t) {
-                        masterLookups.put(
-                          enabledNameserver,
-                          new DnsLookupResult(
-                            masterRecord,
-                            DnsLookupStatus.UNRECOVERABLE,
-                            Collections.singleton(ErrorPrinter.getStackTraces(t)),
-                            null
-                          )
-                        );
-                      }
-                    }
-                    // Make sure we got at least one response for every master
-                    if (!foundSuccessful) {
-                      masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
-                      masterStatusMessages.add(RESOURCES.getMessage("masterRecord.missing", masterRecord));
-                    }
-                  }
-                  assert firstMasterAddresses != null;
-
-                  // Get the results for each node
-                  Map<Node, ResourceNodeDnsResult> _nodeResults = AoCollections.newHashMap(_resourceNodes.length);
-                  Set<String> allNodeAddresses = AoCollections.newHashSet(_resourceNodes.length);
-                  for (ResourceNode<?, ?> resourceNode :  _resourceNodes) {
-                    Node node = resourceNode.getNode();
-                    if (node.isEnabled()) {
-                      Set<? extends Name> nodeRecords = resourceNode.getNodeRecords();
-                      Map<Name, Map<Nameserver, DnsLookupResult>> nodeRecordLookups = AoCollections.newHashMap(nodeRecords.size());
-                      NodeDnsStatus nodeStatus = NodeDnsStatus.SLAVE;
-                      List<String> nodeStatusMessages = new ArrayList<>();
-                      Nameserver firstNodeNameserver = null;
-                      Name firstNodeRecord = null;
-                      Set<String> firstNodeAddresses = null;
-                      for (Name nodeRecord : resourceNode.getNodeRecords()) {
-                        Map<Nameserver, DnsLookupResult> nodeLookups = AoCollections.newHashMap(enabledNameservers.length);
-                        nodeRecordLookups.put(nodeRecord, nodeLookups);
-                        Map<Nameserver, Future<DnsLookupResult>> nodeFutures = allHostnameFutures.get(nodeRecord);
-                        boolean foundSuccessful = false;
-                        for (Nameserver enabledNameserver : enabledNameservers) {
-                          try {
-                            DnsLookupResult result = nodeFutures.get(enabledNameserver).get();
-                            nodeLookups.put(enabledNameserver, result);
-                            if (result.getStatus() == DnsLookupStatus.SUCCESSFUL || result.getStatus() == DnsLookupStatus.WARNING) {
-                              foundSuccessful = true;
-                              Set<String> addresses = result.getAddresses();
-                              allNodeAddresses.addAll(addresses);
-                              // Must be only one A record
-                              if (addresses.size()>1) {
-                                nodeStatus = NodeDnsStatus.INCONSISTENT;
-                                nodeStatusMessages.add(
-                                  RESOURCES.getMessage(
-                                    "nodeRecord.onlyOneAllowed",
-                                    Strings.join(addresses, ", ")
-                                  )
-                                );
-                              } else {
-                                // Each node must have a different A record
-                                String address = addresses.iterator().next();
-                                for (ResourceNodeDnsResult previousNodeResult :  _nodeResults.values()) {
-                                  Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
-                                  if (previousNodeRecordLookups != null) {
-                                    boolean foundMatch = false;
-                                    MATCH_LOOP:
-                                    for (Map<? extends Nameserver, ? extends DnsLookupResult> previousLookups : previousNodeRecordLookups.values()) {
-                                      for (DnsLookupResult previousResult : previousLookups.values()) {
-                                        if (previousResult.getAddresses().contains(address)) {
-                                          foundMatch = true;
-                                          break MATCH_LOOP;
-                                        }
-                                      }
-                                    }
-                                    if (foundMatch) {
-                                      Node previousNode = previousNodeResult.getResourceNode().getNode();
-                                      nodeStatus = NodeDnsStatus.INCONSISTENT;
-                                      nodeStatusMessages.add(
-                                        RESOURCES.getMessage(
-                                          "nodeRecord.duplicateA",
-                                          previousNode,
-                                          nodeRecord,
-                                          address
-                                        )
-                                      );
-                                      // Re-add the previous with inconsistent state and additional message
-                                      List<String> newNodeStatusMessages = new ArrayList<>(previousNodeResult.getNodeStatusMessages());
-                                      newNodeStatusMessages.add(
-                                        RESOURCES.getMessage(
-                                          "nodeRecord.duplicateA",
-                                          nodeRecord,
-                                          previousNode,
-                                          address
-                                        )
-                                      );
-                                      _nodeResults.put(
-                                        previousNode,
-                                        new ResourceNodeDnsResult(
-                                          previousNodeResult.getResourceNode(),
-                                          previousNodeResult.getNodeRecordLookups(),
-                                          NodeDnsStatus.INCONSISTENT,
-                                          newNodeStatusMessages
-                                        )
-                                      );
-                                    }
-                                  }
-                                }
-                              }
-                              if (firstNodeAddresses == null) {
-                                firstNodeNameserver = enabledNameserver;
-                                firstNodeRecord = nodeRecord;
-                                firstNodeAddresses = addresses;
-                              } else {
-                                // All multi-record nodes must have the same IP address within a single node (like for domain aliases)
-                                if (!firstNodeAddresses.equals(addresses)) {
-                                  nodeStatus = NodeDnsStatus.INCONSISTENT;
-                                  nodeStatusMessages.add(
-                                    RESOURCES.getMessage(
-                                      "multiRecordNode.mismatch",
-                                      firstNodeNameserver,
-                                      firstNodeRecord,
-                                      Strings.join(firstNodeAddresses, ", "),
-                                      enabledNameserver,
-                                      nodeRecord,
-                                      Strings.join(addresses, ", ")
-                                    )
-                                  );
-                                }
-                              }
-                            }
-                          } catch (ThreadDeath td) {
-                            throw td;
-                          } catch (Throwable t) {
-                            nodeLookups.put(
-                              enabledNameserver,
-                              new DnsLookupResult(
-                                nodeRecord,
-                                DnsLookupStatus.UNRECOVERABLE,
-                                Collections.singleton(ErrorPrinter.getStackTraces(t)),
-                                null
-                              )
-                            );
-                          }
-                        }
-                        // Make sure we got at least one response for every node
-                        if (!foundSuccessful) {
-                          nodeStatus = NodeDnsStatus.INCONSISTENT;
-                          nodeStatusMessages.add(RESOURCES.getMessage("nodeRecord.missing", nodeRecord));
-                        }
-                      }
-                      // If master and node are both consistent and matches any master A record, promote to master
-                      if ((masterStatus == MasterDnsStatus.CONSISTENT || masterStatus == MasterDnsStatus.WARNING) && nodeStatus == NodeDnsStatus.SLAVE) {
-                        if (firstMasterAddresses.containsAll(firstNodeAddresses)) {
-                          nodeStatus=NodeDnsStatus.MASTER;
-                        }
-                      }
-                      _nodeResults.put(
-                        node,
-                        new ResourceNodeDnsResult(
-                          resourceNode,
-                          nodeRecordLookups,
-                          nodeStatus,
-                          nodeStatusMessages
-                        )
-                      );
-                    } else {
-                      // Node disabled
-                      _nodeResults.put(
-                        node,
-                        new ResourceNodeDnsResult(
-                          resourceNode,
-                          null,
-                          NodeDnsStatus.DISABLED,
-                          Collections.singleton(RESOURCES.getMessage("nodeDisabled"))
-                        )
-                      );
-                    }
-                  }
-
-                  // Inconsistent if any master A record is outside the expected nodeDomains
-                  for (Name masterRecord : masterRecords) {
-                    for (Map<Nameserver, DnsLookupResult> masterLookups : masterRecordLookups.values()) {
-                      for (DnsLookupResult masterResult : masterLookups.values()) {
-                        for (String masterAddress : masterResult.getAddresses()) {
-                          if (!allNodeAddresses.contains(masterAddress)) {
-                            masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
-                            masterStatusMessages.add(
-                              RESOURCES.getMessage(
-                                "masterARecordDoesntMatchNode",
-                                masterRecord,
-                                masterAddress
-                              )
-                            );
-                          }
-                        }
-                      }
-                    }
-                  }
-
+                while (!Thread.currentThread().isInterrupted()) {
                   synchronized (threadLock) {
                     if (currentThread != thread) {
                       break;
                     }
-                    setDnsResult(
-                      new ResourceDnsResult(
-                        resource,
-                        startTime,
-                        System.currentTimeMillis(),
-                        masterRecordLookups,
-                        masterStatus,
-                        masterStatusMessages,
-                        _nodeResults
-                      )
-                    );
                   }
-                } catch (RejectedExecutionException exc) {
-                  // Normal during shutdown
-                  boolean needsLogged;
-                  synchronized (threadLock) {
-                    needsLogged = currentThread == thread;
+                  try {
+                    long startTime = System.currentTimeMillis();
+
+                    // Query all enabled nameservers for all involved dns entries in parallel, getting all A records
+                    final Map<Name, Map<Nameserver, Future<DnsLookupResult>>> allHostnameFutures = AoCollections.newHashMap(allHostnames.length);
+                    for (final Name hostname : allHostnames) {
+                      Map<Nameserver, Future<DnsLookupResult>> hostnameFutures = AoCollections.newHashMap(enabledNameservers.length);
+                      allHostnameFutures.put(hostname, hostnameFutures);
+                      for (final Nameserver nameserver : enabledNameservers) {
+                        hostnameFutures.put(
+                            nameserver,
+                            executorService.submit(() -> {
+                              try {
+                                for (
+                              int attempt = 0;
+                              attempt < DNS_ATTEMPTS && !Thread.currentThread().isInterrupted();
+                              attempt++
+                            ) {
+                                  Lookup lookup = new Lookup(hostname, Type.A);
+                                  lookup.setCache(null);
+                                  lookup.setResolver(getSimpleResolver(nameserver));
+                                  lookup.setSearchPath(emptySearchPath);
+                                  Record[] records = lookup.run();
+                                  int result = lookup.getResult();
+                                  switch (result) {
+                                    case Lookup.SUCCESSFUL :
+                                      if (records == null || records.length == 0) {
+                                        return new DnsLookupResult(
+                                            hostname,
+                                            DnsLookupStatus.HOST_NOT_FOUND,
+                                            null,
+                                            null
+                                        );
+                                      }
+                                      String[] addresses = new String[records.length];
+                                      Collection<String> statusMessages = null;
+                                      for (int c = 0; c < records.length; c++) {
+                                        ARecord aRecord = (ARecord) records[c];
+                                        // Verify masterDomain TTL settings match expected values, issue as a warning
+                                        if (masterRecords.contains(hostname)) {
+                                          long ttl = aRecord.getTTL();
+                                          if (ttl != masterRecordsTtl) {
+                                            if (statusMessages == null) {
+                                              statusMessages = new ArrayList<>();
+                                            }
+                                            statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl", masterRecordsTtl, ttl));
+                                          }
+                                        }
+                                        addresses[c] = aRecord.getAddress().getHostAddress();
+                                      }
+                                      return new DnsLookupResult(
+                                          hostname,
+                                          statusMessages == null ? DnsLookupStatus.SUCCESSFUL : DnsLookupStatus.WARNING,
+                                          statusMessages,
+                                          addresses
+                                      );
+                                    case Lookup.UNRECOVERABLE :
+                                      return new DnsLookupResult(
+                                          hostname,
+                                          DnsLookupStatus.UNRECOVERABLE,
+                                          null,
+                                          null
+                                      );
+                                    case Lookup.TRY_AGAIN :
+                                      // Fall-through to try again loop
+                                      break;
+                                    case Lookup.HOST_NOT_FOUND :
+                                      return new DnsLookupResult(
+                                          hostname,
+                                          DnsLookupStatus.HOST_NOT_FOUND,
+                                          null,
+                                          null
+                                      );
+                                    case Lookup.TYPE_NOT_FOUND :
+                                      return new DnsLookupResult(
+                                          hostname,
+                                          DnsLookupStatus.TYPE_NOT_FOUND,
+                                          null,
+                                          null
+                                      );
+                                    default :
+                                      return new DnsLookupResult(
+                                          hostname,
+                                          DnsLookupStatus.ERROR,
+                                          Collections.singleton(RESOURCES.getMessage("lookup.unexpectedResultCode", result)),
+                                          null
+                                      );
+                                  }
+                                }
+                                return new DnsLookupResult(
+                                    hostname,
+                                    DnsLookupStatus.TRY_AGAIN,
+                                    null,
+                                    null
+                                );
+                              } catch (ThreadDeath td) {
+                                throw td;
+                              } catch (Throwable t) {
+                                return new DnsLookupResult(
+                                    hostname,
+                                    DnsLookupStatus.ERROR,
+                                    Collections.singleton(ErrorPrinter.getStackTraces(t)),
+                                    null
+                                );
+                              }
+                            })
+                        );
+                      }
+                    }
+
+                    // Get all the masterRecord results
+                    Map<Name, Map<Nameserver, DnsLookupResult>> masterRecordLookups = AoCollections.newHashMap(masterRecords.size());
+                    MasterDnsStatus masterStatus = MasterDnsStatus.CONSISTENT;
+                    List<String> masterStatusMessages = new ArrayList<>();
+                    Nameserver firstMasterNameserver = null;
+                    Name firstMasterRecord = null;
+                    Set<String> firstMasterAddresses = null;
+                    for (Name masterRecord : masterRecords) {
+                      Map<Nameserver, DnsLookupResult> masterLookups = AoCollections.newHashMap(enabledNameservers.length);
+                      masterRecordLookups.put(masterRecord, masterLookups);
+                      Map<Nameserver, Future<DnsLookupResult>> masterFutures = allHostnameFutures.get(masterRecord);
+                      boolean foundSuccessful = false;
+                      for (Nameserver enabledNameserver : enabledNameservers) {
+                        try {
+                          DnsLookupResult result = masterFutures.get(enabledNameserver).get();
+                          masterLookups.put(enabledNameserver, result);
+                          if (result.getStatus() == DnsLookupStatus.SUCCESSFUL || result.getStatus() == DnsLookupStatus.WARNING) {
+                            if (result.getStatus() == DnsLookupStatus.WARNING) {
+                              masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.WARNING);
+                            }
+                            foundSuccessful = true;
+                            Set<String> addresses = result.getAddresses();
+                            // Check for multi-master violation
+                            if (addresses.size() > 1 && !allowMultiMaster) {
+                              masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
+                              masterStatusMessages.add(
+                                  RESOURCES.getMessage(
+                                      "masterRecord.multiMasterNotAllowed",
+                                      enabledNameserver,
+                                      Strings.join(addresses, ", ")
+                                  )
+                              );
+                            }
+                            if (firstMasterAddresses == null) {
+                              firstMasterNameserver = enabledNameserver;
+                              firstMasterRecord = masterRecord;
+                              firstMasterAddresses = addresses;
+                            } else {
+                              // All multi-record masters must have the same IP address(es) within a single node (like for domain aliases)
+                              if (!firstMasterAddresses.equals(addresses)) {
+                                masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
+                                masterStatusMessages.add(
+                                    RESOURCES.getMessage(
+                                        "multiRecordMaster.mismatch",
+                                        firstMasterNameserver,
+                                        firstMasterRecord,
+                                        Strings.join(firstMasterAddresses, ", "),
+                                        enabledNameserver,
+                                        masterRecord,
+                                        Strings.join(addresses, ", ")
+                                    )
+                                );
+                              }
+                            }
+                          }
+                        } catch (ThreadDeath td) {
+                          throw td;
+                        } catch (Throwable t) {
+                          masterLookups.put(
+                              enabledNameserver,
+                              new DnsLookupResult(
+                                  masterRecord,
+                                  DnsLookupStatus.UNRECOVERABLE,
+                                  Collections.singleton(ErrorPrinter.getStackTraces(t)),
+                                  null
+                              )
+                          );
+                        }
+                      }
+                      // Make sure we got at least one response for every master
+                      if (!foundSuccessful) {
+                        masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
+                        masterStatusMessages.add(RESOURCES.getMessage("masterRecord.missing", masterRecord));
+                      }
+                    }
+                    assert firstMasterAddresses != null;
+
+                    // Get the results for each node
+                    Map<Node, ResourceNodeDnsResult> _nodeResults = AoCollections.newHashMap(_resourceNodes.length);
+                    Set<String> allNodeAddresses = AoCollections.newHashSet(_resourceNodes.length);
+                    for (ResourceNode<?, ?> resourceNode :  _resourceNodes) {
+                      Node node = resourceNode.getNode();
+                      if (node.isEnabled()) {
+                        Set<? extends Name> nodeRecords = resourceNode.getNodeRecords();
+                        Map<Name, Map<Nameserver, DnsLookupResult>> nodeRecordLookups = AoCollections.newHashMap(nodeRecords.size());
+                        NodeDnsStatus nodeStatus = NodeDnsStatus.SLAVE;
+                        List<String> nodeStatusMessages = new ArrayList<>();
+                        Nameserver firstNodeNameserver = null;
+                        Name firstNodeRecord = null;
+                        Set<String> firstNodeAddresses = null;
+                        for (Name nodeRecord : resourceNode.getNodeRecords()) {
+                          Map<Nameserver, DnsLookupResult> nodeLookups = AoCollections.newHashMap(enabledNameservers.length);
+                          nodeRecordLookups.put(nodeRecord, nodeLookups);
+                          Map<Nameserver, Future<DnsLookupResult>> nodeFutures = allHostnameFutures.get(nodeRecord);
+                          boolean foundSuccessful = false;
+                          for (Nameserver enabledNameserver : enabledNameservers) {
+                            try {
+                              DnsLookupResult result = nodeFutures.get(enabledNameserver).get();
+                              nodeLookups.put(enabledNameserver, result);
+                              if (result.getStatus() == DnsLookupStatus.SUCCESSFUL || result.getStatus() == DnsLookupStatus.WARNING) {
+                                foundSuccessful = true;
+                                Set<String> addresses = result.getAddresses();
+                                allNodeAddresses.addAll(addresses);
+                                // Must be only one A record
+                                if (addresses.size() > 1) {
+                                  nodeStatus = NodeDnsStatus.INCONSISTENT;
+                                  nodeStatusMessages.add(
+                                      RESOURCES.getMessage(
+                                          "nodeRecord.onlyOneAllowed",
+                                          Strings.join(addresses, ", ")
+                                      )
+                                  );
+                                } else {
+                                  // Each node must have a different A record
+                                  String address = addresses.iterator().next();
+                                  for (ResourceNodeDnsResult previousNodeResult :  _nodeResults.values()) {
+                                    Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
+                                    if (previousNodeRecordLookups != null) {
+                                      boolean foundMatch = false;
+                                      MATCH_LOOP:
+                                      for (Map<? extends Nameserver, ? extends DnsLookupResult> previousLookups : previousNodeRecordLookups.values()) {
+                                        for (DnsLookupResult previousResult : previousLookups.values()) {
+                                          if (previousResult.getAddresses().contains(address)) {
+                                            foundMatch = true;
+                                            break MATCH_LOOP;
+                                          }
+                                        }
+                                      }
+                                      if (foundMatch) {
+                                        Node previousNode = previousNodeResult.getResourceNode().getNode();
+                                        nodeStatus = NodeDnsStatus.INCONSISTENT;
+                                        nodeStatusMessages.add(
+                                            RESOURCES.getMessage(
+                                                "nodeRecord.duplicateA",
+                                                previousNode,
+                                                nodeRecord,
+                                                address
+                                            )
+                                        );
+                                        // Re-add the previous with inconsistent state and additional message
+                                        List<String> newNodeStatusMessages = new ArrayList<>(previousNodeResult.getNodeStatusMessages());
+                                        newNodeStatusMessages.add(
+                                            RESOURCES.getMessage(
+                                                "nodeRecord.duplicateA",
+                                                nodeRecord,
+                                                previousNode,
+                                                address
+                                            )
+                                        );
+                                        _nodeResults.put(
+                                            previousNode,
+                                            new ResourceNodeDnsResult(
+                                                previousNodeResult.getResourceNode(),
+                                                previousNodeResult.getNodeRecordLookups(),
+                                                NodeDnsStatus.INCONSISTENT,
+                                                newNodeStatusMessages
+                                            )
+                                        );
+                                      }
+                                    }
+                                  }
+                                }
+                                if (firstNodeAddresses == null) {
+                                  firstNodeNameserver = enabledNameserver;
+                                  firstNodeRecord = nodeRecord;
+                                  firstNodeAddresses = addresses;
+                                } else {
+                                  // All multi-record nodes must have the same IP address within a single node (like for domain aliases)
+                                  if (!firstNodeAddresses.equals(addresses)) {
+                                    nodeStatus = NodeDnsStatus.INCONSISTENT;
+                                    nodeStatusMessages.add(
+                                        RESOURCES.getMessage(
+                                            "multiRecordNode.mismatch",
+                                            firstNodeNameserver,
+                                            firstNodeRecord,
+                                            Strings.join(firstNodeAddresses, ", "),
+                                            enabledNameserver,
+                                            nodeRecord,
+                                            Strings.join(addresses, ", ")
+                                        )
+                                    );
+                                  }
+                                }
+                              }
+                            } catch (ThreadDeath td) {
+                              throw td;
+                            } catch (Throwable t) {
+                              nodeLookups.put(
+                                  enabledNameserver,
+                                  new DnsLookupResult(
+                                      nodeRecord,
+                                      DnsLookupStatus.UNRECOVERABLE,
+                                      Collections.singleton(ErrorPrinter.getStackTraces(t)),
+                                      null
+                                  )
+                              );
+                            }
+                          }
+                          // Make sure we got at least one response for every node
+                          if (!foundSuccessful) {
+                            nodeStatus = NodeDnsStatus.INCONSISTENT;
+                            nodeStatusMessages.add(RESOURCES.getMessage("nodeRecord.missing", nodeRecord));
+                          }
+                        }
+                        // If master and node are both consistent and matches any master A record, promote to master
+                        if ((masterStatus == MasterDnsStatus.CONSISTENT || masterStatus == MasterDnsStatus.WARNING) && nodeStatus == NodeDnsStatus.SLAVE) {
+                          if (firstMasterAddresses.containsAll(firstNodeAddresses)) {
+                            nodeStatus = NodeDnsStatus.MASTER;
+                          }
+                        }
+                        _nodeResults.put(
+                            node,
+                            new ResourceNodeDnsResult(
+                                resourceNode,
+                                nodeRecordLookups,
+                                nodeStatus,
+                                nodeStatusMessages
+                            )
+                        );
+                      } else {
+                        // Node disabled
+                        _nodeResults.put(
+                            node,
+                            new ResourceNodeDnsResult(
+                                resourceNode,
+                                null,
+                                NodeDnsStatus.DISABLED,
+                                Collections.singleton(RESOURCES.getMessage("nodeDisabled"))
+                            )
+                        );
+                      }
+                    }
+
+                    // Inconsistent if any master A record is outside the expected nodeDomains
+                    for (Name masterRecord : masterRecords) {
+                      for (Map<Nameserver, DnsLookupResult> masterLookups : masterRecordLookups.values()) {
+                        for (DnsLookupResult masterResult : masterLookups.values()) {
+                          for (String masterAddress : masterResult.getAddresses()) {
+                            if (!allNodeAddresses.contains(masterAddress)) {
+                              masterStatus = AppCluster.max(masterStatus, MasterDnsStatus.INCONSISTENT);
+                              masterStatusMessages.add(
+                                  RESOURCES.getMessage(
+                                      "masterARecordDoesntMatchNode",
+                                      masterRecord,
+                                      masterAddress
+                                  )
+                              );
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    synchronized (threadLock) {
+                      if (currentThread != thread) {
+                        break;
+                      }
+                      setDnsResult(
+                          new ResourceDnsResult(
+                              resource,
+                              startTime,
+                              System.currentTimeMillis(),
+                              masterRecordLookups,
+                              masterStatus,
+                              masterStatusMessages,
+                              _nodeResults
+                          )
+                      );
+                    }
+                  } catch (RejectedExecutionException exc) {
+                    // Normal during shutdown
+                    boolean needsLogged;
+                    synchronized (threadLock) {
+                      needsLogged = currentThread == thread;
+                    }
+                    if (needsLogged) {
+                      logger.log(Level.SEVERE, null, exc);
+                    }
+                  } catch (ThreadDeath td) {
+                    throw td;
+                  } catch (Throwable t) {
+                    logger.log(Level.SEVERE, null, t);
                   }
-                  if (needsLogged) {
-                    logger.log(Level.SEVERE, null, exc);
+                  try {
+                    Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);
+                  } catch (InterruptedException exc) {
+                    logger.log(Level.WARNING, null, exc);
+                    // Restore the interrupted status
+                    Thread.currentThread().interrupt();
                   }
-                } catch (ThreadDeath td) {
-                  throw td;
-                } catch (Throwable t) {
-                  logger.log(Level.SEVERE, null, t);
                 }
-                try {
-                  Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);
-                } catch (InterruptedException exc) {
-                  logger.log(Level.WARNING, null, exc);
-                  // Restore the interrupted status
-                  Thread.currentThread().interrupt();
-                }
-              }
-            },
-            "PropertiesConfiguration.fileMonitorThread"
+              },
+              "PropertiesConfiguration.fileMonitorThread"
           );
           thread.setPriority(THREAD_PRIORITY);
           thread.start();
@@ -681,15 +682,15 @@ public class ResourceDnsMonitor {
     synchronized (threadLock) {
       thread = null;
       setDnsResult(
-        new ResourceDnsResult(
-          resource,
-          currentTime,
-          currentTime,
-          null,
-          MasterDnsStatus.STOPPED,
-          null,
-          getNodeResults(resource, null, NodeDnsStatus.STOPPED, null)
-        )
+          new ResourceDnsResult(
+              resource,
+              currentTime,
+              currentTime,
+              null,
+              MasterDnsStatus.STOPPED,
+              null,
+              getNodeResults(resource, null, NodeDnsStatus.STOPPED, null)
+          )
       );
     }
   }

@@ -50,7 +50,7 @@ public class AppClusterConfigurationException extends AppClusterException {
 
   static {
     Throwables.registerSurrogateFactory(AppClusterConfigurationException.class, (template, cause) ->
-      new AppClusterConfigurationException(template.getMessage(), cause)
+        new AppClusterConfigurationException(template.getMessage(), cause)
     );
   }
 }

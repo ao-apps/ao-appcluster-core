@@ -37,7 +37,7 @@ public enum ResourceSynchronizationMode {
   TEST_ONLY;
 
   private static final Resources RESOURCES =
-    Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
+      Resources.getResources(ResourceBundle::getBundle, ResourceSynchronizationMode.class);
 
   @Override
   public String toString() {

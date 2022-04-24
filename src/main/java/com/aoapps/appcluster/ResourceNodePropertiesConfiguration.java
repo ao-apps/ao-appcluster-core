@@ -42,12 +42,12 @@ public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, 
     this.properties = properties;
     this.resourceId = resourceId;
     this.nodeId = nodeId;
-    this.nodeRecords = properties.getUniqueNames("appcluster.resource."+resourceId+".node."+nodeId+".nodeRecords");
+    this.nodeRecords = properties.getUniqueNames("appcluster.resource." + resourceId + ".node." + nodeId + ".nodeRecords");
   }
 
   @Override
   public String toString() {
-    return resourceId+'/'+nodeId;
+    return resourceId + '/' + nodeId;
   }
 
   @Override
@@ -55,10 +55,10 @@ public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, 
     if (!(o instanceof ResourceNodeConfiguration)) {
       return false;
     }
-    ResourceNodeConfiguration<?, ?> other = (ResourceNodeConfiguration)o;
+    ResourceNodeConfiguration<?, ?> other = (ResourceNodeConfiguration) o;
     return
-      resourceId.equals(other.getResourceId())
-      && nodeId.equals(other.getNodeId())
+        resourceId.equals(other.getResourceId())
+            && nodeId.equals(other.getNodeId())
     ;
   }
 

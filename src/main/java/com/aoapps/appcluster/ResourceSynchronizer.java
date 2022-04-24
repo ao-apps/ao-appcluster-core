@@ -59,7 +59,7 @@ public abstract class ResourceSynchronizer<R extends Resource<R, RN>, RN extends
 
   @Override
   public String toString() {
-    return localResourceNode.getResource()+": "+localResourceNode.getNode()+" -> "+remoteResourceNode.getNode();
+    return localResourceNode.getResource() + ": " + localResourceNode.getNode() + " -> " + remoteResourceNode.getNode();
   }
 
   /**

@@ -51,7 +51,7 @@ public class Nameserver {
     if (!(o instanceof Nameserver)) {
       return false;
     }
-    return hostname.equals(((Nameserver)o).hostname);
+    return hostname.equals(((Nameserver) o).hostname);
   }
 
   @Override

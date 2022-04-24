@@ -50,7 +50,7 @@ public class AppClusterException extends Exception {
 
   static {
     Throwables.registerSurrogateFactory(AppClusterException.class, (template, cause) ->
-      new AppClusterException(template.getMessage(), cause)
+        new AppClusterException(template.getMessage(), cause)
     );
   }
 }

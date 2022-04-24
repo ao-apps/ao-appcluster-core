@@ -49,7 +49,7 @@ public abstract class ResourceNode<R extends Resource<R, RN>, RN extends Resourc
 
   @Override
   public String toString() {
-    return getResource().toString()+'@'+getNode().toString();
+    return getResource().toString() + '@' + getNode().toString();
   }
 
   @Override
@@ -57,10 +57,10 @@ public abstract class ResourceNode<R extends Resource<R, RN>, RN extends Resourc
     if (!(o instanceof ResourceNode<?, ?>)) {
       return false;
     }
-    ResourceNode<?, ?> other = (ResourceNode<?, ?>)o;
+    ResourceNode<?, ?> other = (ResourceNode<?, ?>) o;
     return
-      resource.equals(other.resource)
-      && node.equals(other.node)
+        resource.equals(other.resource)
+            && node.equals(other.node)
     ;
   }
 

@@ -44,7 +44,7 @@ public class LoggerResourceListener implements ResourceListener {
   private static final Logger logger = Logger.getLogger(LoggerResourceListener.class.getName());
 
   private static final Resources RESOURCES =
-    Resources.getResources(ResourceBundle::getBundle, LoggerResourceListener.class);
+      Resources.getResources(ResourceBundle::getBundle, LoggerResourceListener.class);
 
   @Override
   public void onResourceDnsResult(ResourceDnsResult oldResult, ResourceDnsResult newResult) {
@@ -76,16 +76,16 @@ public class LoggerResourceListener implements ResourceListener {
               }
               if (!newAddresses.equals(oldAddresses)) {
                 logger.log(
-                  level,
-                  RESOURCES.getMessage(
-                    "onResourceDnsResult.masterRecordLookupResultChanged",
-                    cluster,
-                    resource,
-                    masterRecord,
-                    enabledNameserver,
-                    oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
-                    Strings.join(newAddresses, ", ")
-                  )
+                    level,
+                    RESOURCES.getMessage(
+                        "onResourceDnsResult.masterRecordLookupResultChanged",
+                        cluster,
+                        resource,
+                        masterRecord,
+                        enabledNameserver,
+                        oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
+                        Strings.join(newAddresses, ", ")
+                    )
                 );
               }
               SortedSet<String> newStatusMessages = newDnsLookupResult.getStatusMessages();
@@ -96,15 +96,15 @@ public class LoggerResourceListener implements ResourceListener {
               if (!newStatusMessages.equals(oldStatusMessages)) {
                 for (String statusMessage : newStatusMessages) {
                   logger.log(
-                    level,
-                    RESOURCES.getMessage(
-                      "onResourceDnsResult.masterRecord.statusMessage",
-                      cluster,
-                      resource,
-                      masterRecord,
-                      enabledNameserver,
-                      statusMessage
-                    )
+                      level,
+                      RESOURCES.getMessage(
+                          "onResourceDnsResult.masterRecord.statusMessage",
+                          cluster,
+                          resource,
+                          masterRecord,
+                          enabledNameserver,
+                          statusMessage
+                      )
                   );
                 }
               }
@@ -148,17 +148,17 @@ public class LoggerResourceListener implements ResourceListener {
                 }
                 if (!newAddresses.equals(oldAddresses)) {
                   logger.log(
-                    level,
-                    RESOURCES.getMessage(
-                      "onResourceDnsResult.nodeRecordLookupResultChanged",
-                      cluster,
-                      resource,
-                      node,
-                      nodeRecord,
-                      enabledNameserver,
-                      oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
-                      Strings.join(newAddresses, ", ")
-                    )
+                      level,
+                      RESOURCES.getMessage(
+                          "onResourceDnsResult.nodeRecordLookupResultChanged",
+                          cluster,
+                          resource,
+                          node,
+                          nodeRecord,
+                          enabledNameserver,
+                          oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
+                          Strings.join(newAddresses, ", ")
+                      )
                   );
                 }
                 SortedSet<String> newStatusMessages = newDnsLookupResult.getStatusMessages();
@@ -169,16 +169,16 @@ public class LoggerResourceListener implements ResourceListener {
                 if (!newStatusMessages.equals(oldStatusMessages)) {
                   for (String statusMessage : newStatusMessages) {
                     logger.log(
-                      level,
-                      RESOURCES.getMessage(
-                        "onResourceDnsResult.nodeRecord.statusMessage",
-                        cluster,
-                        resource,
-                        node,
-                        nodeRecord,
-                        enabledNameserver,
-                        statusMessage
-                      )
+                        level,
+                        RESOURCES.getMessage(
+                            "onResourceDnsResult.nodeRecord.statusMessage",
+                            cluster,
+                            resource,
+                            node,
+                            nodeRecord,
+                            enabledNameserver,
+                            statusMessage
+                        )
                     );
                   }
                 }
@@ -224,7 +224,7 @@ public class LoggerResourceListener implements ResourceListener {
     if (oldSteps.size() != newSteps.size()) {
       return false;
     }
-    for (int i=0, size=newSteps.size(); i<size; i++) {
+    for (int i = 0, size = newSteps.size(); i < size; i++) {
       ResourceSynchronizationResultStep oldStep = oldSteps.get(i);
       ResourceSynchronizationResultStep newStep = newSteps.get(i);
       if (oldStep.getResourceStatus() != newStep.getResourceStatus()) {
@@ -258,16 +258,16 @@ public class LoggerResourceListener implements ResourceListener {
     Level level = resourceStatus.getLogLevel();
     if (logger.isLoggable(level) && !matches(oldResult, newResult)) {
       List<ResourceSynchronizationResultStep> steps = newResult.getSteps();
-      for (int stepNum=1, size=steps.size(); stepNum <= size; stepNum++) {
-        ResourceSynchronizationResultStep step = steps.get(stepNum-1);
+      for (int stepNum = 1, size = steps.size(); stepNum <= size; stepNum++) {
+        ResourceSynchronizationResultStep step = steps.get(stepNum - 1);
         logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.description", cluster, resource, localNode, remoteNode, mode, stepNum, step.getDescription()));
         logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.startTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getStartTime()));
         logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.endTime", cluster, resource, localNode, remoteNode, mode, stepNum, step.getEndTime()));
         logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.status", cluster, resource, localNode, remoteNode, mode, stepNum, step.getResourceStatus()));
-        for (String output: step.getOutputs()) {
+        for (String output : step.getOutputs()) {
           logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.output", cluster, resource, localNode, remoteNode, mode, stepNum, output));
         }
-        for (String error: step.getErrors()) {
+        for (String error : step.getErrors()) {
           logger.log(level, RESOURCES.getMessage("onResourceSynchronizationResult.step.error", cluster, resource, localNode, remoteNode, mode, stepNum, error));
         }
       }

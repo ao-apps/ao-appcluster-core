@@ -68,7 +68,7 @@ public class Node {
     if (!(o instanceof Node)) {
       return false;
     }
-    return id.equals(((Node)o).getId());
+    return id.equals(((Node) o).getId());
   }
 
   @Override

@@ -37,8 +37,8 @@ public abstract class CronResourcePropertiesConfiguration<R extends CronResource
 
   protected CronResourcePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException {
     super(properties, id);
-    this.synchronizeTimeout = properties.getInt("appcluster.resource."+id+".timeout.sync");
-    this.testTimeout = properties.getInt("appcluster.resource."+id+".timeout.test");
+    this.synchronizeTimeout = properties.getInt("appcluster.resource." + id + ".timeout.sync");
+    this.testTimeout = properties.getInt("appcluster.resource." + id + ".timeout.test");
   }
 
   @Override
@@ -49,7 +49,7 @@ public abstract class CronResourcePropertiesConfiguration<R extends CronResource
   @Override
   public Schedule getSynchronizeSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException {
     assert localResourceNode.getResource() == remoteResourceNode.getResource();
-    return properties.getSchedule("appcluster.resource."+id+".schedule.sync."+localResourceNode.getNode().getId()+"."+remoteResourceNode.getNode().getId());
+    return properties.getSchedule("appcluster.resource." + id + ".schedule.sync." + localResourceNode.getNode().getId() + "." + remoteResourceNode.getNode().getId());
   }
 
   @Override
@@ -60,6 +60,6 @@ public abstract class CronResourcePropertiesConfiguration<R extends CronResource
   @Override
   public Schedule getTestSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException {
     assert localResourceNode.getResource() == remoteResourceNode.getResource();
-    return properties.getSchedule("appcluster.resource."+id+".schedule.test."+localResourceNode.getNode().getId()+"."+remoteResourceNode.getNode().getId());
+    return properties.getSchedule("appcluster.resource." + id + ".schedule.test." + localResourceNode.getNode().getId() + "." + remoteResourceNode.getNode().getId());
   }
 }

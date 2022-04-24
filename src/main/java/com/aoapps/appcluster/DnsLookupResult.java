@@ -43,10 +43,10 @@ public class DnsLookupResult {
    * Sorts the addresses as they are added.
    */
   DnsLookupResult(
-    Name name,
-    DnsLookupStatus status,
-    Collection<String> statusMessages,
-    String[] addresses
+      Name name,
+      DnsLookupStatus status,
+      Collection<String> statusMessages,
+      String[] addresses
   ) {
     this.name = name;
     this.status = status;
@@ -60,12 +60,12 @@ public class DnsLookupResult {
     if (!(o instanceof DnsLookupResult)) {
       return false;
     }
-    DnsLookupResult other = (DnsLookupResult)o;
+    DnsLookupResult other = (DnsLookupResult) o;
     return
-      name.equals(other.name)
-      && status == other.status
-      && statusMessages.equals(other.statusMessages)
-      && addresses.equals(other.addresses)
+        name.equals(other.name)
+            && status == other.status
+            && statusMessages.equals(other.statusMessages)
+            && addresses.equals(other.addresses)
     ;
   }
 

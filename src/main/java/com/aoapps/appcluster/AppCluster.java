@@ -110,16 +110,15 @@ public class AppCluster {
     this.configuration = new AppClusterPropertiesConfiguration(properties);
   }
 
-  /**
-   * Performs a consistency check on a configuration.
-   */
-  /*
-  public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
-    checkConfiguration(
-      configuration.getNodeConfigurations(),
-      configuration.getResourceConfigurations()
-    );
-  }*/
+//  /**
+//   * Performs a consistency check on a configuration.
+//   */
+//  public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
+//    checkConfiguration(
+//      configuration.getNodeConfigurations(),
+//      configuration.getResourceConfigurations()
+//    );
+//  }
 
   /**
    * Performs a consistency check on a configuration.
@@ -201,7 +200,7 @@ public class AppCluster {
    */
   public void removeResourceListener(ResourceListener resourceListener) {
     synchronized (resourceListeners) {
-      for (int i=0; i<resourceListeners.size(); i++) {
+      for (int i = 0; i < resourceListeners.size(); i++) {
         if (resourceListeners.get(i) == resourceListener) {
           resourceListeners.remove(i);
           return;
@@ -508,8 +507,8 @@ public class AppCluster {
         localNode = null;
         for (Node node : nodes) {
           if (
-            node.getHostname().equals(localHostname)
-            && node.getUsername().equals(localUsername)
+              node.getHostname().equals(localHostname)
+                  && node.getUsername().equals(localUsername)
           ) {
             localNode = node;
             break;
@@ -599,7 +598,7 @@ public class AppCluster {
   }
 
   static <T extends Enum<T>> T max(T enum1, T enum2) {
-    if (enum1.compareTo(enum2)>0) {
+    if (enum1.compareTo(enum2) > 0) {
       return enum1;
     }
     return enum2;
