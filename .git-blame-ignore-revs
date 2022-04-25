@@ -16,3 +16,6 @@ dcfba37cc53ef22066d65ec2dd5f0104d388f567
 
 # Added javadoc top section with contents equivalent to README.md.
 ca7477c0985b09a2f82abebd718ce6842439250b
+
+# Performed automatic source code clean-up with rewrite-maven-plugin
+0b524e62267ba6ef6467f422410888aa5ddd2b83
