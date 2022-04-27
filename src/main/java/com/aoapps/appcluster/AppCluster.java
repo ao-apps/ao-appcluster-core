@@ -63,9 +63,9 @@ public class AppCluster {
    * Started flag.
    */
   private final Object startedLock = new Object();
-  private boolean started = false; // Protected by startedLock
+  private boolean started; // Protected by startedLock
   private UnmodifiableTimestamp startedTime = null; // Protected by startedLock
-  private boolean enabled = false; // Protected by startedLock
+  private boolean enabled; // Protected by startedLock
   private String display; // Protected by startedLock
   private ExecutorService executorService; // Protected by startLock
   private Set<? extends Node> nodes = Collections.emptySet(); // Protected by startedLock
@@ -516,18 +516,18 @@ public class AppCluster {
         }
 
         // Start the executor services
-        executorService = Executors.newCachedThreadPool(r -> {
+        executorService = Executors.newCachedThreadPool((Runnable r) -> {
           Thread thread = new Thread(r, AppCluster.class.getName() + ".executorService");
           thread.setPriority(EXECUTOR_THREAD_PRIORITY);
           return thread;
         });
         synchronized (resourceListeners) {
-          resourceListenersOnDnsResultExecutorService = Executors.newSingleThreadExecutor(r -> {
+          resourceListenersOnDnsResultExecutorService = Executors.newSingleThreadExecutor((Runnable r) -> {
             Thread thread = new Thread(r, AppCluster.class.getName() + ".resourceListenersOnDnsResultExecutorService");
             thread.setPriority(EXECUTOR_THREAD_PRIORITY);
             return thread;
           });
-          resourceListenersOnSynchronizationResultExecutorService = Executors.newSingleThreadExecutor(r -> {
+          resourceListenersOnSynchronizationResultExecutorService = Executors.newSingleThreadExecutor((Runnable r) -> {
             Thread thread = new Thread(r, AppCluster.class.getName() + ".resourceListenersOnSynchronizationResultExecutorService");
             thread.setPriority(EXECUTOR_THREAD_PRIORITY);
             return thread;

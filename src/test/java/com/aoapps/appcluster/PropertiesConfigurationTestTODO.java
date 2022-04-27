@@ -42,7 +42,7 @@ public class PropertiesConfigurationTestTODO {
   public void testRealWorldConfig() throws IOException, AppClusterConfigurationException, InterruptedException {
     URL url = PropertiesConfigurationTestTODO.class.getResource("appcluster.properties");
     AppClusterPropertiesConfiguration config;
-    if (url.getProtocol().equals("file")) {
+    if ("file".equals(url.getProtocol())) {
       config = new AppClusterPropertiesConfiguration(new File(url.getPath()));
     } else {
       Properties props = new Properties();
