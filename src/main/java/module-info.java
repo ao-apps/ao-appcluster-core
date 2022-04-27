@@ -30,4 +30,4 @@ module com.aoapps.appcluster.core {
   requires org.dnsjava; // <groupId>dnsjava</groupId><artifactId>dnsjava</artifactId>
   // Java SQL
   requires java.sql;
-}
+} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
