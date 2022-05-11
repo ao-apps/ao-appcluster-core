@@ -40,12 +40,12 @@ package com.aoapps.appcluster;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class ResourceSynchronizer<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class ResourceSynchronizer<R extends Resource<R, N>, N extends ResourceNode<R, N>> {
 
-  protected final RN localResourceNode;
-  protected final RN remoteResourceNode;
+  protected final N localResourceNode;
+  protected final N remoteResourceNode;
 
-  protected ResourceSynchronizer(RN localResourceNode, RN remoteResourceNode) {
+  protected ResourceSynchronizer(N localResourceNode, N remoteResourceNode) {
     R resource = localResourceNode.getResource();
     if (resource != remoteResourceNode.getResource()) {
       throw new IllegalArgumentException("localResourceNode.resource != remoteResourceNode.resource");
@@ -65,14 +65,14 @@ public abstract class ResourceSynchronizer<R extends Resource<R, RN>, RN extends
   /**
    * Gets the local resource node.
    */
-  public RN getLocalResourceNode() {
+  public N getLocalResourceNode() {
     return localResourceNode;
   }
 
   /**
    * Gets the remote resource node.
    */
-  public RN getRemoteResourceNode() {
+  public N getRemoteResourceNode() {
     return remoteResourceNode;
   }
 

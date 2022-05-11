@@ -61,7 +61,7 @@ import java.util.logging.Logger;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceSynchronizer<R, RN> {
+public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N extends CronResourceNode<R, N>> extends ResourceSynchronizer<R, N> {
 
   private static final Logger logger = Logger.getLogger(CronResourceSynchronizer.class.getName());
 
@@ -81,7 +81,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, RN>, RN
   private ResourceSynchronizationMode synchronizeNowMode; // All access uses jobLock
   private ResourceSynchronizationResult lastResult; // All access uses jobLock
 
-  protected CronResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, Schedule synchronizeSchedule, Schedule testSchedule) {
+  protected CronResourceSynchronizer(N localResourceNode, N remoteResourceNode, Schedule synchronizeSchedule, Schedule testSchedule) {
     super(localResourceNode, remoteResourceNode);
     this.synchronizeSchedule = synchronizeSchedule;
     this.testSchedule = testSchedule;

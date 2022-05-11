@@ -32,7 +32,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> implements ResourceConfiguration<R, RN> {
+public abstract class ResourcePropertiesConfiguration<R extends Resource<R, N>, N extends ResourceNode<R, N>> implements ResourceConfiguration<R, N> {
 
   protected final AppClusterPropertiesConfiguration properties;
   protected final String id;
@@ -102,7 +102,7 @@ public abstract class ResourcePropertiesConfiguration<R extends Resource<R, RN>,
   }
 
   @Override
-  public abstract Set<? extends ResourceNodePropertiesConfiguration<R, RN>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
+  public abstract Set<? extends ResourceNodePropertiesConfiguration<R, N>> getResourceNodeConfigurations() throws AppClusterConfigurationException;
 
   @Override
   public abstract R newResource(AppCluster cluster, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException;

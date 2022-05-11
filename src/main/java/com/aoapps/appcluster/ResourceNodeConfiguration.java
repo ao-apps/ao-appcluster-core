@@ -31,7 +31,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public interface ResourceNodeConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public interface ResourceNodeConfiguration<R extends Resource<R, N>, N extends ResourceNode<R, N>> {
 
   @Override
   String toString();
@@ -60,5 +60,5 @@ public interface ResourceNodeConfiguration<R extends Resource<R, RN>, RN extends
   /**
    * Creates a new resource node from this configuration.
    */
-  RN newResourceNode(Node node) throws AppClusterConfigurationException;
+  N newResourceNode(Node node) throws AppClusterConfigurationException;
 }

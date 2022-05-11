@@ -110,20 +110,23 @@ public class AppCluster {
     this.configuration = new AppClusterPropertiesConfiguration(properties);
   }
 
-//  /**
-//   * Performs a consistency check on a configuration.
-//   */
-//  public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
-//    checkConfiguration(
-//      configuration.getNodeConfigurations(),
-//      configuration.getResourceConfigurations()
-//    );
-//  }
+  ///**
+  // * Performs a consistency check on a configuration.
+  // */
+  //public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
+  //  checkConfiguration(
+  //    configuration.getNodeConfigurations(),
+  //    configuration.getResourceConfigurations()
+  //  );
+  //}
 
   /**
    * Performs a consistency check on a configuration.
    */
-  public static void checkConfiguration(Set<? extends NodeConfiguration> nodeConfigurations, Set<? extends ResourceConfiguration<?, ?>> resourceConfigurations) throws AppClusterConfigurationException {
+  public static void checkConfiguration(
+      Set<? extends NodeConfiguration> nodeConfigurations,
+      Set<? extends ResourceConfiguration<?, ?>> resourceConfigurations
+  ) throws AppClusterConfigurationException {
     // Each node must have a distinct display
     Set<String> strings = AoCollections.newHashSet(nodeConfigurations.size());
     for (NodeConfiguration nodeConfiguration : nodeConfigurations) {
@@ -443,10 +446,12 @@ public class AppCluster {
    * machine is not one of the nodes.  For this JVM to be considered the local
    * node, the system hostname must match this node's hostname, and the system
    * property "user.name" must match this node's username.
-   *
+   * <p>
    * Determined at cluster start time, before any resources are started.
-   *
+   * </p>
+   * <p>
    * Returns <code>null</code> when not started.
+   * </p>
    */
   public Node getLocalNode() {
     synchronized (startedLock) {

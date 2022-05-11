@@ -89,7 +89,10 @@ public class ResourceDnsResult implements ResourceResult {
    *
    * @exception  IllegalArgumentException  if any dnsRecord->nameserver result is missing.
    */
-  static Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getUnmodifiableDnsLookupResults(Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> dnsRecordLookups, Set<? extends Name> dnsRecords, Set<? extends Nameserver> nameservers) throws IllegalArgumentException {
+  static Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> getUnmodifiableDnsLookupResults(
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> dnsRecordLookups,
+      Set<? extends Name> dnsRecords, Set<? extends Nameserver> nameservers
+  ) throws IllegalArgumentException {
     Map<Name, Map<? extends Nameserver, ? extends DnsLookupResult>> newDnsRecordLookups = AoCollections.newLinkedHashMap(dnsRecords.size());
     for (Name dnsRecord : dnsRecords) {
       Map<? extends Nameserver, ? extends DnsLookupResult> dnsLookupResults = dnsRecordLookups.get(dnsRecord);

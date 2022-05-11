@@ -33,7 +33,7 @@ import com.aoapps.cron.Schedule;
  *
  * @author  AO Industries, Inc.
  */
-public interface CronResourceConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> extends ResourceConfiguration<R, RN> {
+public interface CronResourceConfiguration<R extends Resource<R, N>, N extends ResourceNode<R, N>> extends ResourceConfiguration<R, N> {
 
   /**
    * Gets the number of seconds before a synchronization pass times-out.
@@ -43,7 +43,7 @@ public interface CronResourceConfiguration<R extends Resource<R, RN>, RN extends
   /**
    * Gets the synchronization schedule between the local node and the remote node.
    */
-  Schedule getSynchronizeSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException;
+  Schedule getSynchronizeSchedule(N localResourceNode, N remoteResourceNode) throws AppClusterConfigurationException;
 
   /**
    * Gets the number of seconds before a test pass times-out.
@@ -53,5 +53,5 @@ public interface CronResourceConfiguration<R extends Resource<R, RN>, RN extends
   /**
    * Gets the test schedule between the local node and the remote node.
    */
-  Schedule getTestSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException;
+  Schedule getTestSchedule(N localResourceNode, N remoteResourceNode) throws AppClusterConfigurationException;
 }

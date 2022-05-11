@@ -32,13 +32,13 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class ResourceNode<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class ResourceNode<R extends Resource<R, N>, N extends ResourceNode<R, N>> {
 
   private final Node node;
   private final Set<? extends Name> nodeRecords;
   private R resource;
 
-  protected ResourceNode(Node node, ResourceNodeConfiguration<R, RN> resourceNodeConfiguration) {
+  protected ResourceNode(Node node, ResourceNodeConfiguration<R, N> resourceNodeConfiguration) {
     this.node = node;
     this.nodeRecords = AoCollections.unmodifiableCopySet(resourceNodeConfiguration.getNodeRecords());
   }
@@ -60,8 +60,7 @@ public abstract class ResourceNode<R extends Resource<R, RN>, RN extends Resourc
     ResourceNode<?, ?> other = (ResourceNode<?, ?>) o;
     return
         resource.equals(other.resource)
-            && node.equals(other.node)
-    ;
+            && node.equals(other.node);
   }
 
   @Override
@@ -107,7 +106,7 @@ public abstract class ResourceNode<R extends Resource<R, RN>, RN extends Resourc
    * or <code>null</code> if this is not a remote node.
    */
   public ResourceStatus getSynchronizationStatus() {
-    ResourceSynchronizer<R, RN> synchronizer = resource.getSynchronizerMap().get(node);
+    ResourceSynchronizer<R, N> synchronizer = resource.getSynchronizerMap().get(node);
     return synchronizer == null ? null : synchronizer.getResultStatus();
   }
 }

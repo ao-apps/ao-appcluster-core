@@ -31,7 +31,7 @@ package com.aoapps.appcluster;
  * @author  AO Industries, Inc.
  */
 @FunctionalInterface
-public interface ResourcePropertiesConfigurationFactory<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public interface ResourcePropertiesConfigurationFactory<R extends Resource<R, N>, N extends ResourceNode<R, N>> {
 
-  ResourcePropertiesConfiguration<R, RN> newResourcePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException;
+  ResourcePropertiesConfiguration<R, N> newResourcePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException;
 }

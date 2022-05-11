@@ -65,8 +65,7 @@ public class DnsLookupResult {
         name.equals(other.name)
             && status == other.status
             && statusMessages.equals(other.statusMessages)
-            && addresses.equals(other.addresses)
-    ;
+            && addresses.equals(other.addresses);
   }
 
   @Override

@@ -30,7 +30,8 @@ import com.aoapps.cron.Schedule;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResourcePropertiesConfiguration<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourcePropertiesConfiguration<R, RN> implements CronResourceConfiguration<R, RN> {
+public abstract class CronResourcePropertiesConfiguration<R extends CronResource<R, N>, N extends CronResourceNode<R, N>>
+    extends ResourcePropertiesConfiguration<R, N> implements CronResourceConfiguration<R, N> {
 
   private final int synchronizeTimeout;
   private final int testTimeout;
@@ -47,7 +48,7 @@ public abstract class CronResourcePropertiesConfiguration<R extends CronResource
   }
 
   @Override
-  public Schedule getSynchronizeSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException {
+  public Schedule getSynchronizeSchedule(N localResourceNode, N remoteResourceNode) throws AppClusterConfigurationException {
     assert localResourceNode.getResource() == remoteResourceNode.getResource();
     return properties.getSchedule("appcluster.resource." + id + ".schedule.sync." + localResourceNode.getNode().getId() + "." + remoteResourceNode.getNode().getId());
   }
@@ -58,7 +59,7 @@ public abstract class CronResourcePropertiesConfiguration<R extends CronResource
   }
 
   @Override
-  public Schedule getTestSchedule(RN localResourceNode, RN remoteResourceNode) throws AppClusterConfigurationException {
+  public Schedule getTestSchedule(N localResourceNode, N remoteResourceNode) throws AppClusterConfigurationException {
     assert localResourceNode.getResource() == remoteResourceNode.getResource();
     return properties.getSchedule("appcluster.resource." + id + ".schedule.test." + localResourceNode.getNode().getId() + "." + remoteResourceNode.getNode().getId());
   }

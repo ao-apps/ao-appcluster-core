@@ -47,7 +47,8 @@ public class ResourceNodeDnsResult {
       Collection<String> nodeStatusMessages
   ) {
     this.resourceNode = resourceNode;
-    this.nodeRecordLookups = nodeRecordLookups == null ? null : ResourceDnsResult.getUnmodifiableDnsLookupResults(nodeRecordLookups, resourceNode.getNodeRecords(), resourceNode.getResource().getEnabledNameservers());
+    this.nodeRecordLookups = nodeRecordLookups == null ? null
+        : ResourceDnsResult.getUnmodifiableDnsLookupResults(nodeRecordLookups, resourceNode.getNodeRecords(), resourceNode.getResource().getEnabledNameservers());
     this.nodeStatus = nodeStatus;
     this.nodeStatusMessages = ResourceDnsResult.getUnmodifiableSortedSet(nodeStatusMessages, ResourceDnsResult.defaultLocaleCollator);
   }

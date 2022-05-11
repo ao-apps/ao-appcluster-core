@@ -29,5 +29,5 @@ package com.aoapps.appcluster;
  * @author  AO Industries, Inc.
  */
 @SuppressWarnings("MarkerInterface")
-public interface CronResourceNodeConfiguration<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceNodeConfiguration<R, RN> {
+public interface CronResourceNodeConfiguration<R extends CronResource<R, N>, N extends CronResourceNode<R, N>> extends ResourceNodeConfiguration<R, N> {
 }

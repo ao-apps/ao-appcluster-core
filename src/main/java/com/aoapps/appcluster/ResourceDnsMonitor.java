@@ -83,7 +83,7 @@ public class ResourceDnsMonitor {
   public static final Duration DNS_CHECK_TIMEOUT = Duration.ofSeconds(30);
 
   /**
-   * Only one resolver will be created for each unique nameserver (case-insensitive on unique)
+   * Only one resolver will be created for each unique nameserver (case-insensitive on unique).
    */
   private static final ConcurrentMap<Nameserver, SimpleResolver> resolvers = new ConcurrentHashMap<>();
 
@@ -103,7 +103,12 @@ public class ResourceDnsMonitor {
   /**
    * Gets a mapping for all nodes with the same status.
    */
-  private static Map<? extends Node, ? extends ResourceNodeDnsResult> getNodeResults(Resource<?, ?> resource, Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups, NodeDnsStatus nodeStatus, Collection<String> nodeStatusMessages) {
+  private static Map<? extends Node, ? extends ResourceNodeDnsResult> getNodeResults(
+      Resource<?, ?> resource,
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> nodeRecordLookups,
+      NodeDnsStatus nodeStatus,
+      Collection<String> nodeStatusMessages
+  ) {
     Set<? extends ResourceNode<?, ?>> resourceNodes = resource.getResourceNodes();
     Map<Node, ResourceNodeDnsResult> nodeResults = AoCollections.newHashMap(resourceNodes.size());
     for (ResourceNode<?, ?> resourceNode : resourceNodes) {
@@ -246,16 +251,16 @@ public class ResourceDnsMonitor {
 
                 // Find all the unique hostnames and nameservers that will be queried
                 final Name[] allHostnames;
-                {
-                  final Set<Name> allHostnamesSet = new HashSet<>();
-                  allHostnamesSet.addAll(masterRecords);
-                  for (ResourceNode<?, ?> resourceNode : _resourceNodes) {
-                    if (resourceNode.getNode().isEnabled()) {
-                      allHostnamesSet.addAll(resourceNode.getNodeRecords());
+                  {
+                    final Set<Name> allHostnamesSet = new HashSet<>();
+                    allHostnamesSet.addAll(masterRecords);
+                    for (ResourceNode<?, ?> resourceNode : _resourceNodes) {
+                      if (resourceNode.getNode().isEnabled()) {
+                        allHostnamesSet.addAll(resourceNode.getNodeRecords());
+                      }
                     }
+                    allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
                   }
-                  allHostnames = allHostnamesSet.toArray(new Name[allHostnamesSet.size()]);
-                }
 
                 while (!Thread.currentThread().isInterrupted()) {
                   synchronized (threadLock) {
@@ -276,11 +281,10 @@ public class ResourceDnsMonitor {
                             nameserver,
                             executorService.submit(() -> {
                               try {
-                                for (
-                              int attempt = 0;
-                              attempt < DNS_ATTEMPTS && !Thread.currentThread().isInterrupted();
-                              attempt++
-                            ) {
+                                for (int attempt = 0;
+                                    attempt < DNS_ATTEMPTS && !Thread.currentThread().isInterrupted();
+                                    attempt++
+                                ) {
                                   Lookup lookup = new Lookup(hostname, Type.A);
                                   lookup.setCache(null);
                                   lookup.setResolver(getSimpleResolver(nameserver));
@@ -288,7 +292,7 @@ public class ResourceDnsMonitor {
                                   Record[] records = lookup.run();
                                   int result = lookup.getResult();
                                   switch (result) {
-                                    case Lookup.SUCCESSFUL :
+                                    case Lookup.SUCCESSFUL:
                                       if (records == null || records.length == 0) {
                                         return new DnsLookupResult(
                                             hostname,
@@ -300,10 +304,10 @@ public class ResourceDnsMonitor {
                                       String[] addresses = new String[records.length];
                                       Collection<String> statusMessages = null;
                                       for (int c = 0; c < records.length; c++) {
-                                        ARecord aRecord = (ARecord) records[c];
+                                        ARecord arecord = (ARecord) records[c];
                                         // Verify masterDomain TTL settings match expected values, issue as a warning
                                         if (masterRecords.contains(hostname)) {
-                                          long ttl = aRecord.getTTL();
+                                          long ttl = arecord.getTTL();
                                           if (ttl != masterRecordsTtl) {
                                             if (statusMessages == null) {
                                               statusMessages = new ArrayList<>();
@@ -311,7 +315,7 @@ public class ResourceDnsMonitor {
                                             statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl", masterRecordsTtl, ttl));
                                           }
                                         }
-                                        addresses[c] = aRecord.getAddress().getHostAddress();
+                                        addresses[c] = arecord.getAddress().getHostAddress();
                                       }
                                       return new DnsLookupResult(
                                           hostname,
@@ -319,31 +323,31 @@ public class ResourceDnsMonitor {
                                           statusMessages,
                                           addresses
                                       );
-                                    case Lookup.UNRECOVERABLE :
+                                    case Lookup.UNRECOVERABLE:
                                       return new DnsLookupResult(
                                           hostname,
                                           DnsLookupStatus.UNRECOVERABLE,
                                           null,
                                           null
                                       );
-                                    case Lookup.TRY_AGAIN :
-                                      // Fall-through to try again loop
+                                    case Lookup.TRY_AGAIN:
+                                      // fall-through to try again loop
                                       break;
-                                    case Lookup.HOST_NOT_FOUND :
+                                    case Lookup.HOST_NOT_FOUND:
                                       return new DnsLookupResult(
                                           hostname,
                                           DnsLookupStatus.HOST_NOT_FOUND,
                                           null,
                                           null
                                       );
-                                    case Lookup.TYPE_NOT_FOUND :
+                                    case Lookup.TYPE_NOT_FOUND:
                                       return new DnsLookupResult(
                                           hostname,
                                           DnsLookupStatus.TYPE_NOT_FOUND,
                                           null,
                                           null
                                       );
-                                    default :
+                                    default:
                                       return new DnsLookupResult(
                                           hostname,
                                           DnsLookupStatus.ERROR,
@@ -451,7 +455,7 @@ public class ResourceDnsMonitor {
                     assert firstMasterAddresses != null;
 
                     // Get the results for each node
-                    Map<Node, ResourceNodeDnsResult> _nodeResults = AoCollections.newHashMap(_resourceNodes.length);
+                    Map<Node, ResourceNodeDnsResult> myNodeResults = AoCollections.newHashMap(_resourceNodes.length);
                     Set<String> allNodeAddresses = AoCollections.newHashSet(_resourceNodes.length);
                     for (ResourceNode<?, ?> resourceNode :  _resourceNodes) {
                       Node node = resourceNode.getNode();
@@ -488,7 +492,7 @@ public class ResourceDnsMonitor {
                                 } else {
                                   // Each node must have a different A record
                                   String address = addresses.iterator().next();
-                                  for (ResourceNodeDnsResult previousNodeResult :  _nodeResults.values()) {
+                                  for (ResourceNodeDnsResult previousNodeResult :  myNodeResults.values()) {
                                     Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
                                     if (previousNodeRecordLookups != null) {
                                       boolean foundMatch = false;
@@ -522,7 +526,7 @@ public class ResourceDnsMonitor {
                                                 address
                                             )
                                         );
-                                        _nodeResults.put(
+                                        myNodeResults.put(
                                             previousNode,
                                             new ResourceNodeDnsResult(
                                                 previousNodeResult.getResourceNode(),
@@ -583,7 +587,7 @@ public class ResourceDnsMonitor {
                             nodeStatus = NodeDnsStatus.MASTER;
                           }
                         }
-                        _nodeResults.put(
+                        myNodeResults.put(
                             node,
                             new ResourceNodeDnsResult(
                                 resourceNode,
@@ -594,7 +598,7 @@ public class ResourceDnsMonitor {
                         );
                       } else {
                         // Node disabled
-                        _nodeResults.put(
+                        myNodeResults.put(
                             node,
                             new ResourceNodeDnsResult(
                                 resourceNode,
@@ -638,7 +642,7 @@ public class ResourceDnsMonitor {
                               masterRecordLookups,
                               masterStatus,
                               masterStatusMessages,
-                              _nodeResults
+                              myNodeResults
                           )
                       );
                     }

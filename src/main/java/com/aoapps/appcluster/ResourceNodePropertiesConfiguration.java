@@ -31,7 +31,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> implements ResourceNodeConfiguration<R, RN> {
+public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, N>, N extends ResourceNode<R, N>> implements ResourceNodeConfiguration<R, N> {
 
   protected final AppClusterPropertiesConfiguration properties;
   protected final String resourceId;
@@ -58,8 +58,7 @@ public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, 
     ResourceNodeConfiguration<?, ?> other = (ResourceNodeConfiguration) o;
     return
         resourceId.equals(other.getResourceId())
-            && nodeId.equals(other.getNodeId())
-    ;
+            && nodeId.equals(other.getNodeId());
   }
 
   @Override
@@ -84,5 +83,5 @@ public abstract class ResourceNodePropertiesConfiguration<R extends Resource<R, 
   }
 
   @Override
-  public abstract RN newResourceNode(Node node) throws AppClusterConfigurationException;
+  public abstract N newResourceNode(Node node) throws AppClusterConfigurationException;
 }

@@ -39,7 +39,7 @@ import org.xbill.DNS.Name;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNode<R, RN>> {
+public abstract class Resource<R extends Resource<R, N>, N extends ResourceNode<R, N>> {
 
   private final AppCluster cluster;
   private final String id;
@@ -48,14 +48,14 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
   private final Set<? extends Name> masterRecords;
   private final int masterRecordsTtl;
   private final String type;
-  private final Set<? extends RN> resourceNodes;
+  private final Set<? extends N> resourceNodes;
   private final Set<? extends Nameserver> enabledNameservers;
 
   private final ResourceDnsMonitor dnsMonitor;
-  private final Map<Node, ResourceSynchronizer<R, RN>> synchronizers;
+  private final Map<Node, ResourceSynchronizer<R, N>> synchronizers;
 
   @SuppressWarnings("OverridableMethodCallInConstructor")
-  protected Resource(AppCluster cluster, ResourceConfiguration<R, RN> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
+  protected Resource(AppCluster cluster, ResourceConfiguration<R, N> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
     this.cluster = cluster;
     this.id = resourceConfiguration.getId();
     this.enabled = cluster.isEnabled() && resourceConfiguration.isEnabled();
@@ -64,12 +64,12 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
     this.masterRecordsTtl = resourceConfiguration.getMasterRecordsTtl();
     this.type = resourceConfiguration.getType();
     @SuppressWarnings("unchecked")
-    R rThis = (R) this;
-    Set<RN> newResourceNodes = AoCollections.newLinkedHashSet(resourceNodes.size());
+    R rthis = (R) this;
+    Set<N> newResourceNodes = AoCollections.newLinkedHashSet(resourceNodes.size());
     for (ResourceNode<?, ?> resourceNode : resourceNodes) {
       @SuppressWarnings("unchecked")
-      RN rn = (RN) resourceNode;
-      rn.init(rThis);
+      N rn = (N) resourceNode;
+      rn.init(rthis);
       newResourceNodes.add(rn);
     }
     this.resourceNodes = AoCollections.optimalUnmodifiableSet(newResourceNodes);
@@ -90,8 +90,8 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
       synchronizers = Collections.emptyMap();
     } else {
       // Find local node in the resource
-      RN localResourceNode = null;
-      for (RN resourceNode : this.resourceNodes) {
+      N localResourceNode = null;
+      for (N resourceNode : this.resourceNodes) {
         if (resourceNode.getNode().equals(localNode)) {
           localResourceNode = resourceNode;
           break;
@@ -101,11 +101,11 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
         // The local node is not part of this resource.
         synchronizers = Collections.emptyMap();
       } else {
-        Map<Node, ResourceSynchronizer<R, RN>> newSynchronizers = AoCollections.newLinkedHashMap(this.resourceNodes.size() - 1);
-        for (RN resourceNode : this.resourceNodes) {
+        Map<Node, ResourceSynchronizer<R, N>> newSynchronizers = AoCollections.newLinkedHashMap(this.resourceNodes.size() - 1);
+        for (N resourceNode : this.resourceNodes) {
           Node node = resourceNode.getNode();
           if (!node.equals(localNode)) {
-            ResourceSynchronizer<R, RN> synchronizer = newResourceSynchronizer(localResourceNode, resourceNode, resourceConfiguration);
+            ResourceSynchronizer<R, N> synchronizer = newResourceSynchronizer(localResourceNode, resourceNode, resourceConfiguration);
             if (synchronizer != null) {
               newSynchronizers.put(node, synchronizer);
             }
@@ -195,7 +195,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
   }
 
   @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-  public Set<? extends RN> getResourceNodes() {
+  public Set<? extends N> getResourceNodes() {
     return resourceNodes;
   }
 
@@ -208,7 +208,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
       status = AppCluster.max(status, ResourceStatus.DISABLED);
     }
     status = AppCluster.max(status, getDnsMonitor().getLastResult().getResourceStatus());
-    for (ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
+    for (ResourceSynchronizer<R, N> synchronizer : synchronizers.values()) {
       // Overall synchronizer state
       status = AppCluster.max(status, synchronizer.getState().getResourceStatus());
       // Synchronization result
@@ -234,7 +234,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
    */
   void start() {
     dnsMonitor.start();
-    for (ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
+    for (ResourceSynchronizer<R, N> synchronizer : synchronizers.values()) {
       synchronizer.start();
     }
   }
@@ -243,7 +243,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
    * Stops all synchronizers and the DNS monitor.
    */
   void stop() {
-    for (ResourceSynchronizer<R, RN> synchronizer : synchronizers.values()) {
+    for (ResourceSynchronizer<R, N> synchronizer : synchronizers.values()) {
       synchronizer.stop();
     }
     dnsMonitor.stop();
@@ -253,12 +253,16 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
    * Creates the resource synchronizer for this specific type of resource or <code>null</code>
    * if never performs any synchronization between these two nodes.
    */
-  protected abstract ResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
+  protected abstract ResourceSynchronizer<R, N> newResourceSynchronizer(
+      N localResourceNode,
+      N remoteResourceNode,
+      ResourceConfiguration<R, N> resourceConfiguration
+  ) throws AppClusterConfigurationException;
 
   /**
    * Gets the set of resource synchronizers.
    */
-  public Collection<ResourceSynchronizer<R, RN>> getSynchronizers() {
+  public Collection<ResourceSynchronizer<R, N>> getSynchronizers() {
     return synchronizers.values();
   }
 
@@ -267,7 +271,7 @@ public abstract class Resource<R extends Resource<R, RN>, RN extends ResourceNod
    * If the local node is not part of the resource nodes, returns an empty map.
    */
   @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-  public Map<Node, ResourceSynchronizer<R, RN>> getSynchronizerMap() {
+  public Map<Node, ResourceSynchronizer<R, N>> getSynchronizerMap() {
     return synchronizers;
   }
 }

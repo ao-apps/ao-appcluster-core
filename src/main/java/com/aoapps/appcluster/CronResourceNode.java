@@ -28,9 +28,9 @@ package com.aoapps.appcluster;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResourceNode<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceNode<R, RN> {
+public abstract class CronResourceNode<R extends CronResource<R, N>, N extends CronResourceNode<R, N>> extends ResourceNode<R, N> {
 
-  protected CronResourceNode(Node node, CronResourceNodeConfiguration<R, RN> resourceNodeConfiguration) {
+  protected CronResourceNode(Node node, CronResourceNodeConfiguration<R, N> resourceNodeConfiguration) {
     super(node, resourceNodeConfiguration);
   }
 }

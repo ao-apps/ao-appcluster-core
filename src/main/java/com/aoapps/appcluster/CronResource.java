@@ -27,15 +27,15 @@ import java.util.Collection;
 
 /**
  * A resource that is scheduled by CronDaemon.
- * 
+ *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResource<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends Resource<R, RN> {
+public abstract class CronResource<R extends CronResource<R, N>, N extends CronResourceNode<R, N>> extends Resource<R, N> {
 
   private final int synchronizeTimeout;
   private final int testTimeout;
 
-  protected CronResource(AppCluster cluster, CronResourceConfiguration<R, RN> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
+  protected CronResource(AppCluster cluster, CronResourceConfiguration<R, N> resourceConfiguration, Collection<? extends ResourceNode<?, ?>> resourceNodes) throws AppClusterConfigurationException {
     super(cluster, resourceConfiguration, resourceNodes);
     this.synchronizeTimeout = resourceConfiguration.getSynchronizeTimeout();
     this.testTimeout = resourceConfiguration.getTestTimeout();
@@ -56,5 +56,9 @@ public abstract class CronResource<R extends CronResource<R, RN>, RN extends Cro
   }
 
   @Override
-  protected abstract CronResourceSynchronizer<R, RN> newResourceSynchronizer(RN localResourceNode, RN remoteResourceNode, ResourceConfiguration<R, RN> resourceConfiguration) throws AppClusterConfigurationException;
+  protected abstract CronResourceSynchronizer<R, N> newResourceSynchronizer(
+      N localResourceNode,
+      N remoteResourceNode,
+      ResourceConfiguration<R, N> resourceConfiguration
+  ) throws AppClusterConfigurationException;
 }

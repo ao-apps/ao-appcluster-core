@@ -28,12 +28,13 @@ package com.aoapps.appcluster;
  *
  * @author  AO Industries, Inc.
  */
-public abstract class CronResourceNodePropertiesConfiguration<R extends CronResource<R, RN>, RN extends CronResourceNode<R, RN>> extends ResourceNodePropertiesConfiguration<R, RN> implements CronResourceNodeConfiguration<R, RN> {
+public abstract class CronResourceNodePropertiesConfiguration<R extends CronResource<R, N>, N extends CronResourceNode<R, N>>
+    extends ResourceNodePropertiesConfiguration<R, N> implements CronResourceNodeConfiguration<R, N> {
 
   protected CronResourceNodePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String resourceId, String nodeId) throws AppClusterConfigurationException {
     super(properties, resourceId, nodeId);
   }
 
   @Override
-  public abstract RN newResourceNode(Node node) throws AppClusterConfigurationException;
+  public abstract N newResourceNode(Node node) throws AppClusterConfigurationException;
 }
