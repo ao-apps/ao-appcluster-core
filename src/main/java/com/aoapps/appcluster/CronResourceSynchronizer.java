@@ -263,12 +263,12 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
             @Override
             @SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
             public void run(int minute, int hour, int dayOfMonth, int month, int dayOfWeek, int year) {
-              final ResourceSynchronizationMode synchronizeNowMode;
+              final ResourceSynchronizationMode mySynchronizeNowMode;
               synchronized (jobLock) {
                 if (job != this) {
                   return;
                 }
-                synchronizeNowMode = CronResourceSynchronizer.this.synchronizeNowMode;
+                mySynchronizeNowMode = CronResourceSynchronizer.this.synchronizeNowMode;
                 CronResourceSynchronizer.this.synchronizeNowMode = null;
               }
               // Do not perform any synchronization or testing on an inconsistent resource
@@ -281,9 +281,9 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
                 final ResourceNodeDnsResult remoteDnsResult = nodeResultMap.get(remoteResourceNode.getNode());
                 if (
                     (
-                        synchronizeNowMode == ResourceSynchronizationMode.SYNCHRONIZE
+                        mySynchronizeNowMode == ResourceSynchronizationMode.SYNCHRONIZE
                             || (
-                            synchronizeNowMode == null
+                            mySynchronizeNowMode == null
                                 && synchronizeSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
                         )
                     ) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
@@ -340,9 +340,9 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
                   }
                 } else if (
                     (
-                        synchronizeNowMode == ResourceSynchronizationMode.TEST_ONLY
+                        mySynchronizeNowMode == ResourceSynchronizationMode.TEST_ONLY
                             || (
-                            synchronizeNowMode == null
+                            mySynchronizeNowMode == null
                                 && testSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
                         )
                     ) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
