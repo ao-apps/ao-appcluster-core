@@ -22,7 +22,7 @@ Application-level clustering tools.
 * [Project Home](https://oss.aoapps.com/appcluster/core/)
 * [Changelog](https://oss.aoapps.com/appcluster/core/changelog)
 * [API Docs](https://oss.aoapps.com/appcluster/core/apidocs/)
-* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.aoapps&q=a%3Aao-appcluster-core)
+* [Maven Central Repository](https://central.sonatype.com/artifact/com.aoapps/ao-appcluster-core)
 * [GitHub](https://github.com/ao-apps/ao-appcluster-core)
 
 ## Contact Us
