@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021, 2022, 2023  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -59,7 +59,7 @@ public abstract class ResourceSynchronizer<R extends Resource<R, N>, N extends R
 
   @Override
   public String toString() {
-    return localResourceNode.getResource() + ": " + localResourceNode.getNode() + " -> " + remoteResourceNode.getNode();
+    return localResourceNode.getResource() + ": " + localResourceNode.getNode() + " → " + remoteResourceNode.getNode();
   }
 
   /**
