@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -24,19 +24,15 @@
 package com.aoapps.appcluster;
 
 /**
- * <p>
  * Each resource has one synchronizer between it and any other node for the
  * resource.
- * </p>
- * <p>
- * Every resource type should support testing.  The test should ensure point-in-time
- * consistency between two nodes as much as possible.
- * </p>
- * <p>
- * Resources are only required to support synchronization when is a master.
+ *
+ * <p>Every resource type should support testing.  The test should ensure point-in-time
+ * consistency between two nodes as much as possible.</p>
+ *
+ * <p>Resources are only required to support synchronization when is a master.
  * They may optionally support synchronization when a slave (such as a csync2
- * master on a slave node).
- * </p>
+ * master on a slave node).</p>
  *
  * @author  AO Industries, Inc.
  */

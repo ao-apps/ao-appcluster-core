@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -446,12 +446,10 @@ public class AppCluster {
    * machine is not one of the nodes.  For this JVM to be considered the local
    * node, the system hostname must match this node's hostname, and the system
    * property "user.name" must match this node's username.
-   * <p>
-   * Determined at cluster start time, before any resources are started.
-   * </p>
-   * <p>
-   * Returns <code>null</code> when not started.
-   * </p>
+   *
+   * <p>Determined at cluster start time, before any resources are started.</p>
+   *
+   * <p>Returns <code>null</code> when not started.</p>
    */
   public Node getLocalNode() {
     synchronized (startedLock) {

@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,25 +39,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- * <p>
  * Synchronizes resource based on cron-like schedules.
  * If the local node is stopped, the synchronizer is stopped.  If the
  * locale node or the remote node is disabled, the synchronized is disabled.
  * Otherwise, the synchronizer will operate on a cron-like scheduled basis for
  * testing and synchronizing.
- * </p>
- * <p>
- * To support masters synchronizing while slaves only test, if a test and a
+ *
+ * <p>To support masters synchronizing while slaves only test, if a test and a
  * synchronization are scheduled at the same moment, the synchronization is
  * performed if possible, and the test is only performed if the synchronization
  * is not possible.  Thus, a synchronization also counts as a test and should
- * perform at least as thorough of a check as a test would perform.
- * </p>
- * <p>
- * If a synchronization or test is missed, no catch-up is performed.  This is
+ * perform at least as thorough of a check as a test would perform.</p>
+ *
+ * <p>If a synchronization or test is missed, no catch-up is performed.  This is
  * true for both when the node is down or when a previous test/synchronization
- * took too long, overlapping the current schedule.
- * </p>
+ * took too long, overlapping the current schedule.</p>
  *
  * @author  AO Industries, Inc.
  */
