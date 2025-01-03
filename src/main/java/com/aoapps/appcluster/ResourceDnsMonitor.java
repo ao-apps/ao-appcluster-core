@@ -313,7 +313,7 @@ public class ResourceDnsMonitor {
                                               if (statusMessages == null) {
                                                 statusMessages = new ArrayList<>();
                                               }
-                                              statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl.strict", masterRecordsTtl, ttl));
+                                              statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl.strictTtl", masterRecordsTtl, ttl));
                                             }
                                           } else if (ttl <= 0 || ttl > masterRecordsTtl) {
                                             if (statusMessages == null) {
