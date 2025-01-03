@@ -51,7 +51,7 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
     this.hostname = properties.getName("appcluster.node." + id + ".hostname");
     this.username = properties.getString("appcluster.node." + id + ".username", true);
     Set<? extends Name> nameserverNames = properties.getUniqueNames("appcluster.node." + id + ".nameservers");
-    Map<Name, Boolean> newNameservers = AoCollections.newHashMap(nameserverNames.size());
+    Map<Name, Boolean> newNameservers = AoCollections.newLinkedHashMap(nameserverNames.size());
     for (Name name : nameserverNames) {
       newNameservers.put(name,
           properties.getBoolean("appcluster.node." + id + ".nameserver." + name.toString(true) + ".strictTtl", true));
