@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -35,10 +35,12 @@ public class Nameserver {
 
   private final AppCluster cluster;
   private final Name hostname;
+  private final boolean strictTtl;
 
-  Nameserver(AppCluster cluster, Name hostname) {
+  Nameserver(AppCluster cluster, Name hostname, boolean strictTtl) {
     this.cluster = cluster;
     this.hostname = hostname;
+    this.strictTtl = strictTtl;
   }
 
   @Override
@@ -71,6 +73,17 @@ public class Nameserver {
    */
   public Name getHostname() {
     return hostname;
+  }
+
+  /**
+   * Checks if this nameserver returns strictly matching TTL values.
+   * When {@code true} (the default), it is a warning for a TTL to have a value not precisely equal to the expected
+   * value.
+   * When {@code false}, a TTL value greater than zero and less than or equal to the expected TTL is allowed without
+   * warning.
+   */
+  public boolean isStrictTtl() {
+    return strictTtl;
   }
 
   /**

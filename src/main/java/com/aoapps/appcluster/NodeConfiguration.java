@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 
 package com.aoapps.appcluster;
 
-import java.util.Set;
+import java.util.Map;
 import org.xbill.DNS.Name;
 
 /**
@@ -70,5 +70,5 @@ public interface NodeConfiguration {
   /**
    * @see Node#getNameservers()
    */
-  Set<? extends Name> getNameservers();
+  Map<? extends Name, Boolean> getNameservers();
 }

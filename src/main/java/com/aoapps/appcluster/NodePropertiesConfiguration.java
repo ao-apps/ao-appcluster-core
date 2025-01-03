@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2016, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2016, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,6 +23,8 @@
 
 package com.aoapps.appcluster;
 
+import com.aoapps.collections.AoCollections;
+import java.util.Map;
 import java.util.Set;
 import org.xbill.DNS.Name;
 
@@ -39,7 +41,7 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
   protected final String display;
   protected final Name hostname;
   protected final String username;
-  protected final Set<? extends Name> nameservers;
+  protected final Map<? extends Name, Boolean> nameservers;
 
   protected NodePropertiesConfiguration(AppClusterPropertiesConfiguration properties, String id) throws AppClusterConfigurationException {
     this.properties = properties;
@@ -48,7 +50,13 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
     this.display = properties.getString("appcluster.node." + id + ".display", true);
     this.hostname = properties.getName("appcluster.node." + id + ".hostname");
     this.username = properties.getString("appcluster.node." + id + ".username", true);
-    this.nameservers = properties.getUniqueNames("appcluster.node." + id + ".nameservers");
+    Set<? extends Name> nameserverNames = properties.getUniqueNames("appcluster.node." + id + ".nameservers");
+    Map<Name, Boolean> newNameservers = AoCollections.newHashMap(nameserverNames.size());
+    for (Name name : nameserverNames) {
+      newNameservers.put(name,
+          properties.getBoolean("appcluster.node." + id + ".nameserver." + name.toString(true) + ".strictTtl", true));
+    }
+    this.nameservers = AoCollections.optimalUnmodifiableMap(newNameservers);
   }
 
   @Override
@@ -96,7 +104,7 @@ public class NodePropertiesConfiguration implements NodeConfiguration {
 
   @Override
   @SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-  public Set<? extends Name> getNameservers() {
+  public Map<? extends Name, Boolean> getNameservers() {
     return nameservers;
   }
 }

@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -308,7 +308,14 @@ public class ResourceDnsMonitor {
                                         // Verify masterDomain TTL settings match expected values, issue as a warning
                                         if (masterRecords.contains(hostname)) {
                                           long ttl = arecord.getTTL();
-                                          if (ttl != masterRecordsTtl) {
+                                          if (nameserver.isStrictTtl()) {
+                                            if (ttl != masterRecordsTtl) {
+                                              if (statusMessages == null) {
+                                                statusMessages = new ArrayList<>();
+                                              }
+                                              statusMessages.add(RESOURCES.getMessage("lookup.unexpectedTtl.strict", masterRecordsTtl, ttl));
+                                            }
+                                          } else if (ttl <= 0 || ttl > masterRecordsTtl) {
                                             if (statusMessages == null) {
                                               statusMessages = new ArrayList<>();
                                             }

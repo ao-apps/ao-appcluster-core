@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -229,6 +229,14 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
       return false;
     }
     throw new AppClusterConfigurationException(RESOURCES.getMessage("getBoolean.invalidValue", propertyName, value));
+  }
+
+  public boolean getBoolean(String propertyName, boolean defaultValue) throws AppClusterConfigurationException {
+    String value = getString(propertyName, false);
+    if (value == null) {
+      return defaultValue;
+    }
+    return getBoolean(propertyName);
   }
 
   public int getInt(String propertyName) throws AppClusterConfigurationException {

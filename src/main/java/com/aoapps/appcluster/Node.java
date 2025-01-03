@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -50,10 +50,10 @@ public class Node {
     this.display = nodeConfiguration.getDisplay();
     this.hostname = nodeConfiguration.getHostname();
     this.username = nodeConfiguration.getUsername();
-    Set<? extends Name> configNameservers = nodeConfiguration.getNameservers();
+    Map<? extends Name, Boolean> configNameservers = nodeConfiguration.getNameservers();
     Set<Nameserver> newNameservers = AoCollections.newLinkedHashSet(configNameservers.size());
-    for (Name nameserver : configNameservers) {
-      newNameservers.add(new Nameserver(cluster, nameserver));
+    for (Map.Entry<? extends Name, Boolean> entry : configNameservers.entrySet()) {
+      newNameservers.add(new Nameserver(cluster, entry.getKey(), entry.getValue()));
     }
     this.nameservers = AoCollections.optimalUnmodifiableSet(newNameservers);
   }
