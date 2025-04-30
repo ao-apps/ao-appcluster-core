@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -57,18 +57,90 @@ public class LoggerResourceListener implements ResourceListener {
     }
     // Log any master DNS record change
     Level level;
+    {
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newMasterLookupResults = newResult.getMasterRecordLookups();
+      Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldMasterLookupResults = oldResult.getMasterRecordLookups();
+      if (newMasterLookupResults != null) {
+        for (Name masterRecord : resource.getMasterRecords()) {
+          Map<? extends Nameserver, ? extends DnsLookupResult> newMasterLookups = newMasterLookupResults.get(masterRecord);
+          Map<? extends Nameserver, ? extends DnsLookupResult> oldMasterLookups = oldMasterLookupResults == null ? null : oldMasterLookupResults.get(masterRecord);
+          for (Nameserver enabledNameserver : resource.getEnabledNameservers()) {
+            DnsLookupResult newDnsLookupResult = newMasterLookups.get(enabledNameserver);
+            level = newDnsLookupResult.getStatus().getResourceStatus().getLogLevel();
+            if (logger.isLoggable(level)) {
+              DnsLookupResult oldDnsLookupResult = oldMasterLookups == null ? null : oldMasterLookups.get(enabledNameserver);
+              SortedSet<String> newAddresses = newDnsLookupResult.getAddresses();
+              SortedSet<String> oldAddresses = oldDnsLookupResult == null ? null : oldDnsLookupResult.getAddresses();
+              if (oldAddresses == null) {
+                oldAddresses = AoCollections.emptySortedSet();
+              }
+              if (!newAddresses.equals(oldAddresses)) {
+                logger.log(
+                    level,
+                    RESOURCES.getMessage(
+                        "onResourceDnsResult.masterRecordLookupResultChanged",
+                        cluster,
+                        resource,
+                        masterRecord,
+                        enabledNameserver,
+                        oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
+                        Strings.join(newAddresses, ", ")
+                    )
+                );
+              }
+              SortedSet<String> newStatusMessages = newDnsLookupResult.getStatusMessages();
+              SortedSet<String> oldStatusMessages = oldDnsLookupResult == null ? null : oldDnsLookupResult.getStatusMessages();
+              if (oldStatusMessages == null) {
+                oldStatusMessages = AoCollections.emptySortedSet();
+              }
+              if (!newStatusMessages.equals(oldStatusMessages)) {
+                for (String statusMessage : newStatusMessages) {
+                  logger.log(
+                      level,
+                      RESOURCES.getMessage(
+                          "onResourceDnsResult.masterRecord.statusMessage",
+                          cluster,
+                          resource,
+                          masterRecord,
+                          enabledNameserver,
+                          statusMessage
+                      )
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    level = newResult.getMasterStatus().getResourceStatus().getLogLevel();
+    if (logger.isLoggable(level)) {
+      if (newResult.getMasterStatus() != oldResult.getMasterStatus()) {
+        logger.log(level, RESOURCES.getMessage("onResourceDnsResult.masterStatusChanged", cluster, resource, oldResult.getMasterStatus(), newResult.getMasterStatus()));
+      }
+      if (!newResult.getMasterStatusMessages().equals(oldResult.getMasterStatusMessages())) {
+        for (String masterStatusMessage : newResult.getMasterStatusMessages()) {
+          logger.log(level, RESOURCES.getMessage("onResourceDnsResult.masterStatusMessage", cluster, resource, masterStatusMessage));
+        }
+      }
+    }
+    for (ResourceNode<?, ?> resourceNode : resource.getResourceNodes()) {
+      Node node = resourceNode.getNode();
+      ResourceNodeDnsResult newNodeResult = newResult.getNodeResultMap().get(node);
+      ResourceNodeDnsResult oldNodeResult = oldResult.getNodeResultMap().get(node);
+      // Log any node DNS record change
       {
-        Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newMasterLookupResults = newResult.getMasterRecordLookups();
-        Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldMasterLookupResults = oldResult.getMasterRecordLookups();
-        if (newMasterLookupResults != null) {
-          for (Name masterRecord : resource.getMasterRecords()) {
-            Map<? extends Nameserver, ? extends DnsLookupResult> newMasterLookups = newMasterLookupResults.get(masterRecord);
-            Map<? extends Nameserver, ? extends DnsLookupResult> oldMasterLookups = oldMasterLookupResults == null ? null : oldMasterLookupResults.get(masterRecord);
+        Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newNodeLookupResults = newNodeResult.getNodeRecordLookups();
+        Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldNodeLookupResults = oldNodeResult.getNodeRecordLookups();
+        if (newNodeLookupResults != null) {
+          for (Name nodeRecord : resourceNode.getNodeRecords()) {
+            Map<? extends Nameserver, ? extends DnsLookupResult> newNodeLookups = newNodeLookupResults.get(nodeRecord);
+            Map<? extends Nameserver, ? extends DnsLookupResult> oldNodeLookups = oldNodeLookupResults == null ? null : oldNodeLookupResults.get(nodeRecord);
             for (Nameserver enabledNameserver : resource.getEnabledNameservers()) {
-              DnsLookupResult newDnsLookupResult = newMasterLookups.get(enabledNameserver);
+              DnsLookupResult newDnsLookupResult = newNodeLookups.get(enabledNameserver);
               level = newDnsLookupResult.getStatus().getResourceStatus().getLogLevel();
               if (logger.isLoggable(level)) {
-                DnsLookupResult oldDnsLookupResult = oldMasterLookups == null ? null : oldMasterLookups.get(enabledNameserver);
+                DnsLookupResult oldDnsLookupResult = oldNodeLookups == null ? null : oldNodeLookups.get(enabledNameserver);
                 SortedSet<String> newAddresses = newDnsLookupResult.getAddresses();
                 SortedSet<String> oldAddresses = oldDnsLookupResult == null ? null : oldDnsLookupResult.getAddresses();
                 if (oldAddresses == null) {
@@ -78,10 +150,11 @@ public class LoggerResourceListener implements ResourceListener {
                   logger.log(
                       level,
                       RESOURCES.getMessage(
-                          "onResourceDnsResult.masterRecordLookupResultChanged",
+                          "onResourceDnsResult.nodeRecordLookupResultChanged",
                           cluster,
                           resource,
-                          masterRecord,
+                          node,
+                          nodeRecord,
                           enabledNameserver,
                           oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
                           Strings.join(newAddresses, ", ")
@@ -98,10 +171,11 @@ public class LoggerResourceListener implements ResourceListener {
                     logger.log(
                         level,
                         RESOURCES.getMessage(
-                            "onResourceDnsResult.masterRecord.statusMessage",
+                            "onResourceDnsResult.nodeRecord.statusMessage",
                             cluster,
                             resource,
-                            masterRecord,
+                            node,
+                            nodeRecord,
                             enabledNameserver,
                             statusMessage
                         )
@@ -113,80 +187,6 @@ public class LoggerResourceListener implements ResourceListener {
           }
         }
       }
-    level = newResult.getMasterStatus().getResourceStatus().getLogLevel();
-    if (logger.isLoggable(level)) {
-      if (newResult.getMasterStatus() != oldResult.getMasterStatus()) {
-        logger.log(level, RESOURCES.getMessage("onResourceDnsResult.masterStatusChanged", cluster, resource, oldResult.getMasterStatus(), newResult.getMasterStatus()));
-      }
-      if (!newResult.getMasterStatusMessages().equals(oldResult.getMasterStatusMessages())) {
-        for (String masterStatusMessage : newResult.getMasterStatusMessages()) {
-          logger.log(level, RESOURCES.getMessage("onResourceDnsResult.masterStatusMessage", cluster, resource, masterStatusMessage));
-        }
-      }
-    }
-    for (ResourceNode<?, ?> resourceNode : resource.getResourceNodes()) {
-      Node node = resourceNode.getNode();
-      ResourceNodeDnsResult newNodeResult = newResult.getNodeResultMap().get(node);
-      ResourceNodeDnsResult oldNodeResult = oldResult.getNodeResultMap().get(node);
-        // Log any node DNS record change
-        {
-          Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> newNodeLookupResults = newNodeResult.getNodeRecordLookups();
-          Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> oldNodeLookupResults = oldNodeResult.getNodeRecordLookups();
-          if (newNodeLookupResults != null) {
-            for (Name nodeRecord : resourceNode.getNodeRecords()) {
-              Map<? extends Nameserver, ? extends DnsLookupResult> newNodeLookups = newNodeLookupResults.get(nodeRecord);
-              Map<? extends Nameserver, ? extends DnsLookupResult> oldNodeLookups = oldNodeLookupResults == null ? null : oldNodeLookupResults.get(nodeRecord);
-              for (Nameserver enabledNameserver : resource.getEnabledNameservers()) {
-                DnsLookupResult newDnsLookupResult = newNodeLookups.get(enabledNameserver);
-                level = newDnsLookupResult.getStatus().getResourceStatus().getLogLevel();
-                if (logger.isLoggable(level)) {
-                  DnsLookupResult oldDnsLookupResult = oldNodeLookups == null ? null : oldNodeLookups.get(enabledNameserver);
-                  SortedSet<String> newAddresses = newDnsLookupResult.getAddresses();
-                  SortedSet<String> oldAddresses = oldDnsLookupResult == null ? null : oldDnsLookupResult.getAddresses();
-                  if (oldAddresses == null) {
-                    oldAddresses = AoCollections.emptySortedSet();
-                  }
-                  if (!newAddresses.equals(oldAddresses)) {
-                    logger.log(
-                        level,
-                        RESOURCES.getMessage(
-                            "onResourceDnsResult.nodeRecordLookupResultChanged",
-                            cluster,
-                            resource,
-                            node,
-                            nodeRecord,
-                            enabledNameserver,
-                            oldAddresses == null ? "" : Strings.join(oldAddresses, ", "),
-                            Strings.join(newAddresses, ", ")
-                        )
-                    );
-                  }
-                  SortedSet<String> newStatusMessages = newDnsLookupResult.getStatusMessages();
-                  SortedSet<String> oldStatusMessages = oldDnsLookupResult == null ? null : oldDnsLookupResult.getStatusMessages();
-                  if (oldStatusMessages == null) {
-                    oldStatusMessages = AoCollections.emptySortedSet();
-                  }
-                  if (!newStatusMessages.equals(oldStatusMessages)) {
-                    for (String statusMessage : newStatusMessages) {
-                      logger.log(
-                          level,
-                          RESOURCES.getMessage(
-                              "onResourceDnsResult.nodeRecord.statusMessage",
-                              cluster,
-                              resource,
-                              node,
-                              nodeRecord,
-                              enabledNameserver,
-                              statusMessage
-                          )
-                      );
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       NodeDnsStatus newNodeStatus = newNodeResult.getNodeStatus();
       level = newNodeStatus.getResourceStatus().getLogLevel();
       if (logger.isLoggable(level)) {
