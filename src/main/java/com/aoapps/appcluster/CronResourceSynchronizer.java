@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -282,7 +282,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
                             mySynchronizeNowMode == null
                                 && synchronizeSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
                         )
-                    ) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
+                      ) && canSynchronize(ResourceSynchronizationMode.SYNCHRONIZE, localDnsResult, remoteDnsResult)
                 ) {
                   // Perform synchronization
                   synchronized (jobLock) {
@@ -341,7 +341,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
                             mySynchronizeNowMode == null
                                 && testSchedule.isScheduled(minute, hour, dayOfMonth, month, dayOfWeek, year)
                         )
-                    ) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
+                      ) && canSynchronize(ResourceSynchronizationMode.TEST_ONLY, localDnsResult, remoteDnsResult)
                 ) {
                   // Perform test
                   synchronized (jobLock) {
