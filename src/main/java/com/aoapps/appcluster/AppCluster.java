@@ -110,15 +110,15 @@ public class AppCluster {
     this.configuration = new AppClusterPropertiesConfiguration(properties);
   }
 
-  ///**
-  // * Performs a consistency check on a configuration.
-  // */
-  //public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
-  //  checkConfiguration(
-  //    configuration.getNodeConfigurations(),
-  //    configuration.getResourceConfigurations()
-  //  );
-  //}
+  // /**
+  //  * Performs a consistency check on a configuration.
+  //  */
+  // public static void checkConfiguration(AppClusterConfiguration configuration) throws AppClusterConfigurationException {
+  //   checkConfiguration(
+  //     configuration.getNodeConfigurations(),
+  //     configuration.getResourceConfigurations()
+  //   );
+  // }
 
   /**
    * Performs a consistency check on a configuration.
