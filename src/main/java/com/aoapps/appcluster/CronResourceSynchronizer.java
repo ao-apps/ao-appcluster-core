@@ -125,7 +125,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
   /**
    * Convenience method for JavaBeans property.
    *
-   * @see #canSynchronizeNow(com.aoapps.appcluster.ResourceSynchronizationMode)
+   * @see CronResourceSynchronizer#canSynchronizeNow(com.aoapps.appcluster.ResourceSynchronizationMode)
    * @see ResourceSynchronizationMode#SYNCHRONIZE
    */
   public boolean getCanSynchronizeNow() {
@@ -135,7 +135,7 @@ public abstract class CronResourceSynchronizer<R extends CronResource<R, N>, N e
   /**
    * Convenience method for JavaBeans property.
    *
-   * @see #canSynchronizeNow(com.aoapps.appcluster.ResourceSynchronizationMode)
+   * @see CronResourceSynchronizer#canSynchronizeNow(com.aoapps.appcluster.ResourceSynchronizationMode)
    * @see ResourceSynchronizationMode#TEST_ONLY
    */
   public boolean getCanTestNow() {

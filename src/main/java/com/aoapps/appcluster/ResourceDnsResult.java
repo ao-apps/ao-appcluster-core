@@ -179,7 +179,7 @@ public class ResourceDnsResult implements ResourceResult {
   /**
    * Matches the rules for resource status.
    *
-   * @see #getResourceStatus()
+   * @see ResourceDnsResult#getResourceStatus()
    */
   public ResourceStatus getSecondsSinceStatus() {
     if (!resource.getCluster().isRunning()) {

@@ -82,7 +82,7 @@ public class AppCluster {
    * Creates a cluster with the provided configuration.
    * The cluster is not started until <code>start</code> is called.
    *
-   * @see #start()
+   * @see AppCluster#start()
    */
   public AppCluster(AppClusterConfiguration configuration) {
     this.configuration = configuration;
@@ -93,7 +93,7 @@ public class AppCluster {
    * Any change to the file will cause an automatic reload of the cluster configuration.
    * The cluster is not started until <code>start</code> is called.
    *
-   * @see #start()
+   * @see AppCluster#start()
    */
   public AppCluster(File file) {
     this.configuration = new AppClusterPropertiesConfiguration(file);
@@ -104,7 +104,7 @@ public class AppCluster {
    * Changes to the properties file will not result in a cluster configuration.
    * The cluster is not started until <code>start</code> is called.
    *
-   * @see #start()
+   * @see AppCluster#start()
    */
   public AppCluster(Properties properties) {
     this.configuration = new AppClusterPropertiesConfiguration(properties);
@@ -278,8 +278,8 @@ public class AppCluster {
   /**
    * Checks if this cluster is running.
    *
-   * @see #start()
-   * @see #stop()
+   * @see AppCluster#start()
+   * @see AppCluster#stop()
    */
   public boolean isRunning() {
     synchronized (startedLock) {
@@ -300,7 +300,7 @@ public class AppCluster {
   /**
    * Starts this cluster manager.
    *
-   * @see #stop()
+   * @see AppCluster#stop()
    */
   public void start() throws AppClusterConfigurationException {
     synchronized (startedLock) {
@@ -320,7 +320,7 @@ public class AppCluster {
   /**
    * Stops this cluster manager.
    *
-   * @see #start()
+   * @see AppCluster#start()
    */
   @SuppressWarnings({"UseSpecificCatch", "TooBroadCatch"})
   public void stop() {
