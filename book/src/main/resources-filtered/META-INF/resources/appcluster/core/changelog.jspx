@@ -37,9 +37,9 @@ along with ao-appcluster-core.  If not, see <https://www.gnu.org/licenses/>.
     shortTitle="Changelog"
     tocLevels="1"
     datePublished="2016-10-29T15:21:59-05:00"
-    dateModified="2025-07-02T23:05:45Z"
+    dateModified="2026-02-06T04:05:12Z"
   >
-    <c:set var="latestRelease" value="2.0.1" />
+    <c:set var="latestRelease" value="3.0.0" />
     <c:if test="${
       fn:endsWith('@{project.version}', '-SNAPSHOT')
       and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')
@@ -51,15 +51,24 @@ along with ao-appcluster-core.  If not, see <https://www.gnu.org/licenses/>.
         groupId="@{project.groupId}"
         artifactId="@{documented.artifactId}"
         scmUrl="@{project.scm.url}"
-      >
-        <ul>
-          <li>
-            Individual nameservers may now allow a reported TTL less than the expected value.
-            This seems to occur on a subset of nameservers, so it is configurable on a per-nameserver basis.
-          </li>
-        </ul>
-      </changelog:release>
+      />
     </c:if>
+
+    <changelog:release
+      projectName="@{documented.name}"
+      version="3.0.0"
+      datePublished="2026-02-06T04:05:12Z"
+      groupId="@{project.groupId}"
+      artifactId="@{documented.artifactId}"
+      scmUrl="@{project.scm.url}"
+    >
+      <ul>
+        <li>
+          Individual nameservers may now allow a reported TTL less than the expected value.
+          This seems to occur on a subset of nameservers, so it is configurable on a per-nameserver basis.
+        </li>
+      </ul>
+    </changelog:release>
 
     <changelog:release
       projectName="@{documented.name}"
