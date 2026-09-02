@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -247,14 +247,14 @@ public class ResourceDnsMonitor {
                 final boolean allowMultiMaster = resource.getAllowMultiMaster();
                 final Nameserver[] enabledNameservers = resource.getEnabledNameservers().toArray(new Nameserver[resource.getEnabledNameservers().size()]);
 
-                final ResourceNode<?, ?>[] _resourceNodes = resource.getResourceNodes().toArray(new ResourceNode<?, ?>[resource.getResourceNodes().size()]);
+                final ResourceNode<?, ?>[] resourceNodesFinal = resource.getResourceNodes().toArray(new ResourceNode<?, ?>[resource.getResourceNodes().size()]);
 
                 // Find all the unique hostnames and nameservers that will be queried
                 final Name[] allHostnames;
                   {
                     final Set<Name> allHostnamesSet = new HashSet<>();
                     allHostnamesSet.addAll(masterRecords);
-                    for (ResourceNode<?, ?> resourceNode : _resourceNodes) {
+                    for (ResourceNode<?, ?> resourceNode : resourceNodesFinal) {
                       if (resourceNode.getNode().isEnabled()) {
                         allHostnamesSet.addAll(resourceNode.getNodeRecords());
                       }
@@ -462,9 +462,9 @@ public class ResourceDnsMonitor {
                     assert firstMasterAddresses != null;
 
                     // Get the results for each node
-                    Map<Node, ResourceNodeDnsResult> myNodeResults = AoCollections.newHashMap(_resourceNodes.length);
-                    Set<String> allNodeAddresses = AoCollections.newHashSet(_resourceNodes.length);
-                    for (ResourceNode<?, ?> resourceNode :  _resourceNodes) {
+                    Map<Node, ResourceNodeDnsResult> myNodeResults = AoCollections.newHashMap(resourceNodesFinal.length);
+                    Set<String> allNodeAddresses = AoCollections.newHashSet(resourceNodesFinal.length);
+                    for (ResourceNode<?, ?> resourceNode : resourceNodesFinal) {
                       Node node = resourceNode.getNode();
                       if (node.isEnabled()) {
                         Set<? extends Name> nodeRecords = resourceNode.getNodeRecords();
@@ -499,7 +499,7 @@ public class ResourceDnsMonitor {
                                 } else {
                                   // Each node must have a different A record
                                   String address = addresses.iterator().next();
-                                  for (ResourceNodeDnsResult previousNodeResult :  myNodeResults.values()) {
+                                  for (ResourceNodeDnsResult previousNodeResult : myNodeResults.values()) {
                                     Map<? extends Name, ? extends Map<? extends Nameserver, ? extends DnsLookupResult>> previousNodeRecordLookups = previousNodeResult.getNodeRecordLookups();
                                     if (previousNodeRecordLookups != null) {
                                       boolean foundMatch = false;
