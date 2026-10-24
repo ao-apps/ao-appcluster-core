@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -112,7 +112,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
                       try {
                         Thread.sleep(FILE_CHECK_INTERVAL);
                       } catch (InterruptedException exc) {
-                        logger.log(Level.WARNING, null, exc);
+                        logger.log(Level.WARNING, "TODO: message here", exc);
                         // Restore the interrupted status
                         currentThread.interrupt();
                         break;
@@ -139,7 +139,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
                             } catch (ThreadDeath td) {
                               throw td;
                             } catch (Throwable t) {
-                              logger.log(Level.SEVERE, null, t);
+                              logger.log(Level.SEVERE, "TODO: message here", t);
                             }
                           }
                         }
@@ -147,7 +147,7 @@ public class AppClusterPropertiesConfiguration implements AppClusterConfiguratio
                     } catch (ThreadDeath td) {
                       throw td;
                     } catch (Throwable t) {
-                      logger.log(Level.SEVERE, null, t);
+                      logger.log(Level.SEVERE, "TODO: message here", t);
                     }
                   }
                 },

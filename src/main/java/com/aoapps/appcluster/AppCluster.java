@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2011, 2015, 2016, 2020, 2021, 2022, 2024, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -221,7 +221,7 @@ public class AppCluster {
           } catch (ThreadDeath td) {
             throw td;
           } catch (Throwable t) {
-            logger.log(Level.SEVERE, null, t);
+            logger.log(Level.SEVERE, "TODO: message here", t);
           }
         });
       }
@@ -237,7 +237,7 @@ public class AppCluster {
           } catch (ThreadDeath td) {
             throw td;
           } catch (Throwable t) {
-            logger.log(Level.SEVERE, null, t);
+            logger.log(Level.SEVERE, "TODO: message here", t);
           }
         });
       }
@@ -259,7 +259,7 @@ public class AppCluster {
             } catch (ThreadDeath td) {
               throw td;
             } catch (Throwable t) {
-              logger.log(Level.SEVERE, null, t);
+              logger.log(Level.SEVERE, "TODO: message here", t);
             }
           }
           shutdown();
@@ -268,7 +268,7 @@ public class AppCluster {
           } catch (ThreadDeath td) {
             throw td;
           } catch (Throwable t) {
-            logger.log(Level.SEVERE, null, t);
+            logger.log(Level.SEVERE, "TODO: message here", t);
           }
         }
       }
@@ -332,7 +332,7 @@ public class AppCluster {
           } catch (ThreadDeath td) {
             throw td;
           } catch (Throwable t) {
-            logger.log(Level.SEVERE, null, t);
+            logger.log(Level.SEVERE, "TODO: message here", t);
           }
         }
         shutdown();

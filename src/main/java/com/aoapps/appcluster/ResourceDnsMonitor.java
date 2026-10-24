@@ -660,17 +660,17 @@ public class ResourceDnsMonitor {
                       needsLogged = currentThread == thread;
                     }
                     if (needsLogged) {
-                      logger.log(Level.SEVERE, null, exc);
+                      logger.log(Level.SEVERE, "TODO: message here", exc);
                     }
                   } catch (ThreadDeath td) {
                     throw td;
                   } catch (Throwable t) {
-                    logger.log(Level.SEVERE, null, t);
+                    logger.log(Level.SEVERE, "TODO: message here", t);
                   }
                   try {
                     Thread.sleep(DNS_CHECK_INTERVAL.toMillis(), DNS_CHECK_INTERVAL.getNano() % 1000_000);
                   } catch (InterruptedException exc) {
-                    logger.log(Level.WARNING, null, exc);
+                    logger.log(Level.WARNING, "TODO: message here", exc);
                     // Restore the interrupted status
                     Thread.currentThread().interrupt();
                   }
