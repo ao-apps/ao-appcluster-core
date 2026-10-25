@@ -1,6 +1,6 @@
 /*
  * ao-appcluster-core - Application-level clustering tools.
- * Copyright (C) 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2021, 2022, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -21,7 +21,6 @@
  * along with ao-appcluster-core.  If not, see <https://www.gnu.org/licenses/>.
  */
 module com.aoapps.appcluster.core {
-  exports com.aoapps.appcluster;
   // Direct
   requires com.aoapps.collections; // <groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId>
   requires com.aoapps.cron; // <groupId>com.aoapps</groupId><artifactId>ao-cron</artifactId>
@@ -30,4 +29,6 @@ module com.aoapps.appcluster.core {
   requires org.dnsjava; // <groupId>dnsjava</groupId><artifactId>dnsjava</artifactId>
   // Java SQL
   requires java.sql;
+
+  exports com.aoapps.appcluster;
 }
